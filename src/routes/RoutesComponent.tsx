@@ -1,0 +1,166 @@
+import AuthGuard from '@/Layouts/AuthGuard';
+import LayoutWrapper from '@/Layouts/LayoutsWrapper';
+import React, { Suspense, lazy } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+
+// Auth Pages
+const LoginPage = lazy(() => import('@/pages/auth/login/login'));
+const ForgotPasswordPage = lazy(() => import('@/pages/auth/Forgot-Password/ForgotPassword'));
+const OtpVerificationPage = lazy(() => import('@/pages/auth/Otp-Verification/OtpVerificationPage'));
+const ResetPasswordPage = lazy(() => import('@/pages/auth/Reset-Password/ResetPasswordPage'));
+
+// Dashboard Pages
+const HomePage = lazy(() => import('@/pages/Dashboard/Home/Homepage'));
+const UsersManagement = lazy(() => import('@/pages/Dashboard/UsersManagement/UsersManagement'));
+const UserProfilePage = lazy(() => import('@/pages/Dashboard/UserProfilePage/UserProfilepage'));
+
+// Workouts
+const WorkoutsPage = lazy(() => import('@/pages/Dashboard/Workouts/Workouts'));
+const CreateWorkoutPage = lazy(() => import('@/pages/Dashboard/Workouts/CreateWorkout/CreateWorkoutPage'));
+const WorkoutViewAndEditPage = lazy(() => import('@/pages/Dashboard/Workouts/WorkoutViewAndEdit/WorkoutViewAndEditPage'));
+
+//category
+const CategoryPage = lazy(() => import('@/pages/Dashboard/Categories/Category'));
+const CreateCategoryPage = lazy(() => import('@/pages/Dashboard/Categories/CreateCategory/CreateCategoryPage'));
+const CategoryViewAndEditPage = lazy(() => import('@/pages/Dashboard/Categories/CategoryViewAndEdit/CategoryViewAndEditPage'));
+
+// Subscriptions
+const SubscriptionPage = lazy(() => import('@/pages/Dashboard/Subscriptions/SubscriptionPage'));
+
+// Analytics
+const AnalyticsPage = lazy(() => import('@/pages/Dashboard/Analytics/AnalyticsPage'));
+
+// Settings
+const SettingsPage = lazy(() => import('@/pages/Dashboard/Settings/SettingsPage'));
+
+// Admins
+const AdminsPage = lazy(() => import('@/pages/Dashboard/Admins/AdminsPage'));
+const CreateAdminsPage = lazy(() => import('@/pages/Dashboard/Admins/CreateAdmins/CreateAdminsPage'));
+
+// Teachers
+const TeachersPage = lazy(() => import('@/pages/Dashboard/Teachers/TeachersPage'));
+const CreateTeachersPage = lazy(() => import('@/pages/Dashboard/Teachers/CreateTeachers/CreateTeachersPage'));
+
+// Students
+const StudentsPage = lazy(() => import('@/pages/Dashboard/Students/StudentsPage'));
+const CreateStudentsPage = lazy(() => import('@/pages/Dashboard/Students/CreateStudents/CreateStudentsPage'));
+
+// Academic Years
+const AcademicYears = lazy(() => import('@/pages/Dashboard/AcademicYears/AcademicYearsPage'));
+const CreateAcademicYearPage = lazy(() => import('@/pages/Dashboard/AcademicYears/CreateAcademicYear/CreateAcademicYearPage'));
+
+// Academic Terms
+const AcademicTermsPage = lazy(() => import('@/pages/Dashboard/AcademicTerms/AcademicTermsPage'));
+const CreateAcademicTermPage = lazy(() => import('@/pages/Dashboard/AcademicTerms/CreateAcademicTerm/CreateAcademicTermPage'));
+
+//Class Levels
+const ClassLevelsPage = lazy(() => import('@/pages/Dashboard/ClassLevels/ClassLevelsPage'));
+const CreateClassLevelPage = lazy(() => import('@/pages/Dashboard/ClassLevels/CreateClassLevel/CreateClassLevelPage'));
+
+
+//payments
+const PaymentPage = lazy(() => import('@/pages/Dashboard/Payments/Payment'));
+const PaymentViewAndEditPage = lazy(() => import('@/pages/Dashboard/Payments/PaymentDetail/PaymentDetail'));
+
+//diet plan
+const LearningHubPage = lazy(() => import('@/pages/Dashboard/LearningHub/LearningHub'));
+const CreateLearningHubPage = lazy(() => import('@/pages/Dashboard/LearningHub/CreateLearningHub/CreateLearningHubPage'));
+const LearningHubViewAndEditPage = lazy(() => import('@/pages/Dashboard/LearningHub/LearningHubViewAndEdit/LearningHubViewAndEditPage'));
+
+
+
+const RoutesComponent: React.FC = () => {
+  return (
+    <Suspense fallback={<div></div>}>
+      <Routes>
+        {/* Redirect / to /dashboard/home */}
+        <Route path="/" element={<Navigate to="/dashboard/home" replace />} />
+
+        <Route
+          path="/auth"
+          element={
+            <AuthGuard>
+              <LayoutWrapper type="auth" />
+            </AuthGuard>
+          }
+        >
+          {/* Redirect /auth to /auth/login */}
+          <Route index element={<Navigate to="login" replace />} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="verify-otp" element={<OtpVerificationPage />} />
+          <Route path="reset-password" element={<ResetPasswordPage />} />
+        </Route>
+
+        {/* Dashboard Routes */}
+        <Route
+          path="/dashboard"
+          element={
+            <AuthGuard>
+              <LayoutWrapper type="dashboard" />
+            </AuthGuard>
+          }
+        >
+          {/* Redirect /dashboard to /dashboard/home */}
+          <Route index element={<Navigate to="home" replace />} />
+          <Route path="home" element={<HomePage />} />
+          {/* User Management */}
+          <Route path="user-management" element={<UsersManagement />} />
+          <Route path="user-management/:id" element={<UserProfilePage />} />
+          {/* Workouts */}
+          <Route path="workouts" element={<WorkoutsPage />} />
+          <Route path="workouts/create" element={<CreateWorkoutPage />} />
+          <Route path="workouts/:id" element={<WorkoutViewAndEditPage />} />
+          {/* Category */}
+          <Route path="categories" element={<CategoryPage />} />
+          <Route path="categories/create" element={<CreateCategoryPage />} />
+          <Route path="categories/:id" element={<CategoryViewAndEditPage />} />
+          {/* Subscriptions */}
+          <Route path="subscriptions" element={<SubscriptionPage />} />
+          {/* payments */}
+          <Route path="payments" element={<PaymentPage />} />
+          <Route path="payments/:id" element={<PaymentViewAndEditPage />} />
+
+          {/* diet plan */}
+          <Route path="learning-hub" element={<LearningHubPage />} />
+          <Route path="learning-hub/create" element={<CreateLearningHubPage />} />
+          <Route path="learning-hub/:id" element={<LearningHubViewAndEditPage />} />
+
+          {/* Analytics */}
+          <Route path="analytics" element={<AnalyticsPage />} />
+          {/* Settings */}
+          <Route path="settings" element={<SettingsPage />} />
+
+
+          {/* Admins */}
+          <Route path="admins" element={<AdminsPage />} />
+          <Route path="admins/create" element={<CreateAdminsPage />} />
+
+          {/* Teachers */}
+          <Route path="teachers" element={<TeachersPage />} />
+          <Route path="teachers/create" element={<CreateTeachersPage />} />
+
+          {/* Students */}
+          <Route path="students" element={<StudentsPage />} />
+          <Route path="students/create" element={<CreateStudentsPage />} />
+
+          {/* Academic Years */}
+          <Route path="academic-years" element={<AcademicYears />} />
+          <Route path="academic-years/create" element={<CreateAcademicYearPage />} />
+
+          {/* Academic Terms */}
+          <Route path="academic-terms" element={<AcademicTermsPage />} />
+          <Route path="academic-terms/create" element={<CreateAcademicTermPage />} />
+
+          {/* Class Levels */}
+          <Route path="class-levels" element={<ClassLevelsPage />} />
+          <Route path="class-levels/create" element={<CreateClassLevelPage />} />
+
+
+        </Route>
+      </Routes>
+    </Suspense>
+  );
+};
+
+export default RoutesComponent;
