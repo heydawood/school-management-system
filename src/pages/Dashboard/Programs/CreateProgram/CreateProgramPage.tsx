@@ -1,8 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useState } from 'react';
-import CreateClassLevelFrom from '@/components/features/ClassLevels/CreateClassLevelFrom';
+import CreateProgramForm from '@/components/features/Programs/CreateProgramForm';
 
-const CreateClassLevelPage = () => {
+const CreateProgramPage = () => {
 
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -11,17 +11,16 @@ const CreateClassLevelPage = () => {
     <>
         <Card className="px-4">
       <CardHeader className="border-b px-0">
-        <CardTitle className="text-subheading">Create New Terms</CardTitle>
+        <CardTitle className="text-subheading">Create New Programs</CardTitle>
       </CardHeader>
       <CardContent className="px-0 mt-4">
-        <CreateClassLevelFrom setLoading={setLoading} />
+        <CreateProgramForm setLoading={setLoading} />
       </CardContent>
     </Card>
     </>
   )
 }
 
-export default CreateClassLevelPage
+export default CreateProgramPage
 
-
-//CreateClassLevelPage
+//CreateProgramPage

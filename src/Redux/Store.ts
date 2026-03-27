@@ -14,6 +14,9 @@ import StudentSliceReducer from './Students/Slice';
 import AcademicYearsReducer from './AcademicYears/Slice';
 import AcademicTermsReducer from './AcademicTerms/Slice';
 import ClassLevelsReducer from './ClassLevels/Slice';
+import ProgramsReducer from './Programs/Slice';
+import SubjectsReducer from './Subjects/Slice';
+import YearGroupsReducer from './YearGroups/Slice';
 
 export const appReducer = combineReducers({
   authReducer,
@@ -30,7 +33,10 @@ export const appReducer = combineReducers({
   StudentRecords: StudentSliceReducer,
   AcademicYearsRecords: AcademicYearsReducer,
   AcademicTermsRecords: AcademicTermsReducer,
-  ClassLevelsRecords: ClassLevelsReducer
+  ClassLevelsRecords: ClassLevelsReducer,
+  ProgramsRecords: ProgramsReducer,
+  SubjectsRecords: SubjectsReducer,
+  YearGroupsRecords: YearGroupsReducer,
 });
 
 export const store = () => {

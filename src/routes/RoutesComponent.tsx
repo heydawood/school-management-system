@@ -57,6 +57,19 @@ const CreateAcademicTermPage = lazy(() => import('@/pages/Dashboard/AcademicTerm
 const ClassLevelsPage = lazy(() => import('@/pages/Dashboard/ClassLevels/ClassLevelsPage'));
 const CreateClassLevelPage = lazy(() => import('@/pages/Dashboard/ClassLevels/CreateClassLevel/CreateClassLevelPage'));
 
+//Programs
+const ProgramsPage = lazy(() => import('@/pages/Dashboard/Programs/ProgramsPage'));
+const CreateProgramPage = lazy(() => import('@/pages/Dashboard/Programs/CreateProgram/CreateProgramPage'));
+
+//Subjects
+const SubjectsPage = lazy(() => import('@/pages/Dashboard/Subjects/SubjectsPage'));
+const CreateSubjectPage = lazy(() => import('@/pages/Dashboard/Subjects/CreateSubject/CreateSubjectPage'));
+
+//Year Groups
+const YearGroupsPage = lazy(() => import('@/pages/Dashboard/YearGroups/YearGroupsPage'));
+const CreateYearGroupsPage = lazy(() => import('@/pages/Dashboard/YearGroups/CreateYearGroup/CreateYearGroupPage'));
+
+
 
 //payments
 const PaymentPage = lazy(() => import('@/pages/Dashboard/Payments/Payment'));
@@ -155,6 +168,18 @@ const RoutesComponent: React.FC = () => {
           {/* Class Levels */}
           <Route path="class-levels" element={<ClassLevelsPage />} />
           <Route path="class-levels/create" element={<CreateClassLevelPage />} />
+          
+          {/* Programs */}
+          <Route path="programs" element={<ProgramsPage />} />
+          <Route path="programs/create" element={<CreateProgramPage />} />
+
+          {/* Subjects */}
+          <Route path="subjects" element={<SubjectsPage />} />
+          <Route path="subjects/create" element={<CreateSubjectPage />} />
+
+          {/* Year Groups */}
+          <Route path="year-groups" element={<YearGroupsPage />} />
+          <Route path="year-groups/create" element={<CreateYearGroupsPage />} />
 
 
         </Route>

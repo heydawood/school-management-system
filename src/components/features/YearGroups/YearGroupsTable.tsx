@@ -5,26 +5,27 @@ import type { Pagination } from '@/Utils/Types';
 import { useLearningHubActionManager } from '@/pages/Dashboard/LearningHub/LearningHubActionManager';
 import { useAppDispatch } from '@/Redux/Hooks';
 import { customToast } from '@/Common/Components/ShowToast';
-import type { ClassLevelDataResponse } from '@/pages/Dashboard/ClassLevels/Types';
-import { deleteClassLevelById, updateClassLevelById } from '@/Redux/ClassLevels/Slice';
-import DeleteClassLevelsModal from '@/components/Modals/DeleteClassLevelsModal';
-import ClassLevelsModal from '@/components/Modals/ClassLevelsModal';
-import UpdateClassLevelsModal from '@/components/Modals/UpdateClassLevelsModal';
+import type { SubjectsDataResponse } from '@/pages/Dashboard/Subjects/Types';
+import { deleteSubjectsById, updateSubjectsById } from '@/Redux/Subjects/Slice';
+import SubjectsModal from '@/components/Modals/SubjectsModal';
+import DeleteSubjectsModal from '@/components/Modals/DeleteSubjectsModal';
+import UpdateSubjectsModal from '@/components/Modals/UpdateSubjectsModal';
+import type { YearGroupsDataResponse } from '@/pages/Dashboard/YearGroups/Types';
 
-const ClassLevelsTable: FC<{
+const SubjectsTable: FC<{
     loading: boolean;
-    data: ClassLevelDataResponse[];
+    data: SubjectsDataResponse[];
     pagination: Pagination;
     filters: { search: string };
-}> = ({ loading, data, pagination, filters }) => {
+}> = ({ loading, data, pagination, filters }) => { 
 
-    const [openClassLevelsActionsModal, setOpenClassLevelsActionsModal] = useState<boolean>(false);
-    const [openDeleteClassLevelsModal, setOpenDeleteClassLevelsModal] = useState<boolean>(false);
+    const [openYearGroupsActionsModal, setOpenYearGroupsActionsModal] = useState<boolean>(false);
+    const [openDeleteYearGroupsModal, setOpenDeleteYearGroupsModal] = useState<boolean>(false);
 
-    const [selectedClassLevelsId, setSelectedClassLevelsId] = useState<string | null>(null);
+    const [selectedYearGroupsId, setSelectedYearGroupsId] = useState<string | null>(null);
 
-    const [updateClassLevelsId, setUpdateClassLevelsId] = useState<string | null>(null);
-    const [openUpdateClassLevelsModal, setOpenUpdateClassLevelsModal] = useState<boolean>(false);
+    const [updateYearGroupsId, setUpdateYearGroupsId] = useState<string | null>(null);
+    const [openUpdateYearGroupsModal, setOpenUpdateYearGroupsModal] = useState<boolean>(false);
 
 
     const [deleting, setDeleting] = useState(false);
@@ -36,64 +37,65 @@ const ClassLevelsTable: FC<{
 
 
     //delete function
-    const handleDeleteClassLevels= async () => {
-        console.log('deleted clicked. id:', selectedClassLevelsId)
-        if (!selectedClassLevelsId) return;
+    const handleDeleteYearGroups= async () => {
+      console.log('deleted clicked. id:', selectedYearGroupsId)
+        if (!selectedYearGroupsId) return;
 
         setDeleting(true);
         try {
-            await dispatch(deleteClassLevelById(selectedClassLevelsId))
+            await dispatch(deleteYearGroupsById(selectedYearGroupsId))
                 .unwrap();
-            customToast.success('Class Level deleted successfully.');
+            customToast.success('YearGroup deleted successfully.');
 
             // Close the modal
-            setOpenDeleteClassLevelsModal(false);
+            setOpenDeleteYearGroupsModal(false);
 
             // Refresh the list after deletion
-            setSelectedClassLevelsId(null);
+            setSelectedYearGroupsId(null);
 
 
 
         } catch (error: any) {
-            customToast.error(error?.message || 'Failed to delete Class Level.');
+            customToast.error(error?.message || 'Failed to delete Subjects.');
         } finally {
             setDeleting(false);
         }
     };
 
     //update function
-    const handleUpdateClassLevels = async (updatedData: any) => {
-        if (!updateClassLevelsId) return;
+    const handleUpdateYearGroups = async (updatedData: any) => {
+        if (!updateYearGroupsId) return;
 
         setUpdating(true);
         try {
-            await dispatch(updateClassLevelById({ classLevelId: updateClassLevelsId, classLevelData: updatedData }))
+          console.log(updatedData)
+            await dispatch(updateYearGroupsById({ subjectsId: updateYearGroupsId, subjectsData: updatedData }))
                 .unwrap();
-            customToast.success('class Levels updated successfully.');
+            customToast.success('Subjects updated successfully.');
 
             // Close the modal
-            setOpenUpdateClassLevelsModal(false);
+            setOpenUpdateYearGroupsModal(false);
 
             // Refresh the list after update
-            setUpdateClassLevelsId(null);
+            setUpdateYearGroupsId(null);
         } catch (error: any) {
-            customToast.error(error?.message || 'Failed to update academic term.');
+            customToast.error(error?.message || 'Failed to update Subjects.');
         } finally {
             setUpdating(false);
         }
     };
 
-    const ClassLevelsListColumns = [
+    const YearGroupsListColumns = [
         {
             title: 'Name',
             dataIndex: 'name',
             key: 'name',
-            sorter: (a: ClassLevelDataResponse, b: ClassLevelDataResponse) => { // these(sorter & render) are built in sorters for the table columns, they sort the data based on the column values
+            sorter: (a: YearGroupsDataResponse, b: YearGroupsDataResponse) => { // these(sorter & render) are built in sorters for the table columns, they sort the data based on the column values
                 const nameA = a?.name?.toLowerCase() || '';
                 const nameB = b?.name?.toLowerCase() || '';
                 return nameA.localeCompare(nameB);
             },
-            render: (_: any, record: ClassLevelDataResponse) => (
+            render: (_: any, record: YearGroupsDataResponse) => (
                 <div className="flex items-center">
                     <span className="text-paragraph overflow-hidden">{record.name}</span>
                 </div>
@@ -104,38 +106,41 @@ const ClassLevelsTable: FC<{
             title: 'Description',
             dataIndex: 'description',
             key: 'description',
-            sorter: (a: ClassLevelDataResponse, b: ClassLevelDataResponse) => {
+            sorter: (a: YearGroupsDataResponse, b: YearGroupsDataResponse) => {
                 const descA = a?.description?.toLowerCase() || '';
                 const descB = b?.description?.toLowerCase() || '';
                 return descA.localeCompare(descB);
             },
-            render: (_: any, record: ClassLevelDataResponse) => (
+            render: (_: any, record: YearGroupsDataResponse) => (
                 <div className="flex items-center">
                     <span className="text-paragraph overflow-hidden">{record.description}</span>
                 </div>
             ),
         },
 
+        
+
         {
             title: 'Action',
             dataIndex: 'action',
             key: 'action',
-            render: (_: any, record: ClassLevelDataResponse) => (
+            render: (_: any, record: YearGroupsDataResponse) => (
                 <div>
                     <Button onClick={() => {
 
 
-                        setSelectedClassLevelsId(record.id);
-                        setOpenClassLevelsActionsModal(true)
+                        setSelectedYearGroupsId(record._id);
+                        setOpenYearGroupsActionsModal(true)
                     }} variant="link" className="text-primary-800 font-semibold">
                         View
                     </Button>
 
                     <Button 
                         onClick={() => {
-                            setSelectedClassLevelsId(record.id);
-                           // setModalAction('delete');
-                            setOpenDeleteClassLevelsModal(true)
+                          console.log("record:", record);
+                            setSelectedYearGroupsId(record._id);
+                           
+                            setOpenDeleteYearGroupsModal(true)
                         }} 
                         variant="link" 
                         className="text-error-800 font-semibold"
@@ -146,9 +151,9 @@ const ClassLevelsTable: FC<{
                     <Button 
 
                         onClick={() => {
-                            setUpdateClassLevelsId(record.id);
-                            //setModalAction('update');
-                            setOpenUpdateClassLevelsModal(true)
+                            setUpdateSubjectsId(record.id);
+                            
+                            setOpenUpdateSubjectsModal(true)
                         }} 
                         variant="link" 
                         className="text-green-600 font-semibold"
@@ -167,7 +172,7 @@ const ClassLevelsTable: FC<{
         <>
             <Table
                 loading={loading}
-                columns={ClassLevelsListColumns}
+                columns={SubjectsListColumns}
                 dataSource={data}
                 rowKey="id"
                 headerStyle="bg-neutral-400 rounded-xl"
@@ -188,32 +193,32 @@ const ClassLevelsTable: FC<{
 
 
             {/* View Modal */}
-            {openClassLevelsActionsModal && <ClassLevelsModal
-             classLevelsId={selectedClassLevelsId} 
-             close={() => setOpenClassLevelsActionsModal(false)} />}
+            {openSubjectsActionsModal && <SubjectsModal
+             subjectsId={selectedSubjectsId} 
+             close={() => setOpenSubjectsActionsModal(false)} />}
 
-            {openDeleteClassLevelsModal && <DeleteClassLevelsModal
-                onDelete={handleDeleteClassLevels}
+            {openDeleteSubjectsModal && <DeleteSubjectsModal
+                onDelete={handleDeleteSubjects}
                 deleting={deleting}
              
-             close={() => setOpenDeleteClassLevelsModal(false)} />}
+             close={() => setOpenDeleteSubjectsModal(false)} />}
 
                 {/* Update Modal */}
 
-        {openUpdateClassLevelsModal && <UpdateClassLevelsModal
-            classLevelsId={updateClassLevelsId}
-            onUpdate={handleUpdateClassLevels}
+        {openUpdateSubjectsModal && <UpdateSubjectsModal
+            subjectsId={updateSubjectsId}
+            onUpdate={handleUpdateSubjects}
             updating={updating}
-            close={() => setOpenUpdateClassLevelsModal(false)}
+            close={() => setOpenUpdateSubjectsModal(false)}
             
-            initialName={data.find((term) => term.id === updateClassLevelsId)?.name || ''}
-            initialDescription={data.find((term) => term.id === updateClassLevelsId)?.description || ''}
+            initialName={data.find((term) => term.id === updateSubjectsId)?.name || ''}
+            initialDescription={data.find((term) => term.id === updateSubjectsId)?.description || ''}
         />
         }
         </>
     )
 }
 
-export default ClassLevelsTable
+export default SubjectsTable
 
-//ClassLevelsTable
+//YearGroupsTable

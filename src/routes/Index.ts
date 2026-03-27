@@ -48,3 +48,12 @@ export const AcademicTermsCreate = () => '/dashboard/academic-terms/create';
 
 //Class Level Route
 export const ClassLevelsCreate = () => '/dashboard/class-levels/create';
+
+//Programs Route
+export const ProgramsCreate = () => '/dashboard/programs/create';
+
+//Subjects Route
+export const SubjectsCreate = () => '/dashboard/subjects/create';
+
+//Year Groups Route
+export const YearGroupsCreate = () => '/dashboard/year-groups/create';

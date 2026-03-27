@@ -17,18 +17,15 @@ import type { AcademicTermDataResponse } from '@/pages/Dashboard/AcademicTerms/T
 import { getAcademicTerms } from '@/Redux/AcademicTerms/Slice';
 import { getClassLevels } from '@/Redux/ClassLevels/Slice';
 import type { ClassLevelDataResponse } from '@/pages/Dashboard/ClassLevels/Types';
+import { getPrograms } from '@/Redux/Programs/Slice';
+import type { ProgramsDataResponse } from '@/pages/Dashboard/Programs/Types';
+
 
 const subjectsData = [
   { name: 'Basic Algebra', value: 'Basic Algebra' },
   { name: 'Advanced Math', value: 'Advanced Math' },
   { name: 'English Literature', value: 'English Literature' },
   { name: 'Science', value: 'Science' },
-];
-
-const programsData = [
-  { name: 'Science', value: 'Science' },
-  { name: 'Commerce', value: 'Commerce' },
-  { name: 'Arts', value: 'Arts' },
 ];
 
 
@@ -41,11 +38,11 @@ const CreateTeacherForm = ({ setLoading }: Props) => {
 
   const dispatch = useAppDispatch();
 
-  
+
 
   //fetch academic years for dropdown
   const [academicdata, setAcademicData] = useState<AcademicYearDataResponse[]>([]);
-  
+
   const handleGetAcademicYears = () => {
     setLoading(true);
     dispatch(getAcademicYears())
@@ -112,39 +109,66 @@ const CreateTeacherForm = ({ setLoading }: Props) => {
     value: year.id,
   }));
 
-    //fetching ClassLevels from db
+  //fetching ClassLevels from db
 
   const [classLeveldata, setClassLevel] = useState<AcademicYearDataResponse[]>([]);
 
-    const handleGetClassLevels = () => {
-      setLoading(true);
-      dispatch(getClassLevels())
-        .unwrap()
-        .then((res: ClassLevelDataResponse[]) => {
-          setClassLevel(res as any);
-          console.log("Data:", res);
-        })
-        .catch((err) => {
-          console.log("Error: ", err);
-        })
-        .finally(() => {
-          setLoading(false);
-  
-        });
-    };
-  
-    useEffect(() => {
-      handleGetClassLevels();
-    }, [dispatch]);
-  
-    const classLevels = useAppSelector(
-      (state) => state.ClassLevelsRecords.classLevels
-    );
-  
-    const classLevelsData = classLevels.map((year) => ({
-      name: year.name,
-      value: year.id,
-    }));
+  const handleGetClassLevels = () => {
+    setLoading(true);
+    dispatch(getClassLevels())
+      .unwrap()
+      .then((res: ClassLevelDataResponse[]) => {
+        setClassLevel(res as any);
+        console.log("Data:", res);
+      })
+      .catch((err) => {
+        console.log("Error: ", err);
+      })
+      .finally(() => {
+        setLoading(false);
+
+      });
+  };
+
+  useEffect(() => {
+    handleGetClassLevels();
+  }, [dispatch]);
+
+  const classLevels = useAppSelector(
+    (state) => state.ClassLevelsRecords.classLevels
+  );
+
+  const classLevelsData = classLevels.map((year) => ({
+    name: year.name,
+    value: year.id,
+  }));
+
+
+  //fetching progrm data
+  const [programsDataState, setProgramsDataState] = useState<ProgramsDataResponse[]>([]);
+
+  const handleGetPrograms = () => {
+    setLoading(true);
+    dispatch(getPrograms())
+      .unwrap()
+      .then((res: ProgramsDataResponse[]) => {
+        setProgramsDataState(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    handleGetPrograms();
+  }, [dispatch]);
+
+  const programsData = programsDataState.map((program) => ({
+    name: program.name,
+    value: program._id, // THIS is your programId
+  }));
+
 
 
 

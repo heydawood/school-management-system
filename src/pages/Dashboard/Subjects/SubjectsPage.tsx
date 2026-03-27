@@ -4,9 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import * as routes from '@/routes/Index';
 import Icon from '@/components/ui/svg_icon/SvgIcon';
-import type { ClassLevelDataResponse } from './Types';
-import ClassLevelsTable from '@/components/features/ClassLevels/ClassLevelsTable';
-import { getClassLevels } from '@/Redux/ClassLevels/Slice';
+import SubjectsTable from '@/components/features/Subjects/SubjectsTable';
+import { getSubjects } from '@/Redux/Subjects/Slice';
+import type { SubjectsDataResponse } from './Types';
 
 
 
@@ -34,23 +34,23 @@ const Header = ({
 
 
 
-const ClassLevelsPage = () => {
+const SubjectsPage = () => {
 
-    const { pagination } = useAppSelector((state) => state.AcademicTermsRecords);
+    const { pagination } = useAppSelector((state) => state.SubjectsRecords);
     
         const [loading, setLoading] = useState<boolean>(false);
-        const [data, setData] = useState<ClassLevelDataResponse[]>([]);
+        const [data, setData] = useState<SubjectsDataResponse[]>([]);
         const [filters, setFilters] = useState<{ search: string }>({ search: '' });
     
     
         const dispatch = useAppDispatch();
         const navigate = useNavigate();
     
-        const handleGetClassLevels = () => {
+        const handleGetSubjects = () => {
             setLoading(true);
-            dispatch(getClassLevels())
+            dispatch(getSubjects())
               .unwrap()
-              .then((res: ClassLevelDataResponse[]) => {
+              .then((res: SubjectsDataResponse[]) => {
                 setData(res);
                 console.log("Data:", res);
               })
@@ -64,19 +64,19 @@ const ClassLevelsPage = () => {
           };
         
           useEffect(() => {
-            handleGetClassLevels();
+            handleGetSubjects();
           }, [dispatch]);
 
   return (
     <div className="space-y-4">
           <div className=" border border-gray-light p-4 bg-forground rounded-xl overflow-hidden">
             <Header
-              title="All Class Level List"
+              title="All Programs List"
               ActionButtons={
                 <div className="flex gap-3 items-center">
-                  <Button onClick={() => navigate(routes.ClassLevelsCreate())} className="bg-primary rounded-xl px-5 py-5" type="button">
+                  <Button onClick={() => navigate(routes.SubjectsCreate())} className="bg-primary rounded-xl px-5 py-5" type="button">
                     <Icon icon="/icons/add-circle.svg" className="mr-2 text-white" />
-                    Add New Class Level
+                    Add New Subject
                   </Button>
                 </div>
               }
@@ -84,12 +84,12 @@ const ClassLevelsPage = () => {
               logo={<Icon icon="/icons/teacher.svg" className="text-primary-800" />}
               logoClasses="bg-primary-25"
             />
-             <ClassLevelsTable loading={loading} filters={filters} data={data} pagination={pagination} />
+             <SubjectsTable loading={loading} filters={filters} data={data} pagination={pagination} />
           </div>
         </div>
   )
 }
 
-export default ClassLevelsPage
+export default SubjectsPage
 
-//ClassLevelsPage
+//SubjectsPage

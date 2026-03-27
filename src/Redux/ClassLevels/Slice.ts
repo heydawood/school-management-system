@@ -2,8 +2,6 @@ import { customToast } from '@/Common/Components/ShowToast';
 import type { Pagination } from '@/Utils/Types';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getPaginatedLearningHub } from '../LearningHub/Slice';
-import { createAcademicTerm, deleteAcademicTermDataById, getAcademicTermDataById, getAcademicTermsData, updateAcademicTermDataById } from '@/Services/AcademicTerms/AcademicTerms';
-import type { CreateAcademicTermTypes } from '@/Forms/CreateAcademicTermTypes';
 import type { ClassLevelDataResponse } from '@/pages/Dashboard/ClassLevels/Types';
 import { createClassLevel, deleteClassLevelDataById, getClassLevelDataById, getClassLevelsData, updateClassLevelDataById } from '@/Services/ClassLevels/ClassLevels';
 import type { CreateClassLevelTypes } from '@/Forms/CreateClassLevelTypes';

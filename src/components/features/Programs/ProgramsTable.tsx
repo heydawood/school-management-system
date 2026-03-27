@@ -5,26 +5,26 @@ import type { Pagination } from '@/Utils/Types';
 import { useLearningHubActionManager } from '@/pages/Dashboard/LearningHub/LearningHubActionManager';
 import { useAppDispatch } from '@/Redux/Hooks';
 import { customToast } from '@/Common/Components/ShowToast';
-import type { ClassLevelDataResponse } from '@/pages/Dashboard/ClassLevels/Types';
-import { deleteClassLevelById, updateClassLevelById } from '@/Redux/ClassLevels/Slice';
-import DeleteClassLevelsModal from '@/components/Modals/DeleteClassLevelsModal';
-import ClassLevelsModal from '@/components/Modals/ClassLevelsModal';
-import UpdateClassLevelsModal from '@/components/Modals/UpdateClassLevelsModal';
+import type { ProgramsDataResponse } from '@/pages/Dashboard/Programs/Types';
+import { deleteProgramsById, updateProgramsById } from '@/Redux/Programs/Slice';
+import ProgramsModal from '@/components/Modals/ProgramsModal';
+import DeleteProgramsModal from '@/components/Modals/DeleteProgramsModal';
+import UpdateProgramsModal from '@/components/Modals/UpdateProgramsModal';
 
-const ClassLevelsTable: FC<{
+const ProgramsTable: FC<{
     loading: boolean;
-    data: ClassLevelDataResponse[];
+    data: ProgramsDataResponse[];
     pagination: Pagination;
     filters: { search: string };
 }> = ({ loading, data, pagination, filters }) => {
 
-    const [openClassLevelsActionsModal, setOpenClassLevelsActionsModal] = useState<boolean>(false);
-    const [openDeleteClassLevelsModal, setOpenDeleteClassLevelsModal] = useState<boolean>(false);
+    const [openProgramsActionsModal, setOpenProgramsActionsModal] = useState<boolean>(false);
+    const [openDeleteProgramsModal, setOpenDeleteProgramsModal] = useState<boolean>(false);
 
-    const [selectedClassLevelsId, setSelectedClassLevelsId] = useState<string | null>(null);
+    const [selectedProgramsId, setSelectedProgramsId] = useState<string | null>(null);
 
-    const [updateClassLevelsId, setUpdateClassLevelsId] = useState<string | null>(null);
-    const [openUpdateClassLevelsModal, setOpenUpdateClassLevelsModal] = useState<boolean>(false);
+    const [updateProgramsId, setUpdateProgramsId] = useState<string | null>(null);
+    const [openUpdateProgramsModal, setOpenUpdateProgramsModal] = useState<boolean>(false);
 
 
     const [deleting, setDeleting] = useState(false);
@@ -36,64 +36,65 @@ const ClassLevelsTable: FC<{
 
 
     //delete function
-    const handleDeleteClassLevels= async () => {
-        console.log('deleted clicked. id:', selectedClassLevelsId)
-        if (!selectedClassLevelsId) return;
+    const handleDeletePrograms= async () => {
+      console.log('deleted clicked. id:', selectedProgramsId)
+        if (!selectedProgramsId) return;
 
         setDeleting(true);
         try {
-            await dispatch(deleteClassLevelById(selectedClassLevelsId))
+            await dispatch(deleteProgramsById(selectedProgramsId))
                 .unwrap();
-            customToast.success('Class Level deleted successfully.');
+            customToast.success('Program deleted successfully.');
 
             // Close the modal
-            setOpenDeleteClassLevelsModal(false);
+            setOpenDeleteProgramsModal(false);
 
             // Refresh the list after deletion
-            setSelectedClassLevelsId(null);
+            setSelectedProgramsId(null);
 
 
 
         } catch (error: any) {
-            customToast.error(error?.message || 'Failed to delete Class Level.');
+            customToast.error(error?.message || 'Failed to delete Programs.');
         } finally {
             setDeleting(false);
         }
     };
 
     //update function
-    const handleUpdateClassLevels = async (updatedData: any) => {
-        if (!updateClassLevelsId) return;
+    const handleUpdatePrograms = async (updatedData: any) => {
+        if (!updateProgramsId) return;
 
         setUpdating(true);
         try {
-            await dispatch(updateClassLevelById({ classLevelId: updateClassLevelsId, classLevelData: updatedData }))
+          console.log(updatedData)
+            await dispatch(updateProgramsById({ programsId: updateProgramsId, programsData: updatedData }))
                 .unwrap();
-            customToast.success('class Levels updated successfully.');
+            customToast.success('Programs updated successfully.');
 
             // Close the modal
-            setOpenUpdateClassLevelsModal(false);
+            setOpenUpdateProgramsModal(false);
 
             // Refresh the list after update
-            setUpdateClassLevelsId(null);
+            setUpdateProgramsId(null);
         } catch (error: any) {
-            customToast.error(error?.message || 'Failed to update academic term.');
+            customToast.error(error?.message || 'Failed to update Programs.');
         } finally {
             setUpdating(false);
         }
     };
 
-    const ClassLevelsListColumns = [
+    const ProgramsListColumns = [
         {
             title: 'Name',
             dataIndex: 'name',
             key: 'name',
-            sorter: (a: ClassLevelDataResponse, b: ClassLevelDataResponse) => { // these(sorter & render) are built in sorters for the table columns, they sort the data based on the column values
+            sorter: (a: ProgramsDataResponse, b: ProgramsDataResponse) => { // these(sorter & render) are built in sorters for the table columns, they sort the data based on the column values
                 const nameA = a?.name?.toLowerCase() || '';
                 const nameB = b?.name?.toLowerCase() || '';
                 return nameA.localeCompare(nameB);
             },
-            render: (_: any, record: ClassLevelDataResponse) => (
+            render: (_: any, record: ProgramsDataResponse) => (
                 <div className="flex items-center">
                     <span className="text-paragraph overflow-hidden">{record.name}</span>
                 </div>
@@ -104,14 +105,30 @@ const ClassLevelsTable: FC<{
             title: 'Description',
             dataIndex: 'description',
             key: 'description',
-            sorter: (a: ClassLevelDataResponse, b: ClassLevelDataResponse) => {
+            sorter: (a: ProgramsDataResponse, b: ProgramsDataResponse) => {
                 const descA = a?.description?.toLowerCase() || '';
                 const descB = b?.description?.toLowerCase() || '';
                 return descA.localeCompare(descB);
             },
-            render: (_: any, record: ClassLevelDataResponse) => (
+            render: (_: any, record: ProgramsDataResponse) => (
                 <div className="flex items-center">
                     <span className="text-paragraph overflow-hidden">{record.description}</span>
+                </div>
+            ),
+        },
+
+        {
+            title: 'Code',
+            dataIndex: 'code',
+            key: 'code',
+            sorter: (a: ProgramsDataResponse, b: ProgramsDataResponse) => {
+                const descA = a?.code?.toLowerCase() || '';
+                const descB = b?.code?.toLowerCase() || '';
+                return descA.localeCompare(descB);
+            },
+            render: (_: any, record: ProgramsDataResponse) => (
+                <div className="flex items-center">
+                    <span className="text-paragraph overflow-hidden">{record.code}</span>
                 </div>
             ),
         },
@@ -120,22 +137,23 @@ const ClassLevelsTable: FC<{
             title: 'Action',
             dataIndex: 'action',
             key: 'action',
-            render: (_: any, record: ClassLevelDataResponse) => (
+            render: (_: any, record: ProgramsDataResponse) => (
                 <div>
                     <Button onClick={() => {
 
 
-                        setSelectedClassLevelsId(record.id);
-                        setOpenClassLevelsActionsModal(true)
+                        setSelectedProgramsId(record._id);
+                        setOpenProgramsActionsModal(true)
                     }} variant="link" className="text-primary-800 font-semibold">
                         View
                     </Button>
 
                     <Button 
                         onClick={() => {
-                            setSelectedClassLevelsId(record.id);
-                           // setModalAction('delete');
-                            setOpenDeleteClassLevelsModal(true)
+                          console.log("record:", record);
+                            setSelectedProgramsId(record._id);
+                           
+                            setOpenDeleteProgramsModal(true)
                         }} 
                         variant="link" 
                         className="text-error-800 font-semibold"
@@ -146,9 +164,9 @@ const ClassLevelsTable: FC<{
                     <Button 
 
                         onClick={() => {
-                            setUpdateClassLevelsId(record.id);
-                            //setModalAction('update');
-                            setOpenUpdateClassLevelsModal(true)
+                            setUpdateProgramsId(record._id);
+                            
+                            setOpenUpdateProgramsModal(true)
                         }} 
                         variant="link" 
                         className="text-green-600 font-semibold"
@@ -167,7 +185,7 @@ const ClassLevelsTable: FC<{
         <>
             <Table
                 loading={loading}
-                columns={ClassLevelsListColumns}
+                columns={ProgramsListColumns}
                 dataSource={data}
                 rowKey="id"
                 headerStyle="bg-neutral-400 rounded-xl"
@@ -188,32 +206,32 @@ const ClassLevelsTable: FC<{
 
 
             {/* View Modal */}
-            {openClassLevelsActionsModal && <ClassLevelsModal
-             classLevelsId={selectedClassLevelsId} 
-             close={() => setOpenClassLevelsActionsModal(false)} />}
+            {openProgramsActionsModal && <ProgramsModal
+             programsId={selectedProgramsId} 
+             close={() => setOpenProgramsActionsModal(false)} />}
 
-            {openDeleteClassLevelsModal && <DeleteClassLevelsModal
-                onDelete={handleDeleteClassLevels}
+            {openDeleteProgramsModal && <DeleteProgramsModal
+                onDelete={handleDeletePrograms}
                 deleting={deleting}
              
-             close={() => setOpenDeleteClassLevelsModal(false)} />}
+             close={() => setOpenDeleteProgramsModal(false)} />}
 
                 {/* Update Modal */}
 
-        {openUpdateClassLevelsModal && <UpdateClassLevelsModal
-            classLevelsId={updateClassLevelsId}
-            onUpdate={handleUpdateClassLevels}
+        {openUpdateProgramsModal && <UpdateProgramsModal
+            programsId={updateProgramsId}
+            onUpdate={handleUpdatePrograms}
             updating={updating}
-            close={() => setOpenUpdateClassLevelsModal(false)}
+            close={() => setOpenUpdateProgramsModal(false)}
             
-            initialName={data.find((term) => term.id === updateClassLevelsId)?.name || ''}
-            initialDescription={data.find((term) => term.id === updateClassLevelsId)?.description || ''}
+            initialName={data.find((term) => term._id === updateProgramsId)?.name || ''}
+            initialDescription={data.find((term) => term._id === updateProgramsId)?.description || ''}
         />
         }
         </>
     )
 }
 
-export default ClassLevelsTable
+export default ProgramsTable
 
-//ClassLevelsTable
+//ProgramsTable

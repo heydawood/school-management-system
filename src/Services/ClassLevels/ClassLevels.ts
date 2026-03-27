@@ -1,4 +1,3 @@
-import type { CreateAcademicTermTypes } from '@/Forms/CreateAcademicTermTypes';
 import api from '../Api';
 import type { CreateClassLevelTypes } from '@/Forms/CreateClassLevelTypes';
 

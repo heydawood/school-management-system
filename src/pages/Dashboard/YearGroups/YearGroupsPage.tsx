@@ -4,9 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import * as routes from '@/routes/Index';
 import Icon from '@/components/ui/svg_icon/SvgIcon';
-import type { ClassLevelDataResponse } from './Types';
-import ClassLevelsTable from '@/components/features/ClassLevels/ClassLevelsTable';
-import { getClassLevels } from '@/Redux/ClassLevels/Slice';
+import type { YearGroupsDataResponse } from './Types';
+import { getYearGroups } from '@/Redux/YearGroups/Slice';
+import YearGroupsTable from '@/components/features/YearGroups/YearGroupsTable';
 
 
 
@@ -34,23 +34,23 @@ const Header = ({
 
 
 
-const ClassLevelsPage = () => {
+const YearGroupsPage = () => {
 
-    const { pagination } = useAppSelector((state) => state.AcademicTermsRecords);
+    const { pagination } = useAppSelector((state) => state.YearGroupsRecords);
     
         const [loading, setLoading] = useState<boolean>(false);
-        const [data, setData] = useState<ClassLevelDataResponse[]>([]);
+        const [data, setData] = useState<YearGroupsDataResponse[]>([]);
         const [filters, setFilters] = useState<{ search: string }>({ search: '' });
     
     
         const dispatch = useAppDispatch();
         const navigate = useNavigate();
     
-        const handleGetClassLevels = () => {
+        const handleGetYearGroups = () => {
             setLoading(true);
-            dispatch(getClassLevels())
+            dispatch(getYearGroups())
               .unwrap()
-              .then((res: ClassLevelDataResponse[]) => {
+              .then((res: YearGroupsDataResponse[]) => {
                 setData(res);
                 console.log("Data:", res);
               })
@@ -64,19 +64,19 @@ const ClassLevelsPage = () => {
           };
         
           useEffect(() => {
-            handleGetClassLevels();
+            handleGetYearGroups();
           }, [dispatch]);
 
   return (
     <div className="space-y-4">
           <div className=" border border-gray-light p-4 bg-forground rounded-xl overflow-hidden">
             <Header
-              title="All Class Level List"
+              title="All Programs List"
               ActionButtons={
                 <div className="flex gap-3 items-center">
-                  <Button onClick={() => navigate(routes.ClassLevelsCreate())} className="bg-primary rounded-xl px-5 py-5" type="button">
+                  <Button onClick={() => navigate(routes.YearGroupsCreate())} className="bg-primary rounded-xl px-5 py-5" type="button">
                     <Icon icon="/icons/add-circle.svg" className="mr-2 text-white" />
-                    Add New Class Level
+                    Add New Year Group
                   </Button>
                 </div>
               }
@@ -84,12 +84,12 @@ const ClassLevelsPage = () => {
               logo={<Icon icon="/icons/teacher.svg" className="text-primary-800" />}
               logoClasses="bg-primary-25"
             />
-             <ClassLevelsTable loading={loading} filters={filters} data={data} pagination={pagination} />
+             <YearGroupsTable loading={loading} filters={filters} data={data} pagination={pagination} />
           </div>
         </div>
   )
 }
 
-export default ClassLevelsPage
+export default YearGroupsPage
 
-//ClassLevelsPage
+//YearGroupsPage
