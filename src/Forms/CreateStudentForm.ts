@@ -3,11 +3,9 @@ export interface CreateStudentTypes {
     email: string;
     password: string;
     passwordConfirm: string;
-    subject: string;
   program: string;
   classLevel: string;
   academicYear: string;
-  academicTerm: string;
 }
 
 export const CreateStudentDefaultValues: CreateStudentTypes = {
@@ -15,11 +13,9 @@ export const CreateStudentDefaultValues: CreateStudentTypes = {
     email: '',
     password: '',
     passwordConfirm: '',
-     subject: '',
   program: '',
   classLevel: '',
   academicYear: '',
-  academicTerm: '',
 };
 
 export interface UpdateStudentType {

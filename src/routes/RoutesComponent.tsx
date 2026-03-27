@@ -87,7 +87,7 @@ const RoutesComponent: React.FC = () => {
     <Suspense fallback={<div></div>}>
       <Routes>
         {/* Redirect / to /dashboard/home */}
-        <Route path="/" element={<Navigate to="/dashboard/home" replace />} />
+        <Route path="/" element={<Navigate to="/dashboard/admins" replace />} />
 
         <Route
           path="/auth"

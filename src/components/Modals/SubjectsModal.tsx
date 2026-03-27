@@ -96,6 +96,11 @@ const SubjectsModal: FC<Props> = ({ close, subjectsId }) => {
                         </div>
 
                         <div className="flex flex-col">
+                          <span className="text-gray-500 text-xs">ID</span>
+                          <span className="text-paragraph">{data.id}</span>
+                        </div>
+
+                        <div className="flex flex-col">
                           <span className="text-gray-500 text-xs">Created By</span>
                           <span className="text-paragraph">{data.createdBy}</span>
                         </div>

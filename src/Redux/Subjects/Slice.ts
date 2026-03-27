@@ -78,7 +78,7 @@ export const updateSubjectsById = createAsyncThunk('updateSubjectsById', async (
     }
 });
 
-//create new Program
+//create new subject
 export const createNewSubject = createAsyncThunk('createNewSubject',
     async (data: CreateSubjectsTypes, { rejectWithValue }) => {
 

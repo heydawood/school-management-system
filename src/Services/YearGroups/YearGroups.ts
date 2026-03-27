@@ -1,5 +1,6 @@
-import type { CreateProgramsTypes } from '@/Forms/CreateProgramTypes';
+
 import api from '../Api';
+import type { CreateYearGroupsTypes } from '@/Forms/CreateYearGroupsTypes';
 
 // Get YearGroups
 export const getYearGroupsData = async () => {
@@ -22,6 +23,8 @@ export const updateYearGroupsDataById = async (yearGroupsId: string, yearGroupsD
 }
 
 //create new YearGroups
-export const createYearGroup = async (yearGroupData: CreateYearGroupsTypes) => {
-  return api.post('/v1/year-groups', yearGroupData);
-}
+export const createYearGroup = async (
+  yearGroupsData: CreateYearGroupsTypes
+) => {
+  return api.post(`/v1/year-groups`, yearGroupsData);
+};

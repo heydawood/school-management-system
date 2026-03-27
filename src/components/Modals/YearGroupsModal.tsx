@@ -7,33 +7,35 @@ import Modalbody from '../ui/modal/Body';
 import Icon from '../ui/svg_icon/SvgIcon';
 import { useAppDispatch } from '@/Redux/Hooks';
 import Spinner from '../ui/spinner';
-import type { AcademicTermDataResponse } from '@/pages/Dashboard/AcademicTerms/Types';
-import { getAcademicTermById } from '@/Redux/AcademicTerms/Slice';
+import type { YearGroupsDataResponse } from '@/pages/Dashboard/YearGroups/Types';
+import { getYearGroupsById } from '@/Redux/YearGroups/Slice';
 
 
 interface Props {
   close: () => void;
-  academicTermId: string | null;
+  YearGroupsId: string | null;
 }
 
 
 
-const AcademicTermModal: FC<Props> = ({ close, academicTermId }) => {
+const YearGroupsModal: FC<Props> = ({ close, YearGroupsId }) => {
 
 
   const dispatch = useAppDispatch();
 
   const [loading, setLoading] = useState<boolean>(false);
-  const [data, setData] = useState<AcademicTermDataResponse | null>(null);
+  const [data, setData] = useState<YearGroupsDataResponse | null>(null);
 
 
-  const handleGetAcademicYear = () => {
+  const handleGetYearGroups = () => {
     setLoading(true);
-    dispatch(getAcademicTermById(academicTermId!))
+    dispatch(getYearGroupsById(YearGroupsId!))
       .unwrap()
       .then((res: any) => {
-        setData(res.data.academicTerm);
-        console.log("Data:", res.data.academicTerm);
+
+         setData(res.data.yearGroup);
+         console.log("Data:", res.data.yearGroup);
+
       })
       .catch((err) => {
         console.log("Error: ", err);
@@ -45,10 +47,10 @@ const AcademicTermModal: FC<Props> = ({ close, academicTermId }) => {
   };
 
   useEffect(() => {
-    if (academicTermId) {
-      handleGetAcademicYear();
+    if (YearGroupsId) {
+      handleGetYearGroups();
     }
-  }, [academicTermId]);
+  }, [YearGroupsId]);
 
 
 
@@ -66,8 +68,8 @@ const AcademicTermModal: FC<Props> = ({ close, academicTermId }) => {
             onCloseClick={close}
           >
             <div>
-              <h1 className="text-heading font-semibold">Academic Term Details</h1>
-              <p className="text-paragraph text-gray-500">Here you can see the details of the selected academic term.</p>
+              <h1 className="text-heading font-semibold">Year Groups Details</h1>
+              <p className="text-paragraph text-gray-500">Here you can see the details of the selected Year Groups.</p>
             </div>
           </Modalheader>
 
@@ -101,15 +103,6 @@ const AcademicTermModal: FC<Props> = ({ close, academicTermId }) => {
                           <span className="text-paragraph">{data.createdBy}</span>
                         </div>
 
-                        <div className="flex flex-col">
-                          <span className="text-gray-500 text-xs">Description</span>
-                          <span className="text-paragraph">{data.description}</span>
-                        </div>
-
-                        <div className="flex flex-col">
-                          <span className="text-gray-500 text-xs">Duration</span>
-                          <span className="text-paragraph">{data.duration}</span>
-                        </div>
 
                         <div className="flex flex-col">
                           <span className="text-gray-500 text-xs">Created At</span>
@@ -152,6 +145,7 @@ const AcademicTermModal: FC<Props> = ({ close, academicTermId }) => {
   )
 }
 
-export default AcademicTermModal
+export default YearGroupsModal
 
-//AcademicTermModal
+
+//YearGroupsModal

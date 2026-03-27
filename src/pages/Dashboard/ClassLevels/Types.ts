@@ -1,6 +1,6 @@
 export interface ClassLevelDataResponse {
   name: string;
-  id: string;
+  _id: string;
   description: string;
   createdBy: string;
   createdAt: string;
@@ -8,4 +8,5 @@ export interface ClassLevelDataResponse {
   teachers: [],
   subjects: [],
   students: [],
+  id: string
 }

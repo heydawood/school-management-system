@@ -1,10 +1,8 @@
 export interface YearGroupsDataResponse {
   name: string;
-  _id: string;
-  description: string;
+  id: string;
   academicYear: string;
   createdBy: string;
   createdAt: string;
   updatedAt: string;
-  duration: string,
 }

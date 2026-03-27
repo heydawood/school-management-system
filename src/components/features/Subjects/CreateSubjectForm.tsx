@@ -9,7 +9,6 @@ import { createNewSubject } from '@/Redux/Subjects/Slice';
 import Dropdown from '@/components/ui/dropdown/Dropdown';
 import { getAcademicTerms } from '@/Redux/AcademicTerms/Slice';
 import type { AcademicTermDataResponse } from '@/pages/Dashboard/AcademicTerms/Types';
-
 import { useAppDispatch, useAppSelector } from '@/Redux/Hooks';
 import { getPrograms } from '@/Redux/Programs/Slice';
 import type { ProgramsDataResponse } from '@/pages/Dashboard/Programs/Types';

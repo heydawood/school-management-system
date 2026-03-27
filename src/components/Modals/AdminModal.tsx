@@ -82,7 +82,12 @@ const AdminModal: FC<Props> = ({ close, adminId }) => {
 
                                                 <div className="flex flex-col">
                                                     <span className="text-gray-500 text-xs">Name</span>
-                                                    <span className="text-paragraph font-medium">{data.name}</span>
+                                                    <span className="text-paragraph">{data.name}</span>
+                                                </div>
+
+                                                <div className="flex flex-col">
+                                                    <span className="text-gray-500 text-xs">ID</span>
+                                                    <span className="text-paragraph ">{data.id}</span>
                                                 </div>
 
                                                 <div className="flex flex-col">

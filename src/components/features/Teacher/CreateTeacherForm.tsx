@@ -19,14 +19,8 @@ import { getClassLevels } from '@/Redux/ClassLevels/Slice';
 import type { ClassLevelDataResponse } from '@/pages/Dashboard/ClassLevels/Types';
 import { getPrograms } from '@/Redux/Programs/Slice';
 import type { ProgramsDataResponse } from '@/pages/Dashboard/Programs/Types';
-
-
-const subjectsData = [
-  { name: 'Basic Algebra', value: 'Basic Algebra' },
-  { name: 'Advanced Math', value: 'Advanced Math' },
-  { name: 'English Literature', value: 'English Literature' },
-  { name: 'Science', value: 'Science' },
-];
+import type { SubjectsDataResponse } from '@/pages/Dashboard/Subjects/Types';
+import { getSubjects } from '@/Redux/Subjects/Slice';
 
 
 
@@ -37,6 +31,40 @@ interface Props {
 const CreateTeacherForm = ({ setLoading }: Props) => {
 
   const dispatch = useAppDispatch();
+
+
+    //fetch subjects years for dropdown
+  const [subjectsdata, setSubjectsData] = useState<SubjectsDataResponse[]>([]);
+
+  const handleGetSubjects = () => {
+              setLoading(true);
+              dispatch(getSubjects())
+                .unwrap()
+                .then((res: SubjectsDataResponse[]) => {
+                  setSubjectsData(res);
+                  console.log("Data:", res);
+                })
+                .catch((err) => {
+                  console.log("Error: ", err);
+                })
+                .finally(() => {
+                  setLoading(false);
+                  
+                });
+            };
+          
+            useEffect(() => {
+              handleGetSubjects();
+            }, [dispatch]);
+
+  const subjects = useAppSelector(
+    (state) => state.SubjectsRecords.subjects
+  );
+
+  const subjectsData = subjects.map((year) => ({
+    name: year.name,
+    value: year.id,
+  }));
 
 
 
@@ -179,6 +207,7 @@ const CreateTeacherForm = ({ setLoading }: Props) => {
 
 
   const onSubmit = (data: CreateTeacherTypes) => {
+    console.log("Submit button: ",data)
     setLoading(true);
     dispatch(createNewTeacher(data))
       .unwrap()

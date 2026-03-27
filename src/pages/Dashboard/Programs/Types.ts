@@ -1,6 +1,6 @@
 export interface ProgramsDataResponse {
   name: string;
-  _id: string;
+  id: string;
   description: string;
   createdBy: string;
   createdAt: string;
@@ -10,4 +10,5 @@ export interface ProgramsDataResponse {
   students: [],
   code: string,
   duration: string,
+  _id: string
 }

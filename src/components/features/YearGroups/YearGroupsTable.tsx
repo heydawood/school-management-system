@@ -11,10 +11,14 @@ import SubjectsModal from '@/components/Modals/SubjectsModal';
 import DeleteSubjectsModal from '@/components/Modals/DeleteSubjectsModal';
 import UpdateSubjectsModal from '@/components/Modals/UpdateSubjectsModal';
 import type { YearGroupsDataResponse } from '@/pages/Dashboard/YearGroups/Types';
+import { deleteYearGroupsById, updateYearGroupsById } from '@/Redux/YearGroups/Slice';
+import DeleteYearGroupsModal from '@/components/Modals/DeleteYearGroupsModal';
+import YearGroupsModal from '@/components/Modals/YearGroupsModal';
+import UpdateYearGroupsModal from '@/components/Modals/UpdateYearGroupsModal';
 
-const SubjectsTable: FC<{
+const YearGroupsTable: FC<{
     loading: boolean;
-    data: SubjectsDataResponse[];
+    data: YearGroupsDataResponse[];
     pagination: Pagination;
     filters: { search: string };
 }> = ({ loading, data, pagination, filters }) => { 
@@ -69,7 +73,7 @@ const SubjectsTable: FC<{
         setUpdating(true);
         try {
           console.log(updatedData)
-            await dispatch(updateYearGroupsById({ subjectsId: updateYearGroupsId, subjectsData: updatedData }))
+            await dispatch(updateYearGroupsById({ yearGroupsId: updateYearGroupsId, yearGroupsData: updatedData }))
                 .unwrap();
             customToast.success('Subjects updated successfully.');
 
@@ -103,21 +107,20 @@ const SubjectsTable: FC<{
         },
 
         {
-            title: 'Description',
-            dataIndex: 'description',
-            key: 'description',
+            title: 'Created At',
+            dataIndex: 'createdAt',
+            key: 'createdAt',
             sorter: (a: YearGroupsDataResponse, b: YearGroupsDataResponse) => {
-                const descA = a?.description?.toLowerCase() || '';
-                const descB = b?.description?.toLowerCase() || '';
+                const descA = a?.createdAt?.toLowerCase() || '';
+                const descB = b?.createdAt?.toLowerCase() || '';
                 return descA.localeCompare(descB);
             },
             render: (_: any, record: YearGroupsDataResponse) => (
                 <div className="flex items-center">
-                    <span className="text-paragraph overflow-hidden">{record.description}</span>
+                    <span className="text-paragraph overflow-hidden">{new Date(record.createdAt).toLocaleDateString()}</span>
                 </div>
             ),
         },
-
         
 
         {
@@ -151,9 +154,9 @@ const SubjectsTable: FC<{
                     <Button 
 
                         onClick={() => {
-                            setUpdateSubjectsId(record.id);
+                            setUpdateYearGroupsId(record._id);
                             
-                            setOpenUpdateSubjectsModal(true)
+                            setOpenUpdateYearGroupsModal(true)
                         }} 
                         variant="link" 
                         className="text-green-600 font-semibold"
@@ -172,7 +175,7 @@ const SubjectsTable: FC<{
         <>
             <Table
                 loading={loading}
-                columns={SubjectsListColumns}
+                columns={YearGroupsListColumns}
                 dataSource={data}
                 rowKey="id"
                 headerStyle="bg-neutral-400 rounded-xl"
@@ -193,32 +196,34 @@ const SubjectsTable: FC<{
 
 
             {/* View Modal */}
-            {openSubjectsActionsModal && <SubjectsModal
-             subjectsId={selectedSubjectsId} 
-             close={() => setOpenSubjectsActionsModal(false)} />}
+            {openYearGroupsActionsModal && <YearGroupsModal
+             YearGroupsId={selectedYearGroupsId} 
+             close={() => setOpenYearGroupsActionsModal(false)} />}
 
-            {openDeleteSubjectsModal && <DeleteSubjectsModal
-                onDelete={handleDeleteSubjects}
+
+             {/* delete modal*/}
+            {openDeleteYearGroupsModal && <DeleteYearGroupsModal
+                onDelete={handleDeleteYearGroups}
                 deleting={deleting}
              
-             close={() => setOpenDeleteSubjectsModal(false)} />}
+             close={() => setOpenDeleteYearGroupsModal(false)} />}
 
                 {/* Update Modal */}
 
-        {openUpdateSubjectsModal && <UpdateSubjectsModal
-            subjectsId={updateSubjectsId}
-            onUpdate={handleUpdateSubjects}
+        {openUpdateYearGroupsModal && <UpdateYearGroupsModal
+            yearGroupsId={updateYearGroupsId}
+            onUpdate={handleUpdateYearGroups}
             updating={updating}
-            close={() => setOpenUpdateSubjectsModal(false)}
+            close={() => setOpenUpdateYearGroupsModal(false)}
             
-            initialName={data.find((term) => term.id === updateSubjectsId)?.name || ''}
-            initialDescription={data.find((term) => term.id === updateSubjectsId)?.description || ''}
+            initialName={data.find((term) => term._id === updateYearGroupsId)?.name || ''}
+            initialDescription={data.find((term) => term._id === updateYearGroupsId)?.description || ''}
         />
         }
         </>
     )
 }
 
-export default SubjectsTable
+export default YearGroupsTable
 
 //YearGroupsTable

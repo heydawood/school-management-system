@@ -16,20 +16,8 @@ import { getAcademicYears } from '@/Redux/AcademicYears/Slice';
 import type { AcademicYearDataResponse } from '@/pages/Dashboard/AcademicYears/Types';
 import { getClassLevels } from '@/Redux/ClassLevels/Slice';
 import type { ClassLevelDataResponse } from '@/pages/Dashboard/ClassLevels/Types';
-
-
-const programsData = [
-  { name: 'Science', value: 'Science' },
-  { name: 'Commerce', value: 'Commerce' },
-  { name: 'Arts', value: 'Arts' },
-];
-
-const classLevelsData = [
-  { name: 'Grade 1', value: 'Grade 1' },
-  { name: 'Grade 2', value: 'Grade 2' },
-  { name: 'Grade 3', value: 'Grade 3' },
-];
-
+import { getPrograms } from '@/Redux/Programs/Slice';
+import type { ProgramsDataResponse } from '@/pages/Dashboard/Programs/Types';
 
 
 
@@ -44,6 +32,31 @@ const CreateStudentForm = ({ setLoading }: Props) => {
 
 
   const dispatch = useAppDispatch();
+
+    //fetching progrm data
+    const [programsDataState, setProgramsDataState] = useState<ProgramsDataResponse[]>([]);
+  
+    const handleGetPrograms = () => {
+      setLoading(true);
+      dispatch(getPrograms())
+        .unwrap()
+        .then((res: ProgramsDataResponse[]) => {
+          setProgramsDataState(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => setLoading(false));
+    };
+  
+    useEffect(() => {
+      handleGetPrograms();
+    }, [dispatch]);
+  
+    const programsData = programsDataState.map((program) => ({
+      name: program.name,
+      value: program._id, // THIS is your programId
+    }));
 
 
   //fetching years from db
@@ -119,6 +132,7 @@ const CreateStudentForm = ({ setLoading }: Props) => {
   });
 
   const onSubmit = (data: CreateStudentTypes) => {
+    console.log("Button clicked:", data)
     setLoading(true);
     dispatch(createNewStudent(data))
       .unwrap()
