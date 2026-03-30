@@ -10,25 +10,25 @@ const OtpVerificationPage = lazy(() => import('@/pages/auth/Otp-Verification/Otp
 const ResetPasswordPage = lazy(() => import('@/pages/auth/Reset-Password/ResetPasswordPage'));
 
 // Dashboard Pages
-const HomePage = lazy(() => import('@/pages/Dashboard/Home/Homepage'));
-const UsersManagement = lazy(() => import('@/pages/Dashboard/UsersManagement/UsersManagement'));
-const UserProfilePage = lazy(() => import('@/pages/Dashboard/UserProfilePage/UserProfilepage'));
+ const HomePage = lazy(() => import('@/pages/Dashboard/Home/Homepage'));
+// const UsersManagement = lazy(() => import('@/pages/Dashboard/UsersManagement/UsersManagement'));
+// const UserProfilePage = lazy(() => import('@/pages/Dashboard/UserProfilePage/UserProfilepage'));
 
 // Workouts
-const WorkoutsPage = lazy(() => import('@/pages/Dashboard/Workouts/Workouts'));
-const CreateWorkoutPage = lazy(() => import('@/pages/Dashboard/Workouts/CreateWorkout/CreateWorkoutPage'));
-const WorkoutViewAndEditPage = lazy(() => import('@/pages/Dashboard/Workouts/WorkoutViewAndEdit/WorkoutViewAndEditPage'));
+// const WorkoutsPage = lazy(() => import('@/pages/Dashboard/Workouts/Workouts'));
+// const CreateWorkoutPage = lazy(() => import('@/pages/Dashboard/Workouts/CreateWorkout/CreateWorkoutPage'));
+// const WorkoutViewAndEditPage = lazy(() => import('@/pages/Dashboard/Workouts/WorkoutViewAndEdit/WorkoutViewAndEditPage'));
 
 //category
-const CategoryPage = lazy(() => import('@/pages/Dashboard/Categories/Category'));
-const CreateCategoryPage = lazy(() => import('@/pages/Dashboard/Categories/CreateCategory/CreateCategoryPage'));
-const CategoryViewAndEditPage = lazy(() => import('@/pages/Dashboard/Categories/CategoryViewAndEdit/CategoryViewAndEditPage'));
+// const CategoryPage = lazy(() => import('@/pages/Dashboard/Categories/Category'));
+// const CreateCategoryPage = lazy(() => import('@/pages/Dashboard/Categories/CreateCategory/CreateCategoryPage'));
+// const CategoryViewAndEditPage = lazy(() => import('@/pages/Dashboard/Categories/CategoryViewAndEdit/CategoryViewAndEditPage'));
 
 // Subscriptions
-const SubscriptionPage = lazy(() => import('@/pages/Dashboard/Subscriptions/SubscriptionPage'));
+// const SubscriptionPage = lazy(() => import('@/pages/Dashboard/Subscriptions/SubscriptionPage'));
 
 // Analytics
-const AnalyticsPage = lazy(() => import('@/pages/Dashboard/Analytics/AnalyticsPage'));
+// const AnalyticsPage = lazy(() => import('@/pages/Dashboard/Analytics/AnalyticsPage'));
 
 // Settings
 const SettingsPage = lazy(() => import('@/pages/Dashboard/Settings/SettingsPage'));
@@ -69,16 +69,20 @@ const CreateSubjectPage = lazy(() => import('@/pages/Dashboard/Subjects/CreateSu
 const YearGroupsPage = lazy(() => import('@/pages/Dashboard/YearGroups/YearGroupsPage'));
 const CreateYearGroupsPage = lazy(() => import('@/pages/Dashboard/YearGroups/CreateYearGroup/CreateYearGroupPage'));
 
+//Results
+const ResultsPage = lazy(() => import('@/pages/Dashboard/Results/ResultsPage'));
+const CreateResultsPage = lazy(() => import('@/pages/Dashboard/YearGroups/CreateYearGroup/CreateYearGroupPage'));
+
 
 
 //payments
-const PaymentPage = lazy(() => import('@/pages/Dashboard/Payments/Payment'));
-const PaymentViewAndEditPage = lazy(() => import('@/pages/Dashboard/Payments/PaymentDetail/PaymentDetail'));
+// const PaymentPage = lazy(() => import('@/pages/Dashboard/Payments/Payment'));
+// const PaymentViewAndEditPage = lazy(() => import('@/pages/Dashboard/Payments/PaymentDetail/PaymentDetail'));
 
 //diet plan
-const LearningHubPage = lazy(() => import('@/pages/Dashboard/LearningHub/LearningHub'));
-const CreateLearningHubPage = lazy(() => import('@/pages/Dashboard/LearningHub/CreateLearningHub/CreateLearningHubPage'));
-const LearningHubViewAndEditPage = lazy(() => import('@/pages/Dashboard/LearningHub/LearningHubViewAndEdit/LearningHubViewAndEditPage'));
+// const LearningHubPage = lazy(() => import('@/pages/Dashboard/LearningHub/LearningHub'));
+// const CreateLearningHubPage = lazy(() => import('@/pages/Dashboard/LearningHub/CreateLearningHub/CreateLearningHubPage'));
+// const LearningHubViewAndEditPage = lazy(() => import('@/pages/Dashboard/LearningHub/LearningHubViewAndEdit/LearningHubViewAndEditPage'));
 
 
 
@@ -117,30 +121,8 @@ const RoutesComponent: React.FC = () => {
           {/* Redirect /dashboard to /dashboard/home */}
           <Route index element={<Navigate to="home" replace />} />
           <Route path="home" element={<HomePage />} />
-          {/* User Management */}
-          <Route path="user-management" element={<UsersManagement />} />
-          <Route path="user-management/:id" element={<UserProfilePage />} />
-          {/* Workouts */}
-          <Route path="workouts" element={<WorkoutsPage />} />
-          <Route path="workouts/create" element={<CreateWorkoutPage />} />
-          <Route path="workouts/:id" element={<WorkoutViewAndEditPage />} />
-          {/* Category */}
-          <Route path="categories" element={<CategoryPage />} />
-          <Route path="categories/create" element={<CreateCategoryPage />} />
-          <Route path="categories/:id" element={<CategoryViewAndEditPage />} />
-          {/* Subscriptions */}
-          <Route path="subscriptions" element={<SubscriptionPage />} />
-          {/* payments */}
-          <Route path="payments" element={<PaymentPage />} />
-          <Route path="payments/:id" element={<PaymentViewAndEditPage />} />
 
-          {/* diet plan */}
-          <Route path="learning-hub" element={<LearningHubPage />} />
-          <Route path="learning-hub/create" element={<CreateLearningHubPage />} />
-          <Route path="learning-hub/:id" element={<LearningHubViewAndEditPage />} />
 
-          {/* Analytics */}
-          <Route path="analytics" element={<AnalyticsPage />} />
           {/* Settings */}
           <Route path="settings" element={<SettingsPage />} />
 
@@ -179,6 +161,10 @@ const RoutesComponent: React.FC = () => {
 
           {/* Year Groups */}
           <Route path="year-groups" element={<YearGroupsPage />} />
+          <Route path="year-groups/create" element={<CreateYearGroupsPage />} />
+
+          {/* Results */}
+          <Route path="results" element={<ResultsPage />} />
           <Route path="year-groups/create" element={<CreateYearGroupsPage />} />
 
 

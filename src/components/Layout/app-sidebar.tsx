@@ -37,7 +37,7 @@ export function AppSidebar() {
       customLogo: <Icon icon="/icons/logout.svg" />,
       logoClasses: 'bg-error-100 text-error',
       onConfirm: () => {
-        dispatch(removeToken());
+        dispatch(removeToken()); //coming from the admin auth slice
         navigate(routes.Login());
       },
       classNames: {

@@ -47,7 +47,7 @@ const CreateAcademicTermsFrom = ({ setLoading }: Props) => {
   return (
     <>
     <div className="mt-4 md:mt-0">
-        <StatChartCard date={''} withDate={false} icon={'/icons/user-add.svg'} title={'New Academic Year Form'}>
+        <StatChartCard date={''} withDate={false} icon={'/icons/pencil.svg'} title={'New Academic Term Form'}>
           <div className="mt-4">
             <FormProvider {...createAcademicTermForm}>
 

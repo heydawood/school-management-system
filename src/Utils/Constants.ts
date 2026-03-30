@@ -1,4 +1,5 @@
 export const TOKEN_KEY = 'sessionToken';
+export const ROLE = 'role';
 export const FORGOT_EMAIL_KEY = 'forgot_email';
 export const FORGOT_OTP_KEY = 'forgot_otp';
 export const AVATAR_KEY = 'user_avatar';

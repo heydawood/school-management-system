@@ -1,5 +1,7 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import authReducer from './Auth/Slice';
+import authTeacherReducer from './AuthTeacher/Slice';
+import authStudentReducer from './AuthStudent/Slice';
 import userManagementReducer from './UserManagement/Slice';
 import SubscriptionReducer from './Subscription/Slice';
 import workoutsReducer from './Workouts/Slice';
@@ -20,6 +22,8 @@ import YearGroupsReducer from './YearGroups/Slice';
 
 export const appReducer = combineReducers({
   authReducer,
+  authTeacherReducer,
+  authStudentReducer,
   userManagement: userManagementReducer,
   subscriptionRecords: SubscriptionReducer,
   workouts: workoutsReducer,

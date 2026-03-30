@@ -42,7 +42,8 @@ const CreateProgramForm = ({ setLoading }: Props) => {
 
      const formattedData = {
     ...data,
-    students: data.students.map(s => s.value),
+    // returing new array of values instead of objects because of backend schema
+    students: data.students.map(s => s.value), 
     subjects: data.subjects.map(s => s.value),
     teachers: data.teachers.map(t => t.value),
   };
@@ -68,7 +69,7 @@ const CreateProgramForm = ({ setLoading }: Props) => {
   return (
     <>
       <div className="mt-4 md:mt-0">
-        <StatChartCard date={''} withDate={false} icon={'/icons/user-add.svg'} title={'New Program Form'}>
+        <StatChartCard date={''} withDate={false} icon={'/icons/pencil.svg'} title={'New Program Form'}>
           <div className="mt-4">
             <FormProvider {...createProgramsForm}>
 

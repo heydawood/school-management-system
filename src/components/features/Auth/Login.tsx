@@ -5,7 +5,7 @@ import Input from '@/components/ui/input/input';
 import Loader from '@/components/ui/loader/Loader';
 import PasswordInput from '@/components/ui/password_input/password-input';
 import type { LoginFormTypes } from '@/Forms/Login';
-import { adminLogin, setToken, setUserInfo } from '@/Redux/Auth/Slice';
+import { adminLogin, setRole, setToken, setUserInfo } from '@/Redux/Auth/Slice';
 import { useAppDispatch } from '@/Redux/Hooks';
 import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -13,6 +13,8 @@ import SVG from 'react-inlinesvg';
 import { Link, useNavigate } from 'react-router-dom';
 import * as routes from '@/routes/Index';
 import type { AuthResponse } from '@/pages/auth/Types';
+import { teacherLogin } from '@/Redux/AuthTeacher/Slice';
+import { studentLogin } from '@/Redux/AuthStudent/Slice';
 
 const LoginForm: React.FC = () => {
   const loginForm = useForm<LoginFormTypes>();
@@ -26,13 +28,32 @@ const LoginForm: React.FC = () => {
 
   const onSubmit = (data: LoginFormTypes) => {
 
-    dispatch(adminLogin(data))
+    //i added this
+    let loginAction;
+
+    if (data.role === "admin") {
+      loginAction = adminLogin(data);
+    } else if (data.role === "teacher") {
+      loginAction = teacherLogin(data);
+    } else {
+      loginAction = studentLogin(data);
+    }
+
+    dispatch(loginAction)
       .unwrap()
       .then((response: { data: AuthResponse; message: string }) => {
-        
-        const accessToken= response.data.token;
+
+        const accessToken = response.data.token;
+        const role = response.data.user.role;
         dispatch(setToken(accessToken));
+        dispatch(setRole(role));
         dispatch(setUserInfo({ avatar: response.data.avatar, userId: response.data.userId, name: response.data.name }));
+
+        // REDIRECT BASED ON ROLE
+        if (role === "admin") navigate("/admin");
+        if (role === "teacher") navigate("/teacher");
+        if (role === "student") navigate("/student");
+        
         navigate('/dashboard/admin');
 
         customToast.success(response.message || 'Login successful!');
@@ -44,8 +65,18 @@ const LoginForm: React.FC = () => {
   return (
     <FormProvider {...loginForm}>
       {isSubmitting && <Loader />}
-      
+
       <form onSubmit={loginForm.handleSubmit(onSubmit)} className="space-y-4">
+
+
+        <div >
+        <select className="w-60 h-[54px] rounded-[12px] bg-primary-500 hover:bg-primary-600 text-center font-semibold text-[14px] 2xl:text-[18px] text-white"  {...loginForm.register("role")}>
+            <option value="admin">Admin</option>
+            <option value="teacher">Teacher</option>
+            <option value="student">Student</option>
+          </select>
+        </div>
+
         <div className="">
           <Input
             type="text"

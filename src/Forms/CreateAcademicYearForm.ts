@@ -2,7 +2,7 @@ export interface CreateAcademicYearTypes {
     name: string;
     fromYear: string;
     toYear: string;
-    createdBy?: string;
+    createdBy: string;
 }
 
 export const CreateAcademicYearDefaultValues: CreateAcademicYearTypes = {

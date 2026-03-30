@@ -25,5 +25,3 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
-
-//width={132} height={32}

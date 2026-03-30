@@ -76,12 +76,12 @@ const StudentsPage = () => {
                 <div className="flex gap-3 items-center">
                   <Button onClick={() => navigate(routes.StudentsCreate())} className="bg-primary rounded-xl px-5 py-5" type="button">
                     <Icon icon="/icons/add-circle.svg" className="mr-2 text-white" />
-                    Add New Student
+                    <p className='text-white'>Add New Student</p>
                   </Button>
                 </div>
               }
               onChange={(e: any) => {}}
-              logo={<Icon icon="/icons/teacher.svg" className="text-primary-800" />}
+              logo={<Icon icon="/icons/student.svg" className="text-primary-800 w-6 h-6" />}
               logoClasses="bg-primary-25"
             />
              <StudentTable loading={loading} filters={filters} data={data} pagination={pagination} />

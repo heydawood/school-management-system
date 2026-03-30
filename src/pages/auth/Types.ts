@@ -3,4 +3,8 @@ export interface AuthResponse {
   name: string;
   avatar: string;
   token: string;
+  role: string;
+  user: {
+    role: string;
+  };
 }

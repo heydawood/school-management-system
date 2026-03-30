@@ -1,9 +1,10 @@
 import { createAsyncThunk, createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import { adminLoginHandler, adminForgotPasswordHandler, adminResetPasswordHandler, verifyOtpHandler, adminResendOtpHandler } from '@/Services/Auth/Auth';
+import { adminForgotPasswordHandler, adminResetPasswordHandler, verifyOtpHandler, adminResendOtpHandler } from '@/Services/Auth/Auth';
 import { AVATAR_KEY, FORGOT_EMAIL_KEY, FORGOT_OTP_KEY, ROLE, TOKEN_KEY, USER_ID_KEY, USER_NAME_KEY } from '@/Utils/Constants';
+import { studentLoginHandler } from '@/Services/AuthStudent/AuthStudent';
 
 // initial state
-interface AuthState {
+interface TeacherAuthState {
   token: string | null;
   role: string | null;
   email: string | null;
@@ -13,7 +14,7 @@ interface AuthState {
   userId: number | null;
 }
 
-const initialState: AuthState = {
+const initialState: TeacherAuthState = {
   token: localStorage.getItem(TOKEN_KEY) || null,
   role: localStorage.getItem(ROLE) || null,
   email: localStorage.getItem(FORGOT_EMAIL_KEY) || null,
@@ -24,9 +25,9 @@ const initialState: AuthState = {
 };
 
 // Thunks
-export const adminLogin = createAsyncThunk('auth/adminLogin', async (data: { email: string; password: string }, { rejectWithValue }) => {
+export const studentLogin = createAsyncThunk('auth/studentLogin', async (data: { email: string; password: string }, { rejectWithValue }) => {
   try {
-    const response = await adminLoginHandler(data.email, data.password);
+    const response = await studentLoginHandler(data.email, data.password);
     return response.data;
   } catch (error: any) {
     return rejectWithValue(error?.message ?? 'Something went wrong');
@@ -76,8 +77,8 @@ export const resendOtp = createAsyncThunk('auth/resendOtp', async ({ email }: { 
 });
 
 // Slice
-const authSlice = createSlice({
-  name: 'auth',
+const authStudentSlice = createSlice({
+  name: 'studentTeacher',
   initialState,
   reducers: {
 
@@ -85,11 +86,13 @@ const authSlice = createSlice({
       state.token = action.payload;
       localStorage.setItem(TOKEN_KEY, action.payload);
     },
-    setRole: (state, action: PayloadAction<string>) => {
+
+    setRole: (state, action: PayloadAction<string>) => { //i added this
       state.role = action.payload;
       localStorage.setItem(ROLE, action.payload);
     },
-    setUserInfo: (state, action: PayloadAction<{ avatar: string; userId: number; name: string }>) => {
+    
+    setTeacherInfo: (state, action: PayloadAction<{ avatar: string; userId: number; name: string }>) => {
       state.avatar = action.payload.avatar;
       state.userId = action.payload.userId;
       state.name = action.payload.name;
@@ -97,17 +100,7 @@ const authSlice = createSlice({
       localStorage.setItem(USER_NAME_KEY, action.payload.name);
       localStorage.setItem(USER_ID_KEY, action.payload.userId.toString());
     },
-    removeToken: (state) => {
-      state.token = null;
-      localStorage.removeItem(TOKEN_KEY);
-      state.avatar = null;
-      state.userId = null;
-      localStorage.removeItem(AVATAR_KEY);
-      localStorage.removeItem(USER_ID_KEY);
-      localStorage.removeItem(USER_NAME_KEY);
-      localStorage.removeItem(ROLE);  //i added this to clear role
-      state.role = null; //i added this to clear role
-    },
+    
     setEmail: (state, action: PayloadAction<string>) => {
       state.email = action.payload;
       localStorage.setItem(FORGOT_EMAIL_KEY, action.payload);
@@ -123,25 +116,7 @@ const authSlice = createSlice({
       localStorage.removeItem(FORGOT_OTP_KEY);
     },
   },
-  // extraReducers: (builder) => {
-  //   builder
-  //     .addCase(forgotPassword.fulfilled, (state, action) => {
-  //       state.email = action.payload;
-  //       localStorage.setItem(FORGOT_EMAIL_KEY, action.payload);
-  //     })
-  //     .addCase(verifyOtp.fulfilled, (state, action) => {
-  //       state.otp = action.payload;
-  //       localStorage.setItem(FORGOT_OTP_KEY, action.payload);
-  //     })
-  //     .addCase(resetPassword.fulfilled, (state) => {
-  //       // after reset, clear everything
-  //       state.email = null;
-  //       state.otp = null;
-  //       localStorage.removeItem(FORGOT_EMAIL_KEY);
-  //       localStorage.removeItem(FORGOT_OTP_KEY);
-  //     });
-  // },
 });
 
-export const { setToken, removeToken, setUserInfo, setEmail, setOtp, clearForgotFlow, setRole } = authSlice.actions;
-export default authSlice.reducer;
+export const { setToken, setTeacherInfo, setEmail, setOtp, clearForgotFlow, setRole } = authStudentSlice.actions;
+export default authStudentSlice.reducer;

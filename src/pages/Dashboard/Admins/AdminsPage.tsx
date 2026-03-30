@@ -72,7 +72,7 @@ function AdminsPage() {
                 <div className="flex gap-3 items-center">
                   <Button onClick={() => navigate(routes.AdminCreate())} className="bg-primary rounded-xl px-5 py-5" type="button">
                     <Icon icon="/icons/add-circle.svg" className="mr-2 text-white" />
-                    Add New Admin
+                    <p className='text-white'>Add New Admin</p>
                   </Button>
                 </div>
               }
@@ -82,7 +82,7 @@ function AdminsPage() {
             />
              <AdminTable loading={loading} filters={filters} data={data} pagination={pagination} />
           </div>
-        </div>
+         </div>
   )
 }
 

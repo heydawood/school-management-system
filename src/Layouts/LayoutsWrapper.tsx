@@ -13,7 +13,9 @@ const LayoutWrapper: React.FC<{
     <div>
       <AlertDialogProvider>
         <Toaster position="top-center" />
-        {type === 'dashboard' ? <DashboardLayout>{children || <Outlet />}</DashboardLayout> : <RootLayout>{children || <Outlet />}</RootLayout>}
+        {type === 'dashboard' ?
+        <DashboardLayout>{children || <Outlet />}</DashboardLayout> :
+        <RootLayout>{children || <Outlet />}</RootLayout>}
       </AlertDialogProvider>
     </div>
   );

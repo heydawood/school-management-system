@@ -4,7 +4,7 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import RequiredAsterisk from '../requiredAsterisk';
 
 interface Props {
-  type: string;
+  type?: string;
   placeholder: string;
   name: string;
   label: string;

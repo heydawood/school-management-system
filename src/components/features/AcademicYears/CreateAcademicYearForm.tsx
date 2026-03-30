@@ -27,6 +27,7 @@ const CreateAcademicYearForm = ({ setLoading }: Props) => {
   const dispatch = useAppDispatch();
 
   const onSubmit = (data: CreateAcademicYearTypes) => {
+    console.log("Submit clicked: ", data)
     setLoading(true);
     dispatch(createNewAcademicYear(data))
       .unwrap()
@@ -47,7 +48,7 @@ const CreateAcademicYearForm = ({ setLoading }: Props) => {
   return (
     <>
     <div className="mt-4 md:mt-0">
-        <StatChartCard date={''} withDate={false} icon={'/icons/user-add.svg'} title={'New Academic Year Form'}>
+        <StatChartCard date={''} withDate={false} icon={'/icons/pencil.svg'} title={'New Academic Year Form'}>
           <div className="mt-4">
             <FormProvider {...createAcademicYearForm}>
 
@@ -105,7 +106,7 @@ const CreateAcademicYearForm = ({ setLoading }: Props) => {
                 </div>
 
                 {/* createdBy */}
-                <div className="mb-6">
+                  <div className="mb-6">
                   <Input
                   allowAsterisk={true}
                     label="Created By"
