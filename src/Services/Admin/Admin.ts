@@ -18,6 +18,8 @@ export const updateAdminInfo = async (adminData: UpdateAdminType) => {
   return api.patch(`/v1/admins/updateAdmin`, adminData);
 };
 
+
+
 //get admin by id
 export const getAdminDataById = async (adminId: string) => {
   return api.get(`/v1/admins/${adminId}`);

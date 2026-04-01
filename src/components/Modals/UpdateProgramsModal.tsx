@@ -44,7 +44,7 @@ const UpdateProgramsModal: FC<Props> = ({
                 {/* HEADER */}
                 <Modalheader
                     logoClasses="bg-primary-100"
-                    customLogo={<Icon icon="/icons/edit.svg" className="text-primary-600" />}
+                    customLogo={<Icon icon="/icons/pencil.svg" className="text-primary-600" />}
                     className="p-4"
                     contentLocation="left"
                     showCloseButton={true}

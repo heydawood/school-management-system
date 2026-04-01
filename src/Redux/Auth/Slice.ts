@@ -105,6 +105,7 @@ const authSlice = createSlice({
       localStorage.removeItem(AVATAR_KEY);
       localStorage.removeItem(USER_ID_KEY);
       localStorage.removeItem(USER_NAME_KEY);
+      
       localStorage.removeItem(ROLE);  //i added this to clear role
       state.role = null; //i added this to clear role
     },

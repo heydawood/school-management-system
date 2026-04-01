@@ -19,6 +19,9 @@ import ClassLevelsReducer from './ClassLevels/Slice';
 import ProgramsReducer from './Programs/Slice';
 import SubjectsReducer from './Subjects/Slice';
 import YearGroupsReducer from './YearGroups/Slice';
+import ExamsReducer from './Exams/Slice';
+import QuestionsReducer from './Questions/Slice';
+import ResultsReducer from './Results/Slice';
 
 export const appReducer = combineReducers({
   authReducer,
@@ -41,6 +44,9 @@ export const appReducer = combineReducers({
   ProgramsRecords: ProgramsReducer,
   SubjectsRecords: SubjectsReducer,
   YearGroupsRecords: YearGroupsReducer,
+  ExamsRecords: ExamsReducer,
+  QuestionsRecords: QuestionsReducer,
+  ResultsRecords: ResultsReducer,
 });
 
 export const store = () => {

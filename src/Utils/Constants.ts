@@ -35,4 +35,6 @@ export enum PageName {
   SUBJECTS = 'subjects',
   YEAR_GROUPS = 'yearGroups',
   RESULTS = 'results',
+  EXAMS = 'exams',
+  QUESTIONS = 'questions'
 }

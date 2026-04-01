@@ -45,16 +45,21 @@ const LoginForm: React.FC = () => {
 
         const accessToken = response.data.token;
         const role = response.data.user.role;
+        const name = response.data.user.name
+
+        console.log('login cicked: ', response)
+
         dispatch(setToken(accessToken));
         dispatch(setRole(role));
-        dispatch(setUserInfo({ avatar: response.data.avatar, userId: response.data.userId, name: response.data.name }));
+        dispatch(setUserInfo({ avatar: response.data.avatar, userId: response.data.userId, name: name}));
 
         // REDIRECT BASED ON ROLE
-        if (role === "admin") navigate("/admin");
-        if (role === "teacher") navigate("/teacher");
-        if (role === "student") navigate("/student");
-        
-        navigate('/dashboard/admin');
+        if (role === "admin") navigate("/dashboard/admins");
+        if (role === "teacher") navigate("/dashboard/teacher");
+        if (role === "student") navigate("/dashboard/student");
+
+
+        //navigate('/dashboard/admin');
 
         customToast.success(response.message || 'Login successful!');
       })
@@ -70,7 +75,7 @@ const LoginForm: React.FC = () => {
 
 
         <div >
-        <select className="w-60 h-[54px] rounded-[12px] bg-primary-500 hover:bg-primary-600 text-center font-semibold text-[14px] 2xl:text-[18px] text-white"  {...loginForm.register("role")}>
+          <select className="w-60 h-[54px] rounded-[12px] bg-primary-500 hover:bg-primary-600 text-center font-semibold text-[14px] 2xl:text-[18px] text-white"  {...loginForm.register("role")}>
             <option value="admin">Admin</option>
             <option value="teacher">Teacher</option>
             <option value="student">Student</option>

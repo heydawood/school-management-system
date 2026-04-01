@@ -11,7 +11,6 @@ import { useAppDispatch } from '@/Redux/Hooks';
 import { createAdminWorkoutCategory } from '@/Redux/Workouts/Slice';
 import { customToast } from '@/Common/Components/ShowToast';
 import Loader from '../ui/loader/Loader';
-import { useWorkoutManager } from '@/pages/Dashboard/Workouts/WorkoutsManager';
 
 interface Props {
   close: () => void;

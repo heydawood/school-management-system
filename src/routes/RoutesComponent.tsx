@@ -1,7 +1,8 @@
 import AuthGuard from '@/Layouts/AuthGuard';
 import LayoutWrapper from '@/Layouts/LayoutsWrapper';
+import RoleGuard from '@/Layouts/RoleGuard';
 import React, { Suspense, lazy } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 
 // Auth Pages
 const LoginPage = lazy(() => import('@/pages/auth/login/login'));
@@ -10,25 +11,9 @@ const OtpVerificationPage = lazy(() => import('@/pages/auth/Otp-Verification/Otp
 const ResetPasswordPage = lazy(() => import('@/pages/auth/Reset-Password/ResetPasswordPage'));
 
 // Dashboard Pages
- const HomePage = lazy(() => import('@/pages/Dashboard/Home/Homepage'));
-// const UsersManagement = lazy(() => import('@/pages/Dashboard/UsersManagement/UsersManagement'));
-// const UserProfilePage = lazy(() => import('@/pages/Dashboard/UserProfilePage/UserProfilepage'));
+//const HomePage = lazy(() => import('@/pages/Dashboard/Home/Homepage'));
 
-// Workouts
-// const WorkoutsPage = lazy(() => import('@/pages/Dashboard/Workouts/Workouts'));
-// const CreateWorkoutPage = lazy(() => import('@/pages/Dashboard/Workouts/CreateWorkout/CreateWorkoutPage'));
-// const WorkoutViewAndEditPage = lazy(() => import('@/pages/Dashboard/Workouts/WorkoutViewAndEdit/WorkoutViewAndEditPage'));
-
-//category
-// const CategoryPage = lazy(() => import('@/pages/Dashboard/Categories/Category'));
-// const CreateCategoryPage = lazy(() => import('@/pages/Dashboard/Categories/CreateCategory/CreateCategoryPage'));
-// const CategoryViewAndEditPage = lazy(() => import('@/pages/Dashboard/Categories/CategoryViewAndEdit/CategoryViewAndEditPage'));
-
-// Subscriptions
-// const SubscriptionPage = lazy(() => import('@/pages/Dashboard/Subscriptions/SubscriptionPage'));
-
-// Analytics
-// const AnalyticsPage = lazy(() => import('@/pages/Dashboard/Analytics/AnalyticsPage'));
+//Admin Pages
 
 // Settings
 const SettingsPage = lazy(() => import('@/pages/Dashboard/Settings/SettingsPage'));
@@ -73,11 +58,20 @@ const CreateYearGroupsPage = lazy(() => import('@/pages/Dashboard/YearGroups/Cre
 const ResultsPage = lazy(() => import('@/pages/Dashboard/Results/ResultsPage'));
 const CreateResultsPage = lazy(() => import('@/pages/Dashboard/YearGroups/CreateYearGroup/CreateYearGroupPage'));
 
+//Teacher Pages
+const TeacherHomePage = lazy(() => import('@/pages/Dashboard/TeacherPanel/Home/HomePage'));
 
 
-//payments
-// const PaymentPage = lazy(() => import('@/pages/Dashboard/Payments/Payment'));
-// const PaymentViewAndEditPage = lazy(() => import('@/pages/Dashboard/Payments/PaymentDetail/PaymentDetail'));
+const TeacherExamsPage = lazy(() => import('@/pages/Dashboard/TeacherPanel/Exams/ExamsPage'));
+const CreateExamsPage = lazy(() => import('@/pages/Dashboard/TeacherPanel/Exams/CreateExams/CreateExamsPage'));
+
+const QuestionsPage = lazy(() => import('@/pages/Dashboard/TeacherPanel/Questions/QuestionsPage'));
+const CreateQuestionsPage = lazy(() => import('@/pages/Dashboard/TeacherPanel/Questions/CreateQuestions/CreateQuestionsPage'));
+
+//Student Pages
+const StudentHomePage = lazy(() => import('@/pages/Dashboard/StudentPanel/Results/ResultsPage'));
+
+
 
 //diet plan
 // const LearningHubPage = lazy(() => import('@/pages/Dashboard/LearningHub/LearningHub'));
@@ -89,9 +83,28 @@ const CreateResultsPage = lazy(() => import('@/pages/Dashboard/YearGroups/Create
 const RoutesComponent: React.FC = () => {
   return (
     <Suspense fallback={<div></div>}>
+
       <Routes>
         {/* Redirect / to /dashboard/home */}
-        <Route path="/" element={<Navigate to="/dashboard/admins" replace />} />
+
+        {/* <Route path="/" element={<Navigate to="/dashboard/admins" replace />} /> */}
+
+        <Route
+          path="/"
+          element={
+            (() => {
+              const role = localStorage.getItem("role");
+
+              if (role === "admin") return <Navigate to="/dashboard/admins" />;
+              if (role === "teacher") return <Navigate to="/dashboard/teacher" />;
+              if (role === "student") return <Navigate to="/dashboard/student" />;
+
+              return <Navigate to="/auth/login" />;
+            })()
+          }
+        />
+
+
 
         <Route
           path="/auth"
@@ -119,8 +132,8 @@ const RoutesComponent: React.FC = () => {
           }
         >
           {/* Redirect /dashboard to /dashboard/home */}
-          <Route index element={<Navigate to="home" replace />} />
-          <Route path="home" element={<HomePage />} />
+          {/* <Route index element={<Navigate to="home" replace />} />
+          <Route path="home" element={<HomePage />} /> */}
 
 
           {/* Settings */}
@@ -150,7 +163,7 @@ const RoutesComponent: React.FC = () => {
           {/* Class Levels */}
           <Route path="class-levels" element={<ClassLevelsPage />} />
           <Route path="class-levels/create" element={<CreateClassLevelPage />} />
-          
+
           {/* Programs */}
           <Route path="programs" element={<ProgramsPage />} />
           <Route path="programs/create" element={<CreateProgramPage />} />
@@ -166,6 +179,43 @@ const RoutesComponent: React.FC = () => {
           {/* Results */}
           <Route path="results" element={<ResultsPage />} />
           <Route path="year-groups/create" element={<CreateYearGroupsPage />} />
+
+
+          {/* Teacher Panel */}
+          <Route
+            path="teacher"
+            element={
+              <RoleGuard allowedRoles={["teacher"]}>
+                <Outlet />
+              </RoleGuard>
+            }
+          >
+            <Route index element={<TeacherHomePage />} />
+
+            
+             <Route path="exams" element={<TeacherExamsPage />} />
+             <Route path="exams/create" element={<CreateExamsPage />} />
+
+
+            <Route path="questions" element={<QuestionsPage />} />
+            {/* <Route path="questions/create" element={<CreateQuestionsPage />} /> */}
+            <Route path="exams/:examId/questions/create" element={<CreateQuestionsPage />} />
+
+            {/*<Route path="results" element={<TeacherResultsPage />} /> */}
+          </Route>
+
+          {/* Student Panel */}
+          <Route
+            path="student"
+            element={
+              <RoleGuard allowedRoles={["student"]}>
+                <Outlet />
+              </RoleGuard>
+            }
+          >
+            <Route index element={<StudentHomePage />} />
+
+          </Route>
 
 
         </Route>

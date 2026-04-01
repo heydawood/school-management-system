@@ -1,10 +1,8 @@
 import { customToast } from '@/Common/Components/ShowToast';
-import { createAdmin, getAdminData, getAdminDataById } from '@/Services/Admin/Admin';
 import type { Pagination } from '@/Utils/Types';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getPaginatedLearningHub } from '../LearningHub/Slice';
-import type { CreateAdminTypes } from '@/Forms/CreateAdminForm';
-import { createTeacher, getTeacherData, getTeacherDataById } from '@/Services/Teacher/Teacher';
+import { createTeacher, getTeacherData, getTeacherDataById, getTeacherProfileData } from '@/Services/Teacher/Teacher';
 import type { TeacherDataResponse } from '@/pages/Dashboard/Teachers/Types';
 import type { CreateTeacherTypes } from '@/Forms/CreateTeacherForm';
 
@@ -33,6 +31,18 @@ export const getTeachers = createAsyncThunk('getTeachers', async (_, { rejectWit
     const response = await getTeacherData();
     console.log("Response:", response.data.data);
     return response.data.data;
+  } catch (error: any) {
+    customToast.error(error?.message ?? 'Something went wrong');
+    return rejectWithValue(error?.message ?? 'Something went wrong');
+  }
+});
+
+//get teacher profile
+export const getTeacherProfile = createAsyncThunk('getTeacherProfile', async (_, { rejectWithValue }) => {
+  try {
+    const response = await getTeacherProfileData();
+    console.log("Response:", response.data.teacher);
+    return response.data.teacher;
   } catch (error: any) {
     customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');

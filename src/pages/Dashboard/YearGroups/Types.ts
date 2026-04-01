@@ -5,4 +5,6 @@ export interface YearGroupsDataResponse {
   createdBy: string;
   createdAt: string;
   updatedAt: string;
+  _id: string;
+  description: string;
 }

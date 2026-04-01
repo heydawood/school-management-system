@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { customToast } from '@/Common/Components/ShowToast';
 import { useAppDispatch } from '@/Redux/Hooks';
 import type { Dispatch, SetStateAction } from 'react';
-import { updateAdminPassword } from '@/Redux/Settings/Slice';
+import { updateAdminPassword, updateTeacherPassword } from '@/Redux/Settings/Slice';
 
 interface Props {
   setLoading: Dispatch<SetStateAction<boolean>>;
@@ -22,25 +22,45 @@ const UpdatePasswordForm = ({ setLoading }: Props) => {
 
   const onSubmit = (data: PasswordUpdateFormTypes) => {
     setLoading(true);
-    dispatch(updateAdminPassword(data))
+
+    const role = localStorage.getItem("role");
+
+    let action;
+
+    if (role === "admin") {
+      action = updateAdminPassword(data);
+    } else if (role === "teacher") {
+      action = updateTeacherPassword(data);
+    } else if (role === "student") {
+      action = updateStudentPassword(data);
+    }
+
+    if (!action) {
+      customToast.error("Invalid role");
+      setLoading(false);
+      return;
+    }
+
+    dispatch(action)
       .unwrap()
-      .then((res) => {
+      .then((res: any) => {
         customToast.success(res.message ?? 'Password updated successfully.');
         passwordUpdateForm.reset();
       })
-      .catch((err) => {
+      .catch((err: any) => {
         customToast.error(err);
       })
       .finally(() => {
         setLoading(false);
       });
   };
+
   return (
     <div className="mt-4 md:mt-0">
       <StatChartCard date={''} withDate={false} icon={'/icons/lock.svg'} title={'Password Update'}>
         <div className="mt-4">
           <FormProvider {...passwordUpdateForm}>
-            
+
             <form onSubmit={passwordUpdateForm.handleSubmit(onSubmit)}>
 
 

@@ -4,7 +4,9 @@ import {
   getAdminBasicSettingsHandler,
   updateAdminPasswordHandler,
   updateAdminBasicSettingsHandler,
+  updateTeacherPasswordHandler,
 } from '@/Services/Settings/Settings';
+import { updateTeacherInfo } from '@/Services/Teacher/Teacher';
 // import {
 //   getAdminBasicSettingsHandler,
 //   updateAdminPasswordHandler,
@@ -88,3 +90,26 @@ export const updateAdminPassword = createAsyncThunk('updateAdminPassword', async
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
+
+export const updateTeacherPassword = createAsyncThunk('updateTeacherPassword', async (data: any, { rejectWithValue }) => {
+  try {
+    const response = await updateTeacherPasswordHandler(data);
+    return response.data;
+  } catch (error: any) {
+    // customToast.error(error?.message??'Something went wrong');
+    return rejectWithValue(error?.message ?? 'Something went wrong');
+  }
+});
+
+//update Teacher name and email
+export const updateTeacherBasicSettings = createAsyncThunk(
+  'updateTeacherBasicSettings',
+  async ({ teacherId, data }: { teacherId: string; data: any }, { rejectWithValue }) => {
+    try {
+      const response = await updateTeacherInfo(teacherId, data);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error?.message ?? 'Something went wrong');
+    }
+  }
+);

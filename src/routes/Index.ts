@@ -57,3 +57,8 @@ export const SubjectsCreate = () => '/dashboard/subjects/create';
 
 //Year Groups Route
 export const YearGroupsCreate = () => '/dashboard/year-groups/create';
+
+//Teachers Panel
+
+export const ExamCreate = () => '/dashboard/teacher/exams/create';
+export const QuestionCreate = () => '/dashboard/teacher/questions/create';

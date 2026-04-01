@@ -16,7 +16,7 @@ const LoginPage = () => {
         <NextImage image="/images/logo22.png" width={80} height={80} classNames="m-0 p-0" />
         <div className="space-y-2 mt-8">
           <h2 className="text-gray-950 font-bold text-[24px] leading-[40px] 2xl:text-[32px]">Welcome Back 👋🏻</h2>
-          <p className="font-medium 2xl:text-[16px] text-[12px] text-gray-400 leading-[24px]">School Management System Admin Login: Empowering healthier habits, one reminder at a time.</p>
+          <p className="font-medium 2xl:text-[16px] text-[12px] text-gray-400 leading-[24px]">School Management System Login: Empowering Education Through Technology.</p>
         </div>
         <LoginForm />
       </div>

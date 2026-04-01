@@ -1,15 +1,13 @@
 import { SetSettingsFormDefaultValues, SettingsFormDefaultValues, type SettingsFormTypes } from '@/Forms/Settings';
 import { FormProvider, useForm } from 'react-hook-form';
 import UserInfoForm from './UserInfoForm';
-import UserLanguageCard from './UserLanguageCard';
-import NotificationPrefCard from './NotificationPreferences';
 import UpdatePasswordForm from './PasswordChangeForm';
 import { useEffect, type Dispatch, type ReactNode, type SetStateAction } from 'react';
 import Icon from '@/components/ui/svg_icon/SvgIcon';
 import { Button } from '@/components/ui/button';
 import type { BasicSettingsResponse } from '@/pages/Dashboard/Settings/Types';
 import { customToast } from '@/Common/Components/ShowToast';
-import { updateAdminBasicSettings } from '@/Redux/Settings/Slice';
+import { updateAdminBasicSettings, updateTeacherBasicSettings } from '@/Redux/Settings/Slice';
 import { useAppDispatch, useAppSelector } from '@/Redux/Hooks';
 import { setUserInfo } from '@/Redux/Auth/Slice';
 
@@ -34,24 +32,61 @@ const BasicSettingsComponent = ({ basicSetting, setLoading }: { basicSetting: Ba
   });
 
   const dispatch = useAppDispatch();
-  const { userId } = useAppSelector((state) => state.authReducer);
+  const { userId } = useAppSelector((state) => state.authTeacherReducer);
 
   const onSubmit = (data: SettingsFormTypes) => {
     setLoading(true);
-    
+
     // Filter to only send name and email. i don't want to send the avatar because api only accepts name and email
     const payload = {
       name: data.name,
       email: data.email,
     };
 
-    dispatch(updateAdminBasicSettings(payload))
+    const teacherPayload = {
+      teacherId: userId, // from redux, not form
+      data: {
+        name: data.name,
+        email: data.email,
+      },
+    };
+
+
+    const role = localStorage.getItem("role");
+
+    let action;
+
+    if (role === "admin") {
+      action = updateAdminBasicSettings(payload);
+    } 
+
+    else if (role === "teacher") {
+      console.log("Data:", payload);
+      console.log("User ID:", userId);
+
+    action = updateTeacherBasicSettings({
+      teacherId: userId!,
+      data: payload,
+    });
+    } 
+
+    else if (role === "student") {
+      action = updateStudentBasicSettings(payload);
+    }
+
+    if (!action) {
+      customToast.error("Invalid role");
+      setLoading(false);
+      return;
+    }
+
+    dispatch(action)
       .unwrap()
       .then((res: { message: string; data: { name: string; avatar: string; email: string } }) => {
         customToast.success(res.message ?? 'Information saved successfully.');
         dispatch(setUserInfo({ avatar: res.data.avatar, name: res.data.name, userId: userId! }));
       })
-      .catch((err) => {
+      .catch((err: any) => {
         customToast.error(err);
       })
       .finally(() => {

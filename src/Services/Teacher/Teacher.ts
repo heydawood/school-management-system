@@ -6,6 +6,10 @@ import type { CreateTeacherTypes } from '@/Forms/CreateTeacherForm';
 export const getTeacherData = async () => {
   return api.get('/v1/teachers');
 };
+// Get Teacher Profile
+export const getTeacherProfileData = async () => {
+  return api.get('/v1/teachers/profile');
+};
 
 
 //Create New Teacher
@@ -14,9 +18,9 @@ export const createTeacher = async (teacherData:CreateTeacherTypes) => {
 };
 
 
-//updateAdmin
-export const updateAdminInfo = async (adminData: UpdateAdminType) => {
-  return api.patch(`/v1/admins/updateAdmin`, adminData);
+//updateTeacher
+export const updateTeacherInfo = async (teacherId: string, teacherData: UpdateAdminType) => {
+  return api.patch(`/v1/teachers/${teacherId}/update`, teacherData);
 };
 
 //get teacher by id

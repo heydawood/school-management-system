@@ -6,7 +6,6 @@ import { useAppDispatch } from '@/Redux/Hooks';
 import { getAdminBasicSettings } from '@/Redux/Settings/Slice';
 import type { BasicSettingsResponse } from './Types';
 import Loader from '@/components/ui/loader/Loader';
-import SystemMonitoringComponent from '@/components/features/Settings/SystemMonitoringComponent';
 
 const SettingsPage = () => {
   const [tab, setTab] = useState<SettingsTabsTypes>(SettingsTabsTypes.BASIC);
@@ -15,24 +14,25 @@ const SettingsPage = () => {
 
   const dispatch = useAppDispatch();
 
-  const handleGetSettings = () => {
-    setLoading(true);
-    dispatch(getAdminBasicSettings())
-      .unwrap()
-      .then((res: BasicSettingsResponse) => {
-        setSetting(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
+  // const handleGetSettings = () => {
+  //   setLoading(true);
+  //   dispatch(getAdminBasicSettings())
+  //     .unwrap()
+  //     .then((res: BasicSettingsResponse) => {
+  //       setSetting(res);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     })
+  //     .finally(() => {
+  //       setLoading(false);
+  //     });
+  // };
 
-  useEffect(() => {
-    handleGetSettings();
-  }, [dispatch]);
+  // useEffect(() => {
+  //   handleGetSettings();
+  // }, [dispatch]);
+  
   return (
     <div>
       {loading && <Loader />}
@@ -49,7 +49,7 @@ const SettingsPage = () => {
       </Tabs>
       <div>
         {tab === SettingsTabsTypes.BASIC && <BasicSettingsComponent setLoading={setLoading} basicSetting={setting} />}
-        {tab === SettingsTabsTypes.SYSTEM && <SystemMonitoringComponent />}
+        {/* {tab === SettingsTabsTypes.SYSTEM && <SystemMonitoringComponent />} */}
       </div>
     </div>
   );
