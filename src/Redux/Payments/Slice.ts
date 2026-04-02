@@ -45,7 +45,7 @@ export const getPaymentsList = createAsyncThunk(
 
       return response.data.data;
     } catch (error: any) {
-      customToast.error(error?.message ?? 'Something went wrong');
+      //customToast.error(error?.message ?? 'Something went wrong');
       return rejectWithValue(error?.message ?? 'Something went wrong');
     }
   },
@@ -59,7 +59,7 @@ export const exportPayments = createAsyncThunk(
       const response = await exportPaymentsHandler(page, limit, plan, search, startDate, endDate);
       return response.data;
     } catch (error: any) {
-      customToast.error(error?.message ?? 'Something went wrong');
+      //customToast.error(error?.message ?? 'Something went wrong');
       return rejectWithValue(error?.message ?? 'Something went wrong');
     }
   },
@@ -71,7 +71,7 @@ export const getPaymentsPaginatedList = createAsyncThunk('getPaymentsPaginatedLi
     const response = await getPaginatedPaymentsDataHandler(page, limit);
     return response.data.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -81,7 +81,7 @@ export const getPaymentDetail = createAsyncThunk('getPaymentDetail', async (id: 
     const response = await getPaymentDetailHandler(id);
     return response.data.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -98,7 +98,7 @@ export const getPlansList = createAsyncThunk('getPlansList', async (_, { rejectW
 
     return plans;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });

@@ -1,12 +1,6 @@
-import { customToast } from '@/Common/Components/ShowToast';
-import type { AdminDataResponse } from '@/pages/Dashboard/Admins/Types';
-import { createAdmin, getAdminData, getAdminDataById } from '@/Services/Admin/Admin';
 import type { Pagination } from '@/Utils/Types';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getPaginatedLearningHub } from '../LearningHub/Slice';
-import type { CreateAdminTypes } from '@/Forms/CreateAdminForm';
-import { createExam, getExamDataById, getexamsData } from '@/Services/Exams/Exams';
-import type { CreateExamTypes } from '@/Forms/CreateExamsTypes';
 import type { QuestionsDataResponse } from '@/pages/Dashboard/TeacherPanel/Questions/Types';
 import { createQuestion, getQuestionDataById, getQuestionsData, updateQuestionsDataById } from '@/Services/Questions/Questions';
 
@@ -15,10 +9,12 @@ interface State {
   loading: boolean;
   data: QuestionsDataResponse[];
   pagination: Pagination;
+  questions: QuestionsDataResponse[];
 }
 
 const initialState: State = {
   loading: false,
+  questions: [],
   data: [],
   pagination: {
     page: 1,
@@ -36,7 +32,7 @@ export const getQuestions = createAsyncThunk('getQuestions', async (_, { rejectW
     console.log("Questions Response:", response.data.data);
     return response.data.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -63,7 +59,7 @@ export const getQuestionById = createAsyncThunk('getQuestionById', async (questi
     console.log('slice: ', response.data.question)
     return response.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
 
   }
@@ -76,7 +72,7 @@ export const updateQuestionsById = createAsyncThunk('updateQuestionsById', async
     console.log("Update Questions Response:", response.data);
     return response.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -100,7 +96,10 @@ const QuestionsSlice = createSlice({
       })
       .addCase(getPaginatedLearningHub.rejected, (state) => {
         state.loading = false;
-      });
+      })
+      .addCase(getQuestions.fulfilled, (state, action) => {
+                      state.questions = action.payload;
+                  });
   },
 });
 

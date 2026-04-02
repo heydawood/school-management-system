@@ -24,7 +24,7 @@ export const getAdminBasicSettings = createAsyncThunk('getAdminSettings', async 
     const response = await getAdminBasicSettingsHandler();
     return response.data.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -34,7 +34,7 @@ export const getAdminSystemSettings = createAsyncThunk('getAdminSystemSettings',
     const response = await getAdminSystemSettingsHandler();
     return response.data.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -44,7 +44,7 @@ export const getSettingsAppUsage = createAsyncThunk('getSettingsAppUsage', async
     const response = await getSettingsAppUsageHandler(data);
     return response.data.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -54,7 +54,7 @@ export const getUserSupportQuestions = createAsyncThunk('getUserSupportQuestions
     const response = await getUserSupportQuestionsHandler(data.page, data.limit);
     return response.data.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -64,7 +64,7 @@ export const getUserFeedbackSummary = createAsyncThunk('getUserFeedbackSummary',
     const response = await getUserFeedbackSummaryHandler(data);
     return response.data.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });

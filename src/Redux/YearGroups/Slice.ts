@@ -35,7 +35,7 @@ export const getYearGroups = createAsyncThunk('getYearGroups', async (_, { rejec
     console.log("Response YearGroups :", response.data.yearGroups);
     return response.data.yearGroups;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -48,7 +48,7 @@ export const getYearGroupsById = createAsyncThunk('getYearGroupsById', async (ye
     console.log("Get Programs By Id Response:", response.data);
     return response.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
 
   }
@@ -61,7 +61,7 @@ export const deleteYearGroupsById = createAsyncThunk('deleteYearGroupsById', asy
     console.log("Deleted YearGroups Response:", response.data);
     return response.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
 
   }
@@ -74,7 +74,7 @@ export const updateYearGroupsById = createAsyncThunk('updateYearGroupsById', asy
     console.log("Updated YearGroups Response:", response.data);
     return response.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -91,7 +91,7 @@ export const createNewYearGroup = createAsyncThunk(
       return response.data;
 
         } catch (error: any) {
-            customToast.error(error?.message ?? 'Something went wrong');
+            //customToast.error(error?.message ?? 'Something went wrong');
             return rejectWithValue(error?.message ?? 'Something went wrong');
         }
     });

@@ -8,7 +8,7 @@ export const getBehavioralAnalytics = createAsyncThunk('getBehavioralAnalytics',
     const response = await getBehavioralAnalyticsHandler();
     return response.data.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+   // customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -18,7 +18,7 @@ export const getFeatureEngagements = createAsyncThunk('getFeatureEngagements', a
     const response = await getFeatureEngagementsHandler(type);
     return response.data.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+   // customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });

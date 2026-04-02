@@ -34,7 +34,7 @@ export const getCategories = createAsyncThunk('getCategories', async (_, { rejec
     const response = await getCategoriesHandler();
     return response.data.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -46,7 +46,7 @@ export const getPaginatedCategories = createAsyncThunk(
       const response = await getPaginatedCategoriesHandler(filters);
       return response.data.data;
     } catch (error: any) {
-      customToast.error(error?.message ?? 'Something went wrong');
+      //customToast.error(error?.message ?? 'Something went wrong');
       return rejectWithValue(error?.message ?? 'Something went wrong');
     }
   },
@@ -57,7 +57,7 @@ export const getSingleCategory = createAsyncThunk('getSingleCategory', async (id
     const response = await getCategoryDetailHandler(id);
     return response.data.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -76,7 +76,7 @@ export const updateAdminCategory = createAsyncThunk('updateAdminCategory', async
     const response = await updateCategoryHandler(data.id, data.payload);
     return response.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -86,7 +86,7 @@ export const deleteAdminCategory = createAsyncThunk('deleteAdminCategory', async
     const response = await deleteCategoryHandler(id);
     return response.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });

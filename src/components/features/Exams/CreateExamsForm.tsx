@@ -19,173 +19,209 @@ import type { AcademicTermDataResponse } from '@/pages/Dashboard/AcademicTerms/T
 import { getAcademicTerms } from '@/Redux/AcademicTerms/Slice';
 import { getSubjects } from '@/Redux/Subjects/Slice';
 import type { SubjectsDataResponse } from '@/pages/Dashboard/Subjects/Types';
+import type { QuestionsDataResponse } from '@/pages/Dashboard/TeacherPanel/Questions/Types';
+import { getQuestions } from '@/Redux/Questions/Slice';
 
 
 
 const CreateExamForm = ({ setLoading }: any) => {
-const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
 
 
-    //fetching progrm data
-      const [programsDataState, setProgramsDataState] = useState<ProgramsDataResponse[]>([]);
-    
-      const handleGetPrograms = () => {
-        setLoading(true);
-        dispatch(getPrograms())
-          .unwrap()
-          .then((res: ProgramsDataResponse[]) => {
-            setProgramsDataState(res);
-          })
-          .catch((err) => {
-            console.log(err);
-          })
-          .finally(() => setLoading(false));
-      };
-    
-      useEffect(() => {
-        handleGetPrograms();
-      }, [dispatch]);
-    
-      const programsData = programsDataState.map((program) => ({
-        name: program.name,
-        value: program._id, // THIS is your programId
-      }));
+  //fetching progrm data
+  const [programsDataState, setProgramsDataState] = useState<ProgramsDataResponse[]>([]);
 
-      //fetching years from db
-      const [academicdata, setAcademicData] = useState<AcademicYearDataResponse[]>([]);
+  const handleGetPrograms = () => {
+    setLoading(true);
+    dispatch(getPrograms())
+      .unwrap()
+      .then((res: ProgramsDataResponse[]) => {
+        setProgramsDataState(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => setLoading(false));
+  };
 
-        const handleGetAcademicYears = () => {
-          setLoading(true);
-          dispatch(getAcademicYears())
-            .unwrap()
-            .then((res: AcademicYearDataResponse[]) => {
-              setAcademicData(res);
-              console.log("Data:", res);
-            })
-            .catch((err) => {
-              console.log("Error: ", err);
-            })
-            .finally(() => {
-              setLoading(false);
-      
-            });
-        };
-      
-        useEffect(() => {
-          handleGetAcademicYears();
-        }, [dispatch]);
-      
-      
-        const academicYears = useAppSelector(
-          (state) => state.AcademicYearsRecords.academicYears
-        );
-      
-        const academicYearsData = academicYears.map((year) => ({
-          name: year.name,
-          value: year.id,
-        }));
+  useEffect(() => {
+    handleGetPrograms();
+  }, [dispatch]);
 
-        //fetching ClassLevels from db
+  const programsData = programsDataState.map((program) => ({
+    name: program.name,
+    value: program._id, // THIS is your programId
+  }));
+
+  //fetching years from db
+  const [academicdata, setAcademicData] = useState<AcademicYearDataResponse[]>([]);
+
+  const handleGetAcademicYears = () => {
+    setLoading(true);
+    dispatch(getAcademicYears())
+      .unwrap()
+      .then((res: AcademicYearDataResponse[]) => {
+        setAcademicData(res);
+        console.log("Data:", res);
+      })
+      .catch((err) => {
+        console.log("Error: ", err);
+      })
+      .finally(() => {
+        setLoading(false);
+
+      });
+  };
+
+  useEffect(() => {
+    handleGetAcademicYears();
+  }, [dispatch]);
+
+
+  const academicYears = useAppSelector(
+    (state) => state.AcademicYearsRecords.academicYears
+  );
+
+  const academicYearsData = academicYears.map((year) => ({
+    name: year.name,
+    value: year.id,
+  }));
+
+  //fetching ClassLevels from db
   const [classLeveldata, setClassLevel] = useState<AcademicYearDataResponse[]>([]);
 
-          const handleGetClassLevels = () => {
-            setLoading(true);
-            dispatch(getClassLevels())
-              .unwrap()
-              .then((res: ClassLevelDataResponse[]) => {
-                setClassLevel(res as any);
-                console.log("Data:", res);
-              })
-              .catch((err) => {
-                console.log("Error: ", err);
-              })
-              .finally(() => {
-                setLoading(false);
-        
-              });
-          };
-        
-          useEffect(() => {
-            handleGetClassLevels();
-          }, [dispatch]);
-        
-          const classLevels = useAppSelector(
-            (state) => state.ClassLevelsRecords.classLevels
-          );
-        
-          const classLevelsData = classLevels.map((year) => ({
-            name: year.name,
-            value: year.id,
-          }));
+  const handleGetClassLevels = () => {
+    setLoading(true);
+    dispatch(getClassLevels())
+      .unwrap()
+      .then((res: ClassLevelDataResponse[]) => {
+        setClassLevel(res as any);
+        console.log("Data:", res);
+      })
+      .catch((err) => {
+        console.log("Error: ", err);
+      })
+      .finally(() => {
+        setLoading(false);
 
-          //fetching terms from db
-            const [termdata, setTermData] = useState<AcademicTermDataResponse[]>([]);
-          
-          
-            const handleGetAcademicTerms = () => {
-              setLoading(true);
-              dispatch(getAcademicTerms())
-                .unwrap()
-                .then((res: AcademicTermDataResponse[]) => {
-                  setTermData(res);
-                  console.log("Data:", res);
-                })
-                .catch((err) => {
-                  console.log("Error: ", err);
-                })
-                .finally(() => {
-                  setLoading(false);
-          
-                });
-            };
-          
-            useEffect(() => {
-              handleGetAcademicTerms();
-            }, [dispatch]);
-          
-            const academicTerms = useAppSelector(
-              (state) => state.AcademicTermsRecords.academicTerms
-            );
-          
-            const academicTermsData = academicTerms.map((year) => ({
-              name: year.name,
-              value: year.id,
-            }));
+      });
+  };
+
+  useEffect(() => {
+    handleGetClassLevels();
+  }, [dispatch]);
+
+  const classLevels = useAppSelector(
+    (state) => state.ClassLevelsRecords.classLevels
+  );
+
+  const classLevelsData = classLevels.map((year) => ({
+    name: year.name,
+    value: year.id,
+  }));
+
+  //fetching terms from db
+  const [termdata, setTermData] = useState<AcademicTermDataResponse[]>([]);
 
 
-            //getting subjects
-            
-        const [subjectData, setSubjectData] = useState<SubjectsDataResponse[]>([]);
+  const handleGetAcademicTerms = () => {
+    setLoading(true);
+    dispatch(getAcademicTerms())
+      .unwrap()
+      .then((res: AcademicTermDataResponse[]) => {
+        setTermData(res);
+        console.log("Data:", res);
+      })
+      .catch((err) => {
+        console.log("Error: ", err);
+      })
+      .finally(() => {
+        setLoading(false);
 
-            const handleGetSubjects = () => {
-                        setLoading(true);
-                        dispatch(getSubjects())
-                          .unwrap()
-                          .then((res: SubjectsDataResponse[]) => {
-                            setSubjectData(res);
-                            console.log("Data:", res);
-                          })
-                          .catch((err) => {
-                            console.log("Error: ", err);
-                          })
-                          .finally(() => {
-                            setLoading(false);
-                            
-                          });
-                      };
-                    
-                      useEffect(() => {
-                        handleGetSubjects();
-                      }, [dispatch]);
+      });
+  };
 
-                      const subjects = useAppSelector(
-              (state) => state.SubjectsRecords.subjects
-            );
-          
-            const subjectsData = subjects.map((year) => ({
-              name: year.name,
-              value: year.id,
-            }));
+  useEffect(() => {
+    handleGetAcademicTerms();
+  }, [dispatch]);
+
+  const academicTerms = useAppSelector(
+    (state) => state.AcademicTermsRecords.academicTerms
+  );
+
+  const academicTermsData = academicTerms.map((year) => ({
+    name: year.name,
+    value: year.id,
+  }));
+
+
+  //getting subjects
+
+  const [subjectData, setSubjectData] = useState<SubjectsDataResponse[]>([]);
+
+  const handleGetSubjects = () => {
+    setLoading(true);
+    dispatch(getSubjects())
+      .unwrap()
+      .then((res: SubjectsDataResponse[]) => {
+        setSubjectData(res);
+        console.log("Data:", res);
+      })
+      .catch((err) => {
+        console.log("Error: ", err);
+      })
+      .finally(() => {
+        setLoading(false);
+
+      });
+  };
+
+  useEffect(() => {
+    handleGetSubjects();
+  }, [dispatch]);
+
+  const subjects = useAppSelector(
+    (state) => state.SubjectsRecords.subjects
+  );
+
+  const subjectsData = subjects.map((subject) => ({
+    name: subject.name,
+    value: subject.id,
+  }));
+
+  //getting questions
+
+  const [questionData, setQuestionData] = useState<QuestionsDataResponse[]>([]);
+
+  const handleGetQuestion = () => {
+    setLoading(true);
+    dispatch(getQuestions())
+      .unwrap()
+      .then((res: QuestionsDataResponse[]) => {
+        setQuestionData(res);
+        console.log("Data:", res);
+      })
+      .catch((err) => {
+        console.log("Error: ", err);
+      })
+      .finally(() => {
+        setLoading(false);
+
+      });
+  };
+
+  useEffect(() => {
+    handleGetQuestion();
+  }, [dispatch]);
+
+  const questions = useAppSelector(
+    (state) => state.QuestionsRecords.questions
+  );
+
+  const QuestionsData = questions.map((question) => ({
+    name: question.question,
+    value: question.id,
+  }));
 
 
 
@@ -201,7 +237,7 @@ const dispatch = useAppDispatch();
     name: 'questions',
   });
 
-  
+
   const { userId } = useAppSelector((state) => state.authTeacherReducer);
 
   const onSubmit = (data: CreateExamTypes) => {
@@ -240,78 +276,78 @@ const dispatch = useAppDispatch();
           {/* RELATIONS */}
 
           {/* Subject */}
-                 <div className="mb-6">
-                  <div className="mb-6">
-                  <Dropdown
-                    name="subject"
-                    label="Subject"
-                    placeholder="Select Subject"
-                    data={subjectsData}
-                    rules={{
-                      required: 'Subject is required',
-                    }}
-                    allowAsterisk={true}
-                  />
-                </div>
-                </div>
+          <div className="mb-6">
+            <div className="mb-6">
+              <Dropdown
+                name="subject"
+                label="Subject"
+                placeholder="Select Subject"
+                data={subjectsData}
+                rules={{
+                  required: 'Subject is required',
+                }}
+                allowAsterisk={true}
+              />
+            </div>
+          </div>
 
           {/* Program */}
-                <div className="mb-6">
-                  <Dropdown
-                    name="program"
-                    label="Program"
-                    placeholder="Select Program"
-                    data={programsData}
-                    rules={{
-                      required: 'Program is required',
-                    }}
-                    allowAsterisk={true}
-                  />
-                </div>
+          <div className="mb-6">
+            <Dropdown
+              name="program"
+              label="Program"
+              placeholder="Select Program"
+              data={programsData}
+              rules={{
+                required: 'Program is required',
+              }}
+              allowAsterisk={true}
+            />
+          </div>
 
           {/* Academic Term Select */}
-                <div className="mb-6">
-                  <Dropdown
-                    name="academicTerm"
-                    label="Academic Term"
-                    placeholder="Select Academic Term"
-                    data={academicTermsData}
-                    rules={{
-                      required: 'Academic Term is required',
-                    }}
-                    allowAsterisk={true}
-                  />
-                </div>
+          <div className="mb-6">
+            <Dropdown
+              name="academicTerm"
+              label="Academic Term"
+              placeholder="Select Academic Term"
+              data={academicTermsData}
+              rules={{
+                required: 'Academic Term is required',
+              }}
+              allowAsterisk={true}
+            />
+          </div>
 
           {/* Academic Year Select */}
-                <div className="mb-6">
-                  <Dropdown
-                    name="academicYear"
-                    label="Academic Year"
-                    placeholder="Select Academic Year"
-                    data={academicYearsData}
-                    rules={{
-                      required: 'Academic Year is required',
-                    }}
-                    allowAsterisk={true}
-                  />
-                </div>
+          <div className="mb-6">
+            <Dropdown
+              name="academicYear"
+              label="Academic Year"
+              placeholder="Select Academic Year"
+              data={academicYearsData}
+              rules={{
+                required: 'Academic Year is required',
+              }}
+              allowAsterisk={true}
+            />
+          </div>
 
-              
+
 
           {/* Class Level Select */}
-                <div className="mb-6">
-                  <Dropdown
-                    name="classLevel"
-                    label="Class Level"
-                    placeholder="Select Class Level"
-                    data={classLevelsData}
-                    rules={{
-                      required: 'Class Level is required',
-                    }}
-                    allowAsterisk={true}
-                  />
-                </div>
+          <div className="mb-6">
+            <Dropdown
+              name="classLevel"
+              label="Class Level"
+              placeholder="Select Class Level"
+              data={classLevelsData}
+              rules={{
+                required: 'Class Level is required',
+              }}
+              allowAsterisk={true}
+            />
+          </div>
 
           {/* MARKS */}
           <Input placeholder='100' type="number" label="Total Marks" {...register('totalMark', { required: true })} />
@@ -329,29 +365,37 @@ const dispatch = useAppDispatch();
           {/* QUESTIONS */}
           <div>
             {fields.map((field, index) => (
-              <div key={field.id} className="flex gap-2 mt-2 items-center">
-                <Input
-                label='Questions'
-                  placeholder="Enter Question ID"
-                  {...register(`questions.${index}.value` as const)}
+              <div key={field.id} className="flex mx-auto gap-2 mt-2 items-center">
+
+                <Dropdown
+                  name={`questions.${index}.value`}
+                  label="Select Question"
+                  placeholder="Choose question"
+                  data={QuestionsData}
+                  rules={{
+                    required: 'Question is required',
+                  }}
+                  allowAsterisk
                 />
-                <div className='flex mt-7 gap-1'>
 
-                <Button
-                  type="button"
-                  onClick={() => remove(index)}
-                  disabled={fields.length === 1}
+                <div className="flex mt-7 gap-1">
+                  <Button
+                    type="button"
+                    onClick={() => remove(index)}
+                    disabled={fields.length === 1}
                   >
-                  Remove
-                </Button>
+                    Remove
+                  </Button>
 
-                <Button type="button" onClick={() => append({ value: '' })}>
-                  + Add
-                </Button>
-                  </div>
+                  <Button type="button" onClick={() => append({ value: '' })}>
+                    + Add
+                  </Button>
+                </div>
+
               </div>
             ))}
           </div>
+
 
           <Button type="submit" className="w-full bg-primary text-white">
             Create Exam

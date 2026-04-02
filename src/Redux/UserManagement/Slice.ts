@@ -45,7 +45,7 @@ export const getUserManagementList = createAsyncThunk('getUserManagementList', a
     const response = await getUserManagementDataHandler(page, limit);
     return response.data.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -55,7 +55,7 @@ export const getUserManagementPaginatedList = createAsyncThunk('getUserManagemen
     const response = await getPaginatedUserManagementDataHandler(data);
     return response.data.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -65,7 +65,7 @@ export const getFiltersMeta = createAsyncThunk('getFiltersMeta', async (_, { rej
     const response = await getFiltersMetahandler();
     return response.data.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -75,7 +75,7 @@ export const exportUsers = createAsyncThunk('exportUsers', async (_, { rejectWit
     const response = await exportUsersHandler();
     return response.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });

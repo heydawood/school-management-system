@@ -34,7 +34,7 @@ export const getSubjects = createAsyncThunk('getSubjects', async (_, { rejectWit
         console.log("Response:", response.data.data);
         return response.data.data;
     } catch (error: any) {
-        customToast.error(error?.message ?? 'Something went wrong');
+        //customToast.error(error?.message ?? 'Something went wrong');
         return rejectWithValue(error?.message ?? 'Something went wrong');
     }
 });
@@ -47,7 +47,7 @@ export const getSubjectsById = createAsyncThunk('getSubjectsById', async (subjec
         console.log("Get Subjects By Id Response:", response.data);
         return response.data;
     } catch (error: any) {
-        customToast.error(error?.message ?? 'Something went wrong');
+        //customToast.error(error?.message ?? 'Something went wrong');
         return rejectWithValue(error?.message ?? 'Something went wrong');
 
     }
@@ -60,7 +60,7 @@ export const deleteSubjectsById = createAsyncThunk('deleteSubjectsById', async (
         console.log("Deleted Subjects Response:", response.data);
         return response.data;
     } catch (error: any) {
-        customToast.error(error?.message ?? 'Something went wrong');
+        //customToast.error(error?.message ?? 'Something went wrong');
         return rejectWithValue(error?.message ?? 'Something went wrong');
 
     }
@@ -73,7 +73,7 @@ export const updateSubjectsById = createAsyncThunk('updateSubjectsById', async (
         console.log("Updated Subjects Response:", response.data);
         return response.data;
     } catch (error: any) {
-        customToast.error(error?.message ?? 'Something went wrong');
+        //customToast.error(error?.message ?? 'Something went wrong');
         return rejectWithValue(error?.message ?? 'Something went wrong');
     }
 });
@@ -92,7 +92,7 @@ export const createNewSubject = createAsyncThunk('createNewSubject',
 
             return response.data;
         } catch (error: any) {
-            customToast.error(error?.message ?? 'Something went wrong');
+            //customToast.error(error?.message ?? 'Something went wrong');
             return rejectWithValue(error?.message ?? 'Something went wrong');
         }
     });

@@ -54,7 +54,7 @@ export const getWorkoutCategories = createAsyncThunk('getWorkoutCategories', asy
     const response = await getWorkoutCategoriesHandler();
     return response.data.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -73,7 +73,7 @@ export const createAdminWorkout = createAsyncThunk('createAdminWorkout', async (
     const response = await createAdminWorkoutHandler(data);
     return response.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -83,7 +83,7 @@ export const updateAdminWorkout = createAsyncThunk('updateAdminWorkout', async (
     const response = await updateAdminWorkoutHandler(data.id, data.payload);
     return response.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -93,7 +93,7 @@ export const updateAdminWorkoutStatus = createAsyncThunk('updateAdminWorkoutStat
     const response = await updateAdminWorkoutStatusHandler(data.id, { status: data.status });
     return response.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -103,7 +103,7 @@ export const deleteAdminWorkout = createAsyncThunk('deleteAdminWorkout', async (
     const response = await deleteAdminWorkoutHandler(id);
     return response.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -115,7 +115,7 @@ export const getWorkoutList = createAsyncThunk(
       const response = await getWorkoutListHandler(filters);
       return response.data.data;
     } catch (error: any) {
-      customToast.error(error?.message ?? 'Something went wrong');
+      //customToast.error(error?.message ?? 'Something went wrong');
       return rejectWithValue(error?.message ?? 'Something went wrong');
     }
   },
@@ -126,7 +126,7 @@ export const getWorkoutDetail = createAsyncThunk('getWorkoutDetail', async (id: 
     const response = await getWorkoutDetailHandler(id);
     return response.data.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -136,7 +136,7 @@ export const createWorkoutExercise = createAsyncThunk('createWorkoutExercise', a
     const response = await createWorkoutExerciseHandler(data);
     return response.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -146,7 +146,7 @@ export const updateWorkoutExercise = createAsyncThunk('updateWorkoutExercise', a
     const response = await updateWorkoutExerciseHandler(data.id, data.payload);
     return response.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -156,7 +156,7 @@ export const deleteWorkoutExercise = createAsyncThunk('deleteWorkoutExercise', a
     const response = await deleteWorkoutExerciseHandler(id);
     return response.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });

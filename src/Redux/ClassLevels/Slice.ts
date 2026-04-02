@@ -34,7 +34,7 @@ export const getClassLevels = createAsyncThunk('getClassLevels', async (_, { rej
     console.log("Response:", response.data.data);
     return response.data.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -47,7 +47,7 @@ export const getClassLevelById = createAsyncThunk('getClassLevelById', async (cl
     console.log("Get Class Level By Id Response:", response.data);
     return response.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
 
   }
@@ -60,7 +60,7 @@ export const deleteClassLevelById = createAsyncThunk('deleteClassLevelById', asy
     console.log("Deleted Class Level Response:", response.data);
     return response.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
 
   }
@@ -73,7 +73,7 @@ export const updateClassLevelById = createAsyncThunk('updateClassLevelById', asy
     console.log("Updated classLevel Response:", response.data);
     return response.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -85,7 +85,7 @@ export const createNewClassLevel = createAsyncThunk('createNewClassLevel', async
     console.log("Created class Level Response:", response.data);
     return response.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });

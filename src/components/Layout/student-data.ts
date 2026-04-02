@@ -9,7 +9,13 @@ export const studentNavItems: INavItem[] = [
         iconActive: '/icons/sidebar-chart-pie-active.svg',
         pageName: PageName.RESULTS,
     },
-    // 
+    // {
+    //     title: 'Submit Exams',
+    //     link: '/dashboard/student',
+    //     icon: '/icons/sidebar-chart-pie.svg',
+    //     iconActive: '/icons/sidebar-chart-pie-active.svg',
+    //     pageName: PageName.EXAMS,
+    // },
 ];
 
 export const StudentApplicationPages = {

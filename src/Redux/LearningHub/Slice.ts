@@ -33,7 +33,7 @@ export const getPaginatedLearningHub = createAsyncThunk('getPaginatedLearningHub
     const response = await getLearningHubHandler(filters);
     return response.data.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -43,7 +43,7 @@ export const getSingleLearningHub = createAsyncThunk('getSingleLearningHub', asy
     const response = await getLearningHubDetailHandler(id);
     return response.data.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -62,7 +62,7 @@ export const updateAdminLearningHub = createAsyncThunk('updateAdminLearningHub',
     const response = await updateLearningHubHandler(data.id, data.payload);
     return response.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -72,7 +72,7 @@ export const deleteAdminLearningHub = createAsyncThunk('deleteAdminLearningHub',
     const response = await deleteLearningHubHandler(id);
     return response.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });

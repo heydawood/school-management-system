@@ -37,7 +37,7 @@ export const getAcademicYears = createAsyncThunk('getAcademicYears', async (_, {
     console.log("Response:", response.data.data);
     return response.data.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -50,7 +50,7 @@ export const getAcademicYearById = createAsyncThunk('getAcademicYearById', async
     console.log("Get AcademicYear By Id Response:", response.data);
     return response.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
 
   }
@@ -63,7 +63,7 @@ export const deleteAcademicYearById = createAsyncThunk('deleteAcademicYearById',
     console.log("Delete AcademicYear Response:", response.data);
     return response.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
 
   }
@@ -76,7 +76,7 @@ export const updateAcademicYearById = createAsyncThunk('updateAcademicYearById',
     console.log("Update AcademicYear Response:", response.data);
     return response.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -88,7 +88,7 @@ export const createNewAcademicYear = createAsyncThunk('createNewAcademicYear', a
     console.log("Create AcademicYear Response:", response.data);
     return response.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });

@@ -11,10 +11,12 @@ interface State {
   loading: boolean;
   data: TeacherDataResponse[];
   pagination: Pagination;
+  teachers: TeacherDataResponse[];
 }
 
 const initialState: State = {
   loading: false,
+  teachers: [],
   data: [],
   pagination: {
     page: 1,
@@ -32,7 +34,7 @@ export const getTeachers = createAsyncThunk('getTeachers', async (_, { rejectWit
     console.log("Response:", response.data.data);
     return response.data.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -44,7 +46,7 @@ export const getTeacherProfile = createAsyncThunk('getTeacherProfile', async (_,
     console.log("Response:", response.data.teacher);
     return response.data.teacher;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -57,18 +59,18 @@ export const createNewTeacher = createAsyncThunk('createNewTeacher', async (teac
     console.log("Create Teacher Response:", response.data);
     return response.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
 
 //get teacher by id
 export const getTeacherById = createAsyncThunk('getTeacherById', async (teacherId: string, { rejectWithValue }) => {
-  try{
+  try {
     const response = await getTeacherDataById(teacherId);
     return response.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
 
   }
@@ -92,10 +94,13 @@ const TeacherSlice = createSlice({
       })
       .addCase(getPaginatedLearningHub.rejected, (state) => {
         state.loading = false;
+      })
+      .addCase(getTeachers.fulfilled, (state, action) => {
+        state.teachers = action.payload;
       });
   },
 });
 
 
-export const {} = TeacherSlice.actions;
+export const { } = TeacherSlice.actions;
 export default TeacherSlice.reducer;

@@ -34,7 +34,7 @@ export const getExams = createAsyncThunk('getExams', async (_, { rejectWithValue
     console.log("Response:", response.data.data);
     return response.data.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -46,7 +46,7 @@ export const createNewExam = createAsyncThunk('createNewExam', async (examData: 
     console.log("Created Exam Response:", response.data);
     return response.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -59,7 +59,7 @@ export const createNewAdmin = createAsyncThunk('createNewAdmin', async (adminDat
     console.log("Create Admin Response:", response.data);
     return response.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -70,7 +70,7 @@ export const getExamById = createAsyncThunk('getExamById', async (ExamId: string
     const response = await getExamDataById(ExamId);
     return response.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
 
   }

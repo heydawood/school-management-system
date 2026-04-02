@@ -34,7 +34,7 @@ export const getPrograms = createAsyncThunk('getPrograms', async (_, { rejectWit
     console.log("Response:", response.data.programs);
     return response.data.programs;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -47,7 +47,7 @@ export const getProgramsById = createAsyncThunk('getProgramsById', async (progra
     console.log("Get Programs By Id Response:", response.data);
     return response.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
 
   }
@@ -60,7 +60,7 @@ export const deleteProgramsById = createAsyncThunk('deleteProgramsById', async (
     console.log("Deleted Programs Response:", response.data);
     return response.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
 
   }
@@ -73,7 +73,7 @@ export const updateProgramsById = createAsyncThunk('updateProgramsById', async (
     console.log("Updated Programs Response:", response.data);
     return response.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -85,7 +85,7 @@ export const createNewProgram = createAsyncThunk('createNewProgram', async (prog
     console.log("Created Program Response:", response.data);
     return response.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });

@@ -76,7 +76,7 @@ export const getSubscriptionStats = createAsyncThunk('getSubscriptionStats', asy
     const response = await getSubscriptionStatsHandler(plan);
     return response.data.data;
   } catch (error: any) {
-    customToast.error(error?.message || 'Something went wrong');
+    //customToast.error(error?.message || 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -86,7 +86,7 @@ export const getUserActivities = createAsyncThunk('getUserActivities', async (da
     const response = await getUserActivitiesHandler(data);
     return response.data.data;
   } catch (error: any) {
-    customToast.error(error?.message || 'Something went wrong');
+    //customToast.error(error?.message || 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -96,7 +96,7 @@ export const getAdminActivities = createAsyncThunk('getAdminActivities', async (
     const response = await getAdminActivitiesHandler(data);
     return response.data.data;
   } catch (error: any) {
-    customToast.error(error?.message || 'Something went wrong');
+    //customToast.error(error?.message || 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -106,7 +106,7 @@ export const getEmergencyAlerts = createAsyncThunk('getEmergencyAlerts', async (
     const response = await getEmergencyAlertsHandler(data);
     return response.data.data;
   } catch (error: any) {
-    customToast.error(error?.message || 'Something went wrong');
+    //customToast.error(error?.message || 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });

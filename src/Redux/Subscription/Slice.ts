@@ -24,7 +24,7 @@ export const getSubscriptionList = createAsyncThunk('getSubscriptionList', async
 
     return response.data.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -34,7 +34,7 @@ export const updateSingleSubscription = createAsyncThunk<any, { id: string; payl
     const response = await putSubscriptionDataHandler(id, payload);
     return response;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -44,7 +44,7 @@ export const removeSubscriptionFeature = createAsyncThunk<any, { id: string }>('
     const response = await removeSubscriptionFeatureHandler(id);
     return response;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });

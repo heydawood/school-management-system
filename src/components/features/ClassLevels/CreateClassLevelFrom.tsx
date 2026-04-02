@@ -1,15 +1,19 @@
 import { FormProvider, useForm, type UseFormReturn } from 'react-hook-form';
 import StatChartCard from '../Dashboard/StatChartCard';
 import { customToast } from '@/Common/Components/ShowToast';
-import { useAppDispatch } from '@/Redux/Hooks';
-import type { Dispatch, SetStateAction } from 'react';
+import { useAppDispatch, useAppSelector } from '@/Redux/Hooks';
+import { useEffect, useState, type Dispatch, type SetStateAction } from 'react';
 import { Button } from '@/components/ui/button';
 import Input from '@/components/ui/input/input';
 import { CreateClassLevelDefaultValues, type CreateClassLevelTypes } from '@/Forms/CreateClassLevelTypes';
 import { createNewClassLevel } from '@/Redux/ClassLevels/Slice';
 import { useFieldArray } from 'react-hook-form';
-
-
+import type { SubjectsDataResponse } from '@/pages/Dashboard/Subjects/Types';
+import { getSubjects } from '@/Redux/Subjects/Slice';
+import type { StudentDataResponse } from '@/pages/Dashboard/Students/Types';
+import { getStudents } from '@/Redux/Students/Slice';
+import type { TeacherDataResponse } from '@/pages/Dashboard/Teachers/Types';
+import { getTeachers } from '@/Redux/Teachers/Slice';
 
 
 
@@ -20,6 +24,109 @@ interface Props {
 
 
 const CreateClassLevelFrom = ({ setLoading }: Props) => {
+  const dispatch = useAppDispatch();
+
+
+  //subjects data
+  const [subjectData, setSubjectData] = useState<SubjectsDataResponse[]>([]);
+
+  const handleGetSubjects = () => {
+    setLoading(true);
+    dispatch(getSubjects())
+      .unwrap()
+      .then((res: SubjectsDataResponse[]) => {
+        setSubjectData(res);
+        console.log("Data:", res);
+      })
+      .catch((err) => {
+        console.log("Error: ", err);
+      })
+      .finally(() => {
+        setLoading(false);
+
+      });
+  };
+
+  useEffect(() => {
+    handleGetSubjects();
+  }, [dispatch]);
+
+  const subjects = useAppSelector(
+    (state) => state.SubjectsRecords.subjects
+  );
+
+  const subjectsData = subjects.map((subject) => ({
+    name: subject.name,
+    value: subject.id,
+  }));
+
+
+  //students data
+  const [studentData, setStudentData] = useState<StudentDataResponse[]>([]);
+
+  const handleGetStudents = () => {
+    setLoading(true);
+    dispatch(getStudents())
+      .unwrap()
+      .then((res: StudentDataResponse[]) => {
+        setStudentData(res);
+        console.log("Data:", res);
+      })
+      .catch((err) => {
+        console.log("Error: ", err);
+      })
+      .finally(() => {
+        setLoading(false);
+
+      });
+  };
+
+  useEffect(() => {
+    handleGetStudents();
+  }, [dispatch]);
+
+  const students = useAppSelector(
+    (state) => state.StudentRecords.students
+  );
+
+  const studentsData = students.map((student) => ({
+    name: student.name,
+    value: student.id,
+  }));
+
+  //teachers data
+  const [teacherData, setTeacherData] = useState<TeacherDataResponse[]>([]);
+
+  const handleGetTeachers = () => {
+    setLoading(true);
+    dispatch(getTeachers())
+      .unwrap()
+      .then((res: TeacherDataResponse[]) => {
+        setTeacherData(res);
+        console.log("Data:", res);
+      })
+      .catch((err) => {
+        console.log("Error: ", err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    handleGetTeachers();
+  }, [dispatch]);
+
+  const teachers = useAppSelector(
+    (state) => state.TeacherRecords.teachers
+  );
+
+  const teachersData = teachers.map((teacher) => ({
+    name: teacher.name,
+    value: teacher.id,
+  }));
+
+
 
   const createClassLevelForm = useForm<CreateClassLevelTypes>({
     defaultValues: CreateClassLevelDefaultValues,
@@ -38,24 +145,24 @@ const CreateClassLevelFrom = ({ setLoading }: Props) => {
   const { fields: teacherFields, append: addTeacher, remove: removeTeacher } =
     useFieldArray({ control, name: 'teachers' });
 
-  const dispatch = useAppDispatch();
+
 
   const onSubmit = (data: CreateClassLevelTypes) => {
 
-     const formattedData = {
-    ...data,
-    students: data.students.map(s => s.value),
-    subjects: data.subjects.map(s => s.value),
-    teachers: data.teachers.map(t => t.value),
-  };
-    
-    
+    const formattedData = {
+      ...data,
+      students: data.students.map(s => s.value),
+      subjects: data.subjects.map(s => s.value),
+      teachers: data.teachers.map(t => t.value),
+    };
+
+
     console.log("Sent data:", formattedData)
     setLoading(true);
     dispatch(createNewClassLevel(formattedData as any))
       .unwrap()
       .then((res) => {
-        customToast.success(res.message ?? 'Academic Term created successfully.');
+        customToast.success(res.message ?? 'Class Level created successfully.');
         createClassLevelForm.reset();
       })
       .catch((err) => {
@@ -137,26 +244,26 @@ const CreateClassLevelFrom = ({ setLoading }: Props) => {
                   {studentFields.map((field, index) => (
                     <div key={field.id} className="flex gap-2 mb-2 items-center">
                       <Input
-                      allowAsterisk={true}
-                      label={"Students"}
+                        allowAsterisk={true}
+                        label={"Students"}
                         placeholder="Enter student"
                         {...register(`students.${index}.value` as const, {
                           required: 'Student is required',
                         })}
                       />
                       <div className='mt-6 flex gap-1'>
-                      <Button type="button" disabled={studentFields.length === 1} className={`${studentFields.length === 1 ? 'opacity-50 cursor-not-allowed' : ''}`} onClick={() => removeStudent(index)}>
-                        Remove
-                      </Button>
+                        <Button type="button" disabled={studentFields.length === 1} className={`${studentFields.length === 1 ? 'opacity-50 cursor-not-allowed' : ''}`} onClick={() => removeStudent(index)}>
+                          Remove
+                        </Button>
 
-                      <Button type="button" onClick={() => addStudent({ value: '' })}>
-                    + Add Student
-                  </Button>
-                  </div>
+                        <Button type="button" onClick={() => addStudent({ value: '' })}>
+                          + Add Student
+                        </Button>
+                      </div>
                     </div>
                   ))}
 
-                  
+
                 </div>
 
 
@@ -165,23 +272,23 @@ const CreateClassLevelFrom = ({ setLoading }: Props) => {
 
                   {subjectFields.map((field, index) => (
                     <div key={field.id} className="flex gap-2 mb-2 items-center">
-                      
+
                       <Input
-                      allowAsterisk={true}
-                      label={"Subjects"}
+                        allowAsterisk={true}
+                        label={"Subjects"}
                         placeholder="Enter subject"
                         {...register(`subjects.${index}.value` as const)}
                       />
 
                       <div className='mt-6 flex gap-1'>
-                      <Button type="button"  disabled={subjectFields.length === 1} className={`${subjectFields.length === 1 ? 'opacity-50 cursor-not-allowed' : ''}`} onClick={() => removeSubject(index)}>
-                        Remove
-                      </Button>
+                        <Button type="button" disabled={subjectFields.length === 1} className={`${subjectFields.length === 1 ? 'opacity-50 cursor-not-allowed' : ''}`} onClick={() => removeSubject(index)}>
+                          Remove
+                        </Button>
 
-                      <Button type="button" onClick={() => addSubject({ value: '' })}>
-                    + Add Subject
-                  </Button>
-                  </div>
+                        <Button type="button" onClick={() => addSubject({ value: '' })}>
+                          + Add Subject
+                        </Button>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -189,30 +296,30 @@ const CreateClassLevelFrom = ({ setLoading }: Props) => {
 
                 {/* teachers */}
                 <div className="mb-6">
-                  
+
 
                   {teacherFields.map((field, index) => (
                     <div key={field.id} className="flex gap-2 mb-2 items-center">
                       <Input
-                      allowAsterisk={true}
-                      label={"Teachers"}
+                        allowAsterisk={true}
+                        label={"Teachers"}
                         placeholder="Enter teacher"
                         {...register(`teachers.${index}.value` as const)}
                       />
 
                       <div className='mt-6 flex gap-1'>
-                      <Button type="button" disabled={teacherFields.length === 1}className={`${teacherFields.length === 1 ? 'opacity-50 cursor-not-allowed' : ''}`} onClick={() => removeTeacher(index)}>
-                        Remove
-                      </Button>
+                        <Button type="button" disabled={teacherFields.length === 1} className={`${teacherFields.length === 1 ? 'opacity-50 cursor-not-allowed' : ''}`} onClick={() => removeTeacher(index)}>
+                          Remove
+                        </Button>
 
-                      <Button type="button" onClick={() => addTeacher({ value: '' })}>
-                    + Add Teacher
-                  </Button>
-                  </div>
+                        <Button type="button" onClick={() => addTeacher({ value: '' })}>
+                          + Add Teacher
+                        </Button>
+                      </div>
                     </div>
                   ))}
 
-                  
+
                 </div>
 
 

@@ -33,7 +33,7 @@ export const getResults = createAsyncThunk('getResults', async (_, { rejectWithV
     console.log("Response:", response.data.data);
     return response.data.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -46,7 +46,7 @@ export const createNewAdmin = createAsyncThunk('createNewAdmin', async (adminDat
     console.log("Create Admin Response:", response.data);
     return response.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -57,7 +57,7 @@ export const getAdminById = createAsyncThunk('getAdminById', async (adminId: str
     const response = await getAdminDataById(adminId);
     return response.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
 
   }

@@ -5,16 +5,19 @@ import { getPaginatedLearningHub } from '../LearningHub/Slice';
 import type { TeacherDataResponse } from '@/pages/Dashboard/Teachers/Types';
 import { createStudent, getStudentData, getStudentDataById } from '@/Services/Students/Students';
 import type { CreateStudentTypes } from '@/Forms/CreateStudentForm';
+import type { StudentDataResponse } from '@/pages/Dashboard/Students/Types';
 
 
 interface State {
   loading: boolean;
-  data: TeacherDataResponse[];
+  data: StudentDataResponse[];
   pagination: Pagination;
+  students: StudentDataResponse[];
 }
 
 const initialState: State = {
   loading: false,
+  students: [],
   data: [],
   pagination: {
     page: 1,
@@ -32,7 +35,7 @@ export const getStudents = createAsyncThunk('getStudents', async (_, { rejectWit
     console.log("Response:", response.data.data);
     return response.data.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
@@ -45,18 +48,18 @@ export const createNewStudent = createAsyncThunk('createNewStudent', async (stud
     console.log("Create Student Response:", response.data);
     return response.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });
 
 //get student by id
 export const getStudentById = createAsyncThunk('getStudentById', async (studentId: string, { rejectWithValue }) => {
-  try{
+  try {
     const response = await getStudentDataById(studentId);
     return response.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    // customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
 
   }
@@ -80,10 +83,12 @@ const StudentSlice = createSlice({
       })
       .addCase(getPaginatedLearningHub.rejected, (state) => {
         state.loading = false;
+      }).addCase(getStudents.fulfilled, (state, action) => {
+        state.students = action.payload;
       });
   },
 });
 
 
-export const {} = StudentSlice.actions;
+export const { } = StudentSlice.actions;
 export default StudentSlice.reducer;

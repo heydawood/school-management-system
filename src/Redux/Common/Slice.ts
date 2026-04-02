@@ -9,7 +9,7 @@ export const commonFileUpload = createAsyncThunk('commonFileUpload', async (data
     const response = await updateAdminInfo(data);
     return response.data;
   } catch (error: any) {
-    customToast.error(error?.message ?? 'Something went wrong');
+    //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
   }
 });

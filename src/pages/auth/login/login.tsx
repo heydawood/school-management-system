@@ -1,7 +1,9 @@
 import LoginForm from '@/components/features/Auth/Login';
 import NextImage from '@/components/ui/nextImage/NextImage';
 
+
 const LoginPage = () => {
+
   return (
     <div
       className="min-h-screen flex items-center justify-center bg-gray-100 "

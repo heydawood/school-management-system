@@ -44,14 +44,14 @@ const LoginForm: React.FC = () => {
       .then((response: { data: AuthResponse; message: string }) => {
 
         const accessToken = response.data.token;
-        const role = response.data.user.role;
+        const role = response?.data?.user?.role;
         const name = response.data.user.name
 
         console.log('login cicked: ', response)
 
         dispatch(setToken(accessToken));
         dispatch(setRole(role));
-        dispatch(setUserInfo({ avatar: response.data.avatar, userId: response.data.userId, name: name}));
+        dispatch(setUserInfo({ avatar: response.data.avatar, userId: response.data.user.id, name: name }));
 
         // REDIRECT BASED ON ROLE
         if (role === "admin") navigate("/dashboard/admins");
@@ -61,10 +61,20 @@ const LoginForm: React.FC = () => {
 
         //navigate('/dashboard/admin');
 
-        customToast.success(response.message || 'Login successful!');
+        customToast.success(
+          typeof response.message === "string"
+            ? response.message
+            : "Login successful!"
+        );
+
       })
       .catch((error) => {
-        customToast.error(error || 'Login failed. Please try again.');
+        const message =
+          typeof error === "string"
+            ? error
+            : error?.message || "Login failed. Please try again.";
+
+        customToast.error(message);
       });
   };
   return (
