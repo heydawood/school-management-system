@@ -69,7 +69,14 @@ const QuestionsPage = lazy(() => import('@/pages/Dashboard/TeacherPanel/Question
 const CreateQuestionsPage = lazy(() => import('@/pages/Dashboard/TeacherPanel/Questions/CreateQuestions/CreateQuestionsPage'));
 
 //Student Pages
-const StudentHomePage = lazy(() => import('@/pages/Dashboard/StudentPanel/Results/ResultsPage'));
+// const StudentHomePage = lazy(() => import('@/pages/Dashboard/StudentPanel/Results/ResultsPage'));
+const StudentExamPage = lazy(() => import('@/pages/Dashboard/StudentPanel/StudentExam/StudentExamPage'));
+const ExamPage = lazy(() => import('@/pages/Dashboard/StudentPanel/StudentExam/ExamPage'));
+const StudentExamResultPage = lazy(() =>import('@/pages/Dashboard/StudentPanel/StudentExam/StudentExamResultPage'));
+const StudentExamReviewPage = lazy(() =>import('@/pages/Dashboard/StudentPanel/StudentExam/StudentExamReviewPage'));
+
+
+
 
 
 
@@ -192,9 +199,9 @@ const RoutesComponent: React.FC = () => {
           >
             <Route index element={<TeacherHomePage />} />
 
-            
-             <Route path="exams" element={<TeacherExamsPage />} />
-             <Route path="exams/create" element={<CreateExamsPage />} />
+
+            <Route path="exams" element={<TeacherExamsPage />} />
+            <Route path="exams/create" element={<CreateExamsPage />} />
 
 
             <Route path="questions" element={<QuestionsPage />} />
@@ -213,7 +220,11 @@ const RoutesComponent: React.FC = () => {
               </RoleGuard>
             }
           >
-            <Route index element={<StudentHomePage />} />
+            <Route index element={<StudentExamPage />} />
+             <Route path="exams" element={<StudentExamPage />} />
+            <Route path="exams/:examId" element={<ExamPage />} />
+            <Route path="exams/:examId/result" element={<StudentExamResultPage />} />
+            <Route path="exams/:examId/review" element={<StudentExamReviewPage />} />
 
           </Route>
 

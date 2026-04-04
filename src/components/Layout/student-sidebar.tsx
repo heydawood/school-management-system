@@ -61,11 +61,11 @@ export default function StudentSidebar() {
       setPageInfo({ title: `Hello ${name} 👋🏻`, description: `Here’s what’s happening in your apps.` });
       return;
     }
-    if (pathName === routes.Settings()) {
-      const page = TeacherApplicationPages['settings'];
-      setPageInfo({ title: page.title, description: page.description });
-      return;
-    }
+    // if (pathName === routes.Settings()) {
+    //   const page = TeacherApplicationPages['settings'];
+    //   setPageInfo({ title: page.title, description: page.description });
+    //   return;
+    // }
 
     if (pageMatch) {
       const page = StudentApplicationPages[pageMatch.pageName as keyof typeof StudentApplicationPages];
@@ -105,9 +105,6 @@ export default function StudentSidebar() {
                     )}
                   </NavLink>
                 </SidebarMenuItem>
-
-
-
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
@@ -115,23 +112,7 @@ export default function StudentSidebar() {
       </SidebarContent>
 
       <SidebarFooter>
-        {/* <Link
-          to="/dashboard/settings"
-          className={`flex items-center gap-2 h-[50px] rounded-xl px-4 ${pathName.includes('/dashboard/settings')
-            ? 'bg-sidebar-accent text-sidebar-accent-foreground'
-            : 'hover:bg-sidebar-hover text-muted-dark'
-            }`}
-        >
-          <SVG
-            src={
-              pathName.includes('/dashboard/settings')
-                ? '/icons/settings-active.svg'
-                : '/icons/settings.svg'
-            }
-            style={{ width: '24px', height: '24px' }}
-          />
-          <span className="text-sm">Settings</span>
-        </Link> */}
+        
 
         <button
           onClick={logout}

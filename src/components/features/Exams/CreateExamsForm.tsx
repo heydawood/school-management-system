@@ -7,20 +7,13 @@ import Input from '@/components/ui/input/input';
 import { useFieldArray } from 'react-hook-form';
 import { createNewExam } from '@/Redux/Exams/Slice';
 import { CreateExamDefaultValues, type CreateExamTypes } from '@/Forms/CreateExamsTypes';
-import { useEffect, useState } from 'react';
-import type { ProgramsDataResponse } from '@/pages/Dashboard/Programs/Types';
-import { getPrograms } from '@/Redux/Programs/Slice';
 import Dropdown from '@/components/ui/dropdown/Dropdown';
-import { getAcademicYears } from '@/Redux/AcademicYears/Slice';
-import type { AcademicYearDataResponse } from '@/pages/Dashboard/AcademicYears/Types';
-import { getClassLevels } from '@/Redux/ClassLevels/Slice';
-import type { ClassLevelDataResponse } from '@/pages/Dashboard/ClassLevels/Types';
-import type { AcademicTermDataResponse } from '@/pages/Dashboard/AcademicTerms/Types';
-import { getAcademicTerms } from '@/Redux/AcademicTerms/Slice';
-import { getSubjects } from '@/Redux/Subjects/Slice';
-import type { SubjectsDataResponse } from '@/pages/Dashboard/Subjects/Types';
-import type { QuestionsDataResponse } from '@/pages/Dashboard/TeacherPanel/Questions/Types';
-import { getQuestions } from '@/Redux/Questions/Slice';
+import { usePrograms } from '@/Hooks/dropdowns/usePrograms';
+import { useQuestions } from '@/Hooks/dropdowns/useQuestions';
+import { useSubjects } from '@/Hooks/dropdowns/useSubjects';
+import { useClassLevels } from '@/Hooks/dropdowns/useClassLevels';
+import { useAcademicTerms } from '@/Hooks/dropdowns/useAcademicTerms';
+import { useAcademicYears } from '@/Hooks/dropdowns/useAcademicYears';
 
 
 
@@ -29,200 +22,22 @@ const CreateExamForm = ({ setLoading }: any) => {
 
 
   //fetching progrm data
-  const [programsDataState, setProgramsDataState] = useState<ProgramsDataResponse[]>([]);
-
-  const handleGetPrograms = () => {
-    setLoading(true);
-    dispatch(getPrograms())
-      .unwrap()
-      .then((res: ProgramsDataResponse[]) => {
-        setProgramsDataState(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => setLoading(false));
-  };
-
-  useEffect(() => {
-    handleGetPrograms();
-  }, [dispatch]);
-
-  const programsData = programsDataState.map((program) => ({
-    name: program.name,
-    value: program._id, // THIS is your programId
-  }));
+  const programsData = usePrograms(setLoading);
 
   //fetching years from db
-  const [academicdata, setAcademicData] = useState<AcademicYearDataResponse[]>([]);
-
-  const handleGetAcademicYears = () => {
-    setLoading(true);
-    dispatch(getAcademicYears())
-      .unwrap()
-      .then((res: AcademicYearDataResponse[]) => {
-        setAcademicData(res);
-        console.log("Data:", res);
-      })
-      .catch((err) => {
-        console.log("Error: ", err);
-      })
-      .finally(() => {
-        setLoading(false);
-
-      });
-  };
-
-  useEffect(() => {
-    handleGetAcademicYears();
-  }, [dispatch]);
-
-
-  const academicYears = useAppSelector(
-    (state) => state.AcademicYearsRecords.academicYears
-  );
-
-  const academicYearsData = academicYears.map((year) => ({
-    name: year.name,
-    value: year.id,
-  }));
+  const academicYearsData = useAcademicYears(setLoading);
 
   //fetching ClassLevels from db
-  const [classLeveldata, setClassLevel] = useState<AcademicYearDataResponse[]>([]);
-
-  const handleGetClassLevels = () => {
-    setLoading(true);
-    dispatch(getClassLevels())
-      .unwrap()
-      .then((res: ClassLevelDataResponse[]) => {
-        setClassLevel(res as any);
-        console.log("Data:", res);
-      })
-      .catch((err) => {
-        console.log("Error: ", err);
-      })
-      .finally(() => {
-        setLoading(false);
-
-      });
-  };
-
-  useEffect(() => {
-    handleGetClassLevels();
-  }, [dispatch]);
-
-  const classLevels = useAppSelector(
-    (state) => state.ClassLevelsRecords.classLevels
-  );
-
-  const classLevelsData = classLevels.map((year) => ({
-    name: year.name,
-    value: year.id,
-  }));
+  const classLevelsData = useClassLevels(setLoading);
 
   //fetching terms from db
-  const [termdata, setTermData] = useState<AcademicTermDataResponse[]>([]);
-
-
-  const handleGetAcademicTerms = () => {
-    setLoading(true);
-    dispatch(getAcademicTerms())
-      .unwrap()
-      .then((res: AcademicTermDataResponse[]) => {
-        setTermData(res);
-        console.log("Data:", res);
-      })
-      .catch((err) => {
-        console.log("Error: ", err);
-      })
-      .finally(() => {
-        setLoading(false);
-
-      });
-  };
-
-  useEffect(() => {
-    handleGetAcademicTerms();
-  }, [dispatch]);
-
-  const academicTerms = useAppSelector(
-    (state) => state.AcademicTermsRecords.academicTerms
-  );
-
-  const academicTermsData = academicTerms.map((year) => ({
-    name: year.name,
-    value: year.id,
-  }));
-
+  const academicTermsData = useAcademicTerms(setLoading);
 
   //getting subjects
-
-  const [subjectData, setSubjectData] = useState<SubjectsDataResponse[]>([]);
-
-  const handleGetSubjects = () => {
-    setLoading(true);
-    dispatch(getSubjects())
-      .unwrap()
-      .then((res: SubjectsDataResponse[]) => {
-        setSubjectData(res);
-        console.log("Data:", res);
-      })
-      .catch((err) => {
-        console.log("Error: ", err);
-      })
-      .finally(() => {
-        setLoading(false);
-
-      });
-  };
-
-  useEffect(() => {
-    handleGetSubjects();
-  }, [dispatch]);
-
-  const subjects = useAppSelector(
-    (state) => state.SubjectsRecords.subjects
-  );
-
-  const subjectsData = subjects.map((subject) => ({
-    name: subject.name,
-    value: subject.id,
-  }));
+  const subjectsData = useSubjects(setLoading);
 
   //getting questions
-
-  const [questionData, setQuestionData] = useState<QuestionsDataResponse[]>([]);
-
-  const handleGetQuestion = () => {
-    setLoading(true);
-    dispatch(getQuestions())
-      .unwrap()
-      .then((res: QuestionsDataResponse[]) => {
-        setQuestionData(res);
-        console.log("Data:", res);
-      })
-      .catch((err) => {
-        console.log("Error: ", err);
-      })
-      .finally(() => {
-        setLoading(false);
-
-      });
-  };
-
-  useEffect(() => {
-    handleGetQuestion();
-  }, [dispatch]);
-
-  const questions = useAppSelector(
-    (state) => state.QuestionsRecords.questions
-  );
-
-  const QuestionsData = questions.map((question) => ({
-    name: question.question,
-    value: question.id,
-  }));
-
+  const questionsData = useQuestions(setLoading);
 
 
   const form = useForm<CreateExamTypes>({
@@ -371,7 +186,7 @@ const CreateExamForm = ({ setLoading }: any) => {
                   name={`questions.${index}.value`}
                   label="Select Question"
                   placeholder="Choose question"
-                  data={QuestionsData}
+                  data={questionsData}
                   rules={{
                     required: 'Question is required',
                   }}

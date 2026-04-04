@@ -17,18 +17,6 @@ export const createExam = async (examData: CreateExamTypes) => {
 }
 
 
-// //Create New Admin
-// export const createAdmin = async (adminData:CreateAdminTypes) => {
-//   return api.post('/v1/admins/signup', adminData);
-// };
-
-
-// //updateAdmin
-// export const updateAdminInfo = async (adminData: UpdateAdminType) => {
-//   return api.patch(`/v1/admins/updateAdmin`, adminData);
-// };
-
-
 //get exam by id
 export const getExamDataById = async (examId: string) => {
   return api.get(`/v1/exams/${examId}`);

@@ -1,12 +1,10 @@
 import { useEffect, useState, type ReactNode } from 'react';
-import { Button } from '@/components/ui/button';
 import Icon from '@/components/ui/svg_icon/SvgIcon';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/Redux/Hooks';
-import * as routes from '@/routes/Index';
-import type { QuestionsDataResponse } from './Types';
-import { getQuestions } from '@/Redux/Questions/Slice';
-import QuestionsTable from '@/components/features/Questions/QuestionsTable';
+import { getStudentExam } from '@/Redux/StudentExam/Slice';
+import StudentExamTable from '@/components/features/StudentExam/StudentExamTable';
+import type { StudentExamDataResponse } from './Types';
 
 const Header = ({
   onChange,
@@ -30,24 +28,24 @@ const Header = ({
   </div>
 );
 
-function QuestionsPage() {
+function StudentExamPage() {
 
-  const { pagination } = useAppSelector((state) => state.QuestionsRecords);
+  const { pagination } = useAppSelector((state) => state.ResultsRecords);
 
     const [loading, setLoading] = useState<boolean>(false);
-    const [data, setData] = useState<QuestionsDataResponse[]>([]);
+    const [data, setData] = useState<StudentExamDataResponse[]>([]);
     const [filters, setFilters] = useState<{ search: string }>({ search: '' });
 
 
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    const handleGetQuestions = () => {
+    const handleGetStudentExam = () => {
         setLoading(true);
-        dispatch(getQuestions())
+        dispatch(getStudentExam())
           .unwrap()
-          .then((res: QuestionsDataResponse[]) => {
-            setData(res);
+          .then((res: StudentExamDataResponse[]) => {
+            setData(res.exams);
             console.log("Data:", res);
           })
           .catch((err) => {
@@ -60,29 +58,29 @@ function QuestionsPage() {
       };
     
       useEffect(() => {
-        handleGetQuestions();
+        handleGetStudentExam();
       }, [dispatch]);
 
   return (
     <div className="space-y-4">
           <div className=" border border-gray-light p-4 bg-forground rounded-xl overflow-hidden">
             <Header
-              title="All Questions List"
+              title="All Exams"
               ActionButtons={
                 <div className="flex gap-3 items-center">
                   
                 </div>
               }
               onChange={(e: any) => {}}
-              logo={<Icon icon="/icons/academic-term.svg" className="text-primary-800 w-6 h-6" />}
+              logo={<Icon icon="/icons/user-management.svg" className="text-primary-800" />}
               logoClasses="bg-primary-25"
             />
-             <QuestionsTable loading={loading} filters={filters} data={data} pagination={pagination} />
+             <StudentExamTable loading={loading} filters={filters} data={data} pagination={pagination} />
           </div>
          </div>
   )
 }
 
-export default QuestionsPage
+export default StudentExamPage
 
-//QuestionsPage
+//StudentExamPage

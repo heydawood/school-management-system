@@ -2,25 +2,25 @@ import { PageName } from '@/Utils/Constants';
 import type { INavItem } from '@/Utils/Types';
 
 export const studentNavItems: INavItem[] = [
-    {
-        title: 'Results',
-        link: '/dashboard/student',
-        icon: '/icons/sidebar-chart-pie.svg',
-        iconActive: '/icons/sidebar-chart-pie-active.svg',
-        pageName: PageName.RESULTS,
-    },
     // {
-    //     title: 'Submit Exams',
+    //     title: 'Results',
     //     link: '/dashboard/student',
     //     icon: '/icons/sidebar-chart-pie.svg',
     //     iconActive: '/icons/sidebar-chart-pie-active.svg',
-    //     pageName: PageName.EXAMS,
+    //     pageName: PageName.DASHBOARD,
     // },
+     {
+         title: 'Submit Exams',
+         link: '/dashboard/student/exams',
+         icon: '/icons/sidebar-chart-pie.svg',
+         iconActive: '/icons/sidebar-chart-pie-active.svg',
+         pageName: PageName.EXAMS,
+     },
 ];
 
 export const StudentApplicationPages = {
   dashboard: {
-    title: "Teacher's Dashboard",
+    title: "Student's Dashboard",
     description: 'Overview of your teaching activities.',
   },
   exams: {

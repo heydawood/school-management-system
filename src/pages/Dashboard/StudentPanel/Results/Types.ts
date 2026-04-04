@@ -1,6 +1,8 @@
 export interface ResultsDataResponse {
   name: string;
-  email: string;
-  role: string;
+  description: string;
+  subject: string;
   id: string;
+  program: string;
+  academicTerm: string;
 }

@@ -30,7 +30,7 @@ const Header = ({
 
 function ResultsPage() {
 
-  const { pagination } = useAppSelector((state) => state.AdminRecords);
+  const { pagination } = useAppSelector((state) => state.ResultsRecords);
 
     const [loading, setLoading] = useState<boolean>(false);
     const [data, setData] = useState<ResultsDataResponse[]>([]);
