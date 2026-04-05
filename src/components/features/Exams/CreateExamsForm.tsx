@@ -4,20 +4,20 @@ import { customToast } from '@/Common/Components/ShowToast';
 import { useAppDispatch, useAppSelector } from '@/Redux/Hooks';
 import { Button } from '@/components/ui/button';
 import Input from '@/components/ui/input/input';
-import { useFieldArray } from 'react-hook-form';
 import { createNewExam } from '@/Redux/Exams/Slice';
 import { CreateExamDefaultValues, type CreateExamTypes } from '@/Forms/CreateExamsTypes';
 import Dropdown from '@/components/ui/dropdown/Dropdown';
 import { usePrograms } from '@/Hooks/dropdowns/usePrograms';
-import { useQuestions } from '@/Hooks/dropdowns/useQuestions';
 import { useSubjects } from '@/Hooks/dropdowns/useSubjects';
 import { useClassLevels } from '@/Hooks/dropdowns/useClassLevels';
 import { useAcademicTerms } from '@/Hooks/dropdowns/useAcademicTerms';
 import { useAcademicYears } from '@/Hooks/dropdowns/useAcademicYears';
+import {  useNavigate } from 'react-router-dom';
 
 
 
 const CreateExamForm = ({ setLoading }: any) => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
 
@@ -36,9 +36,6 @@ const CreateExamForm = ({ setLoading }: any) => {
   //getting subjects
   const subjectsData = useSubjects(setLoading);
 
-  //getting questions
-  const questionsData = useQuestions(setLoading);
-
 
   const form = useForm<CreateExamTypes>({
     defaultValues: CreateExamDefaultValues,
@@ -47,36 +44,27 @@ const CreateExamForm = ({ setLoading }: any) => {
 
   const { control, register } = form;
 
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: 'questions',
-  });
 
-
-  const { userId } = useAppSelector((state) => state.authTeacherReducer);
 
   const onSubmit = (data: CreateExamTypes) => {
-    const formattedData = {
-      ...data,
-      //createdBy: userId, //  important
-      questions: data.questions.map((q) => q.value),
-    };
+  setLoading(true);
 
-    console.log('Exam Payload:', formattedData);
+  dispatch(createNewExam(data))
+    .unwrap()
+    .then((res: any) => {
+      console.log('res: ', res)
+      const examId = res.newExam._id;
 
-    setLoading(true);
+      customToast.success("Exam created. Now add questions");
 
-    dispatch(createNewExam(formattedData as any))
-      .unwrap()
-      .then((res: any) => {
-        customToast.success(res.message ?? 'Exam created successfully');
-        form.reset();
-      })
-      .catch((err: any) => {
-        customToast.error(err);
-      })
-      .finally(() => setLoading(false));
-  };
+      navigate(`/dashboard/teacher/exams/${examId}/questions/create`);
+    })
+    .catch((err: any) => {
+      customToast.error(err);
+    })
+    .finally(() => setLoading(false));
+};
+
 
   return (
     <StatChartCard title="Create Exam Form" icon="/icons/pencil.svg" withDate={false} date="">
@@ -84,9 +72,8 @@ const CreateExamForm = ({ setLoading }: any) => {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
 
           {/* BASIC INFO */}
-          <Input placeholder='Subject Name' label="Exam Name" {...register('name', { required: true })} />
-          <Input placeholder='Enter Description' label="Description" {...register('description', { required: true })} />
-          <Input placeholder='Created By' label="Created By" {...register('createdBy', { required: true })} />
+          <Input allowAsterisk={true} placeholder='Subject Name' label="Exam Name" {...register('name', { required: true })} />
+          <Input allowAsterisk={true} placeholder='Enter Description' label="Description" {...register('description', { required: true })} />
 
           {/* RELATIONS */}
 
@@ -177,39 +164,6 @@ const CreateExamForm = ({ setLoading }: any) => {
           <Input placeholder='Finals, Mid, etc' label="Exam Type" {...register('examType')} />
           <Input placeholder='Pending or Fulfuilled' label="Status" {...register('examStatus')} />
 
-          {/* QUESTIONS */}
-          <div>
-            {fields.map((field, index) => (
-              <div key={field.id} className="flex mx-auto gap-2 mt-2 items-center">
-
-                <Dropdown
-                  name={`questions.${index}.value`}
-                  label="Select Question"
-                  placeholder="Choose question"
-                  data={questionsData}
-                  rules={{
-                    required: 'Question is required',
-                  }}
-                  allowAsterisk
-                />
-
-                <div className="flex mt-7 gap-1">
-                  <Button
-                    type="button"
-                    onClick={() => remove(index)}
-                    disabled={fields.length === 1}
-                  >
-                    Remove
-                  </Button>
-
-                  <Button type="button" onClick={() => append({ value: '' })}>
-                    + Add
-                  </Button>
-                </div>
-
-              </div>
-            ))}
-          </div>
 
 
           <Button type="submit" className="w-full bg-primary text-white">

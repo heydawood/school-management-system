@@ -6,7 +6,7 @@ import type { Dispatch, SetStateAction } from 'react';
 import { Button } from '@/components/ui/button';
 import Input from '@/components/ui/input/input';
 import { createNewQuestion } from '@/Redux/Questions/Slice';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { CreateQuestionDefaultValues, type CreateQuestionTypes } from '@/Forms/CreateQuestionsFormTypes';
 
 interface Props {
@@ -15,8 +15,9 @@ interface Props {
 
 
 const CreateQuestionsForm = ({ setLoading }: Props) => {
+   const navigate = useNavigate();
 
-    const { examId } = useParams();
+  const { examId } = useParams();
 
   const form = useForm<CreateQuestionTypes>({
     defaultValues: CreateQuestionDefaultValues,
@@ -28,25 +29,25 @@ const CreateQuestionsForm = ({ setLoading }: Props) => {
   const onSubmit = (data: CreateQuestionTypes) => {
 
     if (!examId) {
-    customToast.error("Exam ID missing");
-    return;
-  }
+      customToast.error("Exam ID missing");
+      return;
+    }
 
     console.log('Submit:', data);
 
     setLoading(true);
     dispatch(createNewQuestion({ examId, data }))
-    .unwrap()
-    .then((res) => {
-      customToast.success(res.message ?? 'Question created successfully.');
-      form.reset();
-    })
-    .catch((err) => {
-      customToast.error(err);
-    })
-    .finally(() => {
-      setLoading(false);
-    });
+      .unwrap()
+      .then((res) => {
+        customToast.success(res.message ?? 'Question created successfully.');
+        form.reset();
+      })
+      .catch((err) => {
+        customToast.error(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
@@ -128,7 +129,7 @@ const CreateQuestionsForm = ({ setLoading }: Props) => {
                   <option value="optionD">Option D</option>
                 </select>
 
-                
+
               </div>
 
 
@@ -143,7 +144,7 @@ const CreateQuestionsForm = ({ setLoading }: Props) => {
               </div>
 
               {/* Created By */}
-              <div className="mb-6">
+              {/* <div className="mb-6">
                 <Input
                   allowAsterisk
                   label="Created By"
@@ -152,18 +153,23 @@ const CreateQuestionsForm = ({ setLoading }: Props) => {
                     required: 'Created By is required',
                   })}
                 />
-              </div>
+              </div> */}
 
               {/* Submit */}
               <Button
                 type="submit"
-                className="w-full h-[44px] rounded-[12px] bg-primary-500 hover:bg-primary-600 text-white"
+                className="w-full mb-3 h-[44px] rounded-[12px] bg-green-500 hover:bg-green-600 text-white"
               >
                 Create Question
               </Button>
-
+          
             </form>
-          </FormProvider>
+
+            <Button className="w-full h-[44px] rounded-[12px] bg-primary-500 hover:bg-primary-600 text-white" onClick={() => navigate('/dashboard/teacher/exams')}>
+                Done Adding Questions
+              </Button>
+              
+            </FormProvider>
         </div>
       </StatChartCard>
     </div>

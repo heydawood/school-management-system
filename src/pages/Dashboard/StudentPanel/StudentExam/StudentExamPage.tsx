@@ -1,6 +1,5 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import Icon from '@/components/ui/svg_icon/SvgIcon';
-import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/Redux/Hooks';
 import { getStudentExam } from '@/Redux/StudentExam/Slice';
 import StudentExamTable from '@/components/features/StudentExam/StudentExamTable';
@@ -38,7 +37,6 @@ function StudentExamPage() {
 
 
     const dispatch = useAppDispatch();
-    const navigate = useNavigate();
 
     const handleGetStudentExam = () => {
         setLoading(true);
@@ -82,5 +80,3 @@ function StudentExamPage() {
 }
 
 export default StudentExamPage
-
-//StudentExamPage

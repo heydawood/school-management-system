@@ -15,6 +15,7 @@ const StudentExamTable: FC<{
 
 
   const navigate = useNavigate();
+
   const { handleGetLearningHub } = useLearningHubActionManager();
 
   const StudentExamColumns = [
