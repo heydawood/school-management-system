@@ -5,7 +5,7 @@ import type { Pagination } from '@/Utils/Types';
 import { useLearningHubActionManager } from '@/pages/Dashboard/LearningHub/LearningHubActionManager';
 import { useAppDispatch } from '@/Redux/Hooks';
 import { customToast } from '@/Common/Components/ShowToast';
-import type { YearGroupsDataResponse } from '@/pages/Dashboard/YearGroups/Types';
+import type { YearGroupsDataResponse } from '@/pages/Dashboard/AdminPanel/YearGroups/Types';
 import { deleteYearGroupsById, updateYearGroupsById } from '@/Redux/YearGroups/Slice';
 import DeleteYearGroupsModal from '@/components/Modals/DeleteYearGroupsModal';
 import YearGroupsModal from '@/components/Modals/YearGroupsModal';

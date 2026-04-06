@@ -8,7 +8,7 @@ import { customToast } from '@/Common/Components/ShowToast';
 import AcademicTermModal from '@/components/Modals/AcademicTermModal';
 import DeleteAcademicTermModal from '@/components/Modals/DeleteAcademicTermModal';
 import UpdateAcademicTermModal from '@/components/Modals/UpdateAcademicTermModal';
-import type { AcademicTermDataResponse } from '@/pages/Dashboard/AcademicTerms/Types';
+import type { AcademicTermDataResponse } from '@/pages/Dashboard/AdminPanel/AcademicTerms/Types';
 import { deleteAcademicTermById, updateAcademicTermById } from '@/Redux/AcademicTerms/Slice';
 
 const AcademicTermsTable: FC<{

@@ -15,9 +15,9 @@ const { isDark, toggleTheme } = useTheme();
   return (
     <div className="flex items-center gap-2">
       <span className="cursor-pointer">
-        <Avatar className="rounded-lg">
+        {/* <Avatar className="rounded-lg">
           <AvatarImage src={avatar  || '/images/logged-user.jpg'} alt="user" className="object-cover" />
-        </Avatar>
+        </Avatar> */}
       </span>
 
       {/* Toggle Button */}

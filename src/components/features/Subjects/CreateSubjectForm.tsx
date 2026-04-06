@@ -8,10 +8,13 @@ import { CreateSubjectsDefaultValues, type CreateSubjectsTypes } from '@/Forms/C
 import { createNewSubject } from '@/Redux/Subjects/Slice';
 import Dropdown from '@/components/ui/dropdown/Dropdown';
 import { getAcademicTerms } from '@/Redux/AcademicTerms/Slice';
-import type { AcademicTermDataResponse } from '@/pages/Dashboard/AcademicTerms/Types';
+import type { AcademicTermDataResponse } from '@/pages/Dashboard/AdminPanel/AcademicTerms/Types';
 import { useAppDispatch, useAppSelector } from '@/Redux/Hooks';
 import { getPrograms } from '@/Redux/Programs/Slice';
-import type { ProgramsDataResponse } from '@/pages/Dashboard/Programs/Types';
+import type { ProgramsDataResponse } from '@/pages/Dashboard/AdminPanel/Programs/Types';
+import { useNavigate } from 'react-router-dom';
+import type { TeacherDataResponse } from '@/pages/Dashboard/AdminPanel/Teachers/Types';
+import { getTeachers } from '@/Redux/Teachers/Slice';
 
 
 
@@ -23,6 +26,39 @@ interface Props {
 const CreateSubjectForm = ({ setLoading }: Props) => {
 
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+    //teachers data
+    const [teacherData, setTeacherData] = useState<TeacherDataResponse[]>([]);
+  
+    const handleGetTeachers = () => {
+      setLoading(true);
+      dispatch(getTeachers())
+        .unwrap()
+        .then((res: TeacherDataResponse[]) => {
+          setTeacherData(res);
+          console.log("Data:", res);
+        })
+        .catch((err) => {
+          console.log("Error: ", err);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    };
+  
+    useEffect(() => {
+      handleGetTeachers();
+    }, [dispatch]);
+  
+    const teachers = useAppSelector(
+      (state) => state.TeacherRecords.teachers
+    );
+  
+    const teachersData = teachers.map((teacher) => ({
+      name: teacher.name,
+      value: teacher.id,
+    }));
 
 
   //fetching terms from db
@@ -170,20 +206,19 @@ const CreateSubjectForm = ({ setLoading }: Props) => {
                   />
                 </div>
 
+
                 {/* teacher */}
                 <div className="mb-6">
-                  <Input
-                    allowAsterisk={true}
+                  <Dropdown
+                    name="teacher"
                     label="Teacher"
-                    type="text"
-                    placeholder="Enter teacher"
-                    {...createSubjectsForm.register('teacher', {
-                      required: 'duration is required',
-                      minLength: {
-                        value: 3,
-                        message: 'Duration must be at least 3 characters long',
-                      },
-                    })}
+                    placeholder="Select Teacher"
+                    data={teachersData}
+                    rules={{
+                      required: 'Teacher is required',
+                    }}
+                    allowAsterisk={true}
+                    isSearchAble
                   />
                 </div>
 
@@ -215,6 +250,7 @@ const CreateSubjectForm = ({ setLoading }: Props) => {
                       required: 'Academic Term is required',
                     }}
                     allowAsterisk={true}
+                    isSearchAble
                   />
                 </div>
 
@@ -228,6 +264,7 @@ const CreateSubjectForm = ({ setLoading }: Props) => {
                       required: 'Program is required',
                     }}
                     allowAsterisk={true}
+                    isSearchAble
                   />
                 </div>
 
@@ -236,6 +273,7 @@ const CreateSubjectForm = ({ setLoading }: Props) => {
                 <Button
                   type="submit"
                   className="w-full h-[44px] rounded-[12px] bg-primary-500 hover:bg-primary-600 text-center text-white"
+                  onClick={() => navigate('/dashboard/subjects')}
                 >
                   Create Subject
                 </Button>

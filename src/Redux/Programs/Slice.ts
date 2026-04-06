@@ -2,7 +2,7 @@ import { customToast } from '@/Common/Components/ShowToast';
 import type { Pagination } from '@/Utils/Types';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getPaginatedLearningHub } from '../LearningHub/Slice';
-import type { ProgramsDataResponse } from '@/pages/Dashboard/Programs/Types';
+import type { ProgramsDataResponse } from '@/pages/Dashboard/AdminPanel/Programs/Types';
 import { createProgram, deleteProgramsDataById, getProgramsData, getProgramsDataById, updateProgramsDataById } from '@/Services/Programs/Programs';
 import type { CreateProgramsTypes } from '@/Forms/CreateProgramTypes';
 

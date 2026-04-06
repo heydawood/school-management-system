@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAppDispatch } from '@/Redux/Hooks';
 import { getSubjects } from '@/Redux/Subjects/Slice';
-import type { SubjectsDataResponse } from '@/pages/Dashboard/Subjects/Types';
+import type { SubjectsDataResponse } from '@/pages/Dashboard/AdminPanel/Subjects/Types';
 
 type Option = {
   name: string;

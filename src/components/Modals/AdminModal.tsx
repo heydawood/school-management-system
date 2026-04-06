@@ -8,7 +8,7 @@ import Icon from '../ui/svg_icon/SvgIcon';
 import { useAppDispatch, useAppSelector } from '@/Redux/Hooks';
 import Spinner from '../ui/spinner';
 import { getAdminById } from '@/Redux/Admin/Slice';
-import type { AdminDataByIdResponse, AdminDataResponse } from '@/pages/Dashboard/Admins/Types';
+import type { AdminDataByIdResponse, AdminDataResponse } from '@/pages/Dashboard/AdminPanel/Admins/Types';
 
 interface Props {
     close: () => void;

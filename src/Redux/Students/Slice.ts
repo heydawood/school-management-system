@@ -4,7 +4,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getPaginatedLearningHub } from '../LearningHub/Slice';
 import { createStudent, getStudentData, getStudentDataById } from '@/Services/Students/Students';
 import type { CreateStudentTypes } from '@/Forms/CreateStudentForm';
-import type { StudentDataResponse } from '@/pages/Dashboard/Students/Types';
+import type { StudentDataResponse } from '@/pages/Dashboard/AdminPanel/Students/Types';
 
 
 interface State {

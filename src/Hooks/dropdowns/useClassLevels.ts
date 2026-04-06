@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAppDispatch } from '@/Redux/Hooks';
 import { getClassLevels } from '@/Redux/ClassLevels/Slice';
-import type { ClassLevelDataResponse } from '@/pages/Dashboard/ClassLevels/Types';
+import type { ClassLevelDataResponse } from '@/pages/Dashboard/AdminPanel/ClassLevels/Types';
 
 type Option = {
   name: string;

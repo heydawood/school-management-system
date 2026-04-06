@@ -7,7 +7,7 @@ import Modalbody from '../ui/modal/Body';
 import Icon from '../ui/svg_icon/SvgIcon';
 import { useAppDispatch } from '@/Redux/Hooks';
 import Spinner from '../ui/spinner';
-import type { AcademicTermDataResponse } from '@/pages/Dashboard/AcademicTerms/Types';
+import type { AcademicTermDataResponse } from '@/pages/Dashboard/AdminPanel/AcademicTerms/Types';
 import { getAcademicTermById } from '@/Redux/AcademicTerms/Slice';
 
 

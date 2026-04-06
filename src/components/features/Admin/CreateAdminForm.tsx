@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { CreateAdminDefaultValues, type CreateAdminTypes } from '@/Forms/CreateAdminForm';
 import { createNewAdmin } from '@/Redux/Admin/Slice';
 import Input from '@/components/ui/input/input';
+import { useNavigate } from 'react-router-dom';
 
 
 interface Props {
@@ -23,6 +24,7 @@ const CreateAdminForm = ({ setLoading }: Props) => {
   });
 
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const onSubmit = (data: CreateAdminTypes) => {
     setLoading(true);
@@ -136,6 +138,8 @@ const CreateAdminForm = ({ setLoading }: Props) => {
               <Button
                 type="submit"
                 className="w-full h-[44px] rounded-[12px] bg-primary-500 hover:bg-primary-600 text-center text-white"
+                onClick={() => navigate('/dashboard/admins')}
+
               >
                 Create Admin
               </Button>

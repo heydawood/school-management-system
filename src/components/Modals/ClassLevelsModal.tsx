@@ -7,7 +7,7 @@ import Modalbody from '../ui/modal/Body';
 import Icon from '../ui/svg_icon/SvgIcon';
 import { useAppDispatch } from '@/Redux/Hooks';
 import Spinner from '../ui/spinner';
-import type { ClassLevelDataResponse } from '@/pages/Dashboard/ClassLevels/Types';
+import type { ClassLevelDataResponse } from '@/pages/Dashboard/AdminPanel/ClassLevels/Types';
 import { getClassLevelById } from '@/Redux/ClassLevels/Slice';
 
 

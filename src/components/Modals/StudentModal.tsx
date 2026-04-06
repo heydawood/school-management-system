@@ -7,7 +7,7 @@ import Modalbody from '../ui/modal/Body';
 import Icon from '../ui/svg_icon/SvgIcon';
 import { useAppDispatch } from '@/Redux/Hooks';
 import Spinner from '../ui/spinner';
-import type { StudentDataResponse } from '@/pages/Dashboard/Students/Types';
+import type { StudentDataResponse } from '@/pages/Dashboard/AdminPanel/Students/Types';
 import { getStudentById } from '@/Redux/Students/Slice';
 
 

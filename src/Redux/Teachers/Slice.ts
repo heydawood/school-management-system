@@ -3,7 +3,7 @@ import type { Pagination } from '@/Utils/Types';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getPaginatedLearningHub } from '../LearningHub/Slice';
 import { createTeacher, getTeacherData, getTeacherDataById, getTeacherProfileData } from '@/Services/Teacher/Teacher';
-import type { TeacherDataResponse } from '@/pages/Dashboard/Teachers/Types';
+import type { TeacherDataResponse } from '@/pages/Dashboard/AdminPanel/Teachers/Types';
 import type { CreateTeacherTypes } from '@/Forms/CreateTeacherForm';
 
 

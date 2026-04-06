@@ -19,6 +19,7 @@ const StudentExamReviewPage = () => {
     dispatch(getStudentExamReview(examId!))
       .unwrap()
       .then((res) => {
+        console.log("Review Data:", res.data);
         setReview(res.data);
       })
       .finally(() => setLoading(false));
@@ -60,21 +61,22 @@ const StudentExamReviewPage = () => {
             <span> Correct: {summary.correct}</span>
             <span> Incorrect: {summary.incorrect}</span>
             <span> Total: {summary.totalQuestions}</span>
+             <span> Pass Mark: {summary.passMark}%</span>
           </div>
         </div>
 
-        {/* 🔥 QUESTIONS */}
+        {/* QUESTIONS */}
         <div className="space-y-6">
           {questions.map((q: any, index: number) => {
             const getOptionStyle = (key: string) => {
               const optionKey = `option${key}`;
 
-              // correct answer
+              // correct options
               if (q.correctOption === optionKey) {
                 return 'bg-green-100 border-green-500';
               }
 
-              // wrong selected
+              // wrong option
               if (
                 q.selectedOption === optionKey &&
                 q.correctOption !== optionKey

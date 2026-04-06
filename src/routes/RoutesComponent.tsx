@@ -10,53 +10,47 @@ const ForgotPasswordPage = lazy(() => import('@/pages/auth/Forgot-Password/Forgo
 const OtpVerificationPage = lazy(() => import('@/pages/auth/Otp-Verification/OtpVerificationPage'));
 const ResetPasswordPage = lazy(() => import('@/pages/auth/Reset-Password/ResetPasswordPage'));
 
-// Dashboard Pages
-//const HomePage = lazy(() => import('@/pages/Dashboard/Home/Homepage'));
-
-//Admin Pages
-
 // Settings
 const SettingsPage = lazy(() => import('@/pages/Dashboard/Settings/SettingsPage'));
 
+
+//Admin Panel
+
 // Admins
-const AdminsPage = lazy(() => import('@/pages/Dashboard/Admins/AdminsPage'));
-const CreateAdminsPage = lazy(() => import('@/pages/Dashboard/Admins/CreateAdmins/CreateAdminsPage'));
+const AdminsPage = lazy(() => import('@/pages/Dashboard/AdminPanel/Admins/AdminsPage'));
+const CreateAdminsPage = lazy(() => import('@/pages/Dashboard/AdminPanel/Admins/CreateAdmins/CreateAdminsPage'));
 
 // Teachers
-const TeachersPage = lazy(() => import('@/pages/Dashboard/Teachers/TeachersPage'));
-const CreateTeachersPage = lazy(() => import('@/pages/Dashboard/Teachers/CreateTeachers/CreateTeachersPage'));
+const TeachersPage = lazy(() => import('@/pages/Dashboard/AdminPanel/Teachers/TeachersPage'));
+const CreateTeachersPage = lazy(() => import('@/pages/Dashboard/AdminPanel/Teachers/CreateTeachers/CreateTeachersPage'));
 
 // Students
-const StudentsPage = lazy(() => import('@/pages/Dashboard/Students/StudentsPage'));
-const CreateStudentsPage = lazy(() => import('@/pages/Dashboard/Students/CreateStudents/CreateStudentsPage'));
+const StudentsPage = lazy(() => import('@/pages/Dashboard/AdminPanel/Students/StudentsPage'));
+const CreateStudentsPage = lazy(() => import('@/pages/Dashboard/AdminPanel/Students/CreateStudents/CreateStudentsPage'));
 
 // Academic Years
-const AcademicYears = lazy(() => import('@/pages/Dashboard/AcademicYears/AcademicYearsPage'));
-const CreateAcademicYearPage = lazy(() => import('@/pages/Dashboard/AcademicYears/CreateAcademicYear/CreateAcademicYearPage'));
+const AcademicYears = lazy(() => import('@/pages/Dashboard/AdminPanel/AcademicYears/AcademicYearsPage'));
+const CreateAcademicYearPage = lazy(() => import('@/pages/Dashboard/AdminPanel/AcademicYears/CreateAcademicYear/CreateAcademicYearPage'));
 
 // Academic Terms
-const AcademicTermsPage = lazy(() => import('@/pages/Dashboard/AcademicTerms/AcademicTermsPage'));
-const CreateAcademicTermPage = lazy(() => import('@/pages/Dashboard/AcademicTerms/CreateAcademicTerm/CreateAcademicTermPage'));
+const AcademicTermsPage = lazy(() => import('@/pages/Dashboard/AdminPanel/AcademicTerms/AcademicTermsPage'));
+const CreateAcademicTermPage = lazy(() => import('@/pages/Dashboard/AdminPanel/AcademicTerms/CreateAcademicTerm/CreateAcademicTermPage'));
 
 //Class Levels
-const ClassLevelsPage = lazy(() => import('@/pages/Dashboard/ClassLevels/ClassLevelsPage'));
-const CreateClassLevelPage = lazy(() => import('@/pages/Dashboard/ClassLevels/CreateClassLevel/CreateClassLevelPage'));
+const ClassLevelsPage = lazy(() => import('@/pages/Dashboard/AdminPanel/ClassLevels/ClassLevelsPage'));
+const CreateClassLevelPage = lazy(() => import('@/pages/Dashboard/AdminPanel/ClassLevels/CreateClassLevel/CreateClassLevelPage'));
 
 //Programs
-const ProgramsPage = lazy(() => import('@/pages/Dashboard/Programs/ProgramsPage'));
-const CreateProgramPage = lazy(() => import('@/pages/Dashboard/Programs/CreateProgram/CreateProgramPage'));
+const ProgramsPage = lazy(() => import('@/pages/Dashboard/AdminPanel/Programs/ProgramsPage'));
+const CreateProgramPage = lazy(() => import('@/pages/Dashboard/AdminPanel/Programs/CreateProgram/CreateProgramPage'));
 
 //Subjects
-const SubjectsPage = lazy(() => import('@/pages/Dashboard/Subjects/SubjectsPage'));
-const CreateSubjectPage = lazy(() => import('@/pages/Dashboard/Subjects/CreateSubject/CreateSubjectPage'));
+const SubjectsPage = lazy(() => import('@/pages/Dashboard/AdminPanel/Subjects/SubjectsPage'));
+const CreateSubjectPage = lazy(() => import('@/pages/Dashboard/AdminPanel/Subjects/CreateSubject/CreateSubjectPage'));
 
 //Year Groups
-const YearGroupsPage = lazy(() => import('@/pages/Dashboard/YearGroups/YearGroupsPage'));
-const CreateYearGroupsPage = lazy(() => import('@/pages/Dashboard/YearGroups/CreateYearGroup/CreateYearGroupPage'));
-
-//Results
-const ResultsPage = lazy(() => import('@/pages/Dashboard/Results/ResultsPage'));
-const CreateResultsPage = lazy(() => import('@/pages/Dashboard/YearGroups/CreateYearGroup/CreateYearGroupPage'));
+const YearGroupsPage = lazy(() => import('@/pages/Dashboard/AdminPanel/YearGroups/YearGroupsPage'));
+const CreateYearGroupsPage = lazy(() => import('@/pages/Dashboard/AdminPanel/YearGroups/CreateYearGroup/CreateYearGroupPage'));
 
 //Teacher Pages
 const TeacherHomePage = lazy(() => import('@/pages/Dashboard/TeacherPanel/Home/HomePage'));
@@ -74,16 +68,6 @@ const StudentExamPage = lazy(() => import('@/pages/Dashboard/StudentPanel/Studen
 const ExamPage = lazy(() => import('@/pages/Dashboard/StudentPanel/StudentExam/ExamPage'));
 const StudentExamResultPage = lazy(() =>import('@/pages/Dashboard/StudentPanel/StudentExam/StudentExamResultPage'));
 const StudentExamReviewPage = lazy(() =>import('@/pages/Dashboard/StudentPanel/StudentExam/StudentExamReviewPage'));
-
-
-
-
-
-
-//diet plan
-// const LearningHubPage = lazy(() => import('@/pages/Dashboard/LearningHub/LearningHub'));
-// const CreateLearningHubPage = lazy(() => import('@/pages/Dashboard/LearningHub/CreateLearningHub/CreateLearningHubPage'));
-// const LearningHubViewAndEditPage = lazy(() => import('@/pages/Dashboard/LearningHub/LearningHubViewAndEdit/LearningHubViewAndEditPage'));
 
 
 
@@ -110,8 +94,6 @@ const RoutesComponent: React.FC = () => {
             })()
           }
         />
-
-
 
         <Route
           path="/auth"
@@ -183,10 +165,6 @@ const RoutesComponent: React.FC = () => {
           <Route path="year-groups" element={<YearGroupsPage />} />
           <Route path="year-groups/create" element={<CreateYearGroupsPage />} />
 
-          {/* Results */}
-          <Route path="results" element={<ResultsPage />} />
-          <Route path="year-groups/create" element={<CreateYearGroupsPage />} />
-
 
           {/* Teacher Panel */}
           <Route
@@ -220,8 +198,9 @@ const RoutesComponent: React.FC = () => {
               </RoleGuard>
             }
           >
-            <Route index element={<StudentExamPage />} />
-             <Route path="exams" element={<StudentExamPage />} />
+            <Route index element={<Navigate to="exams" replace />} />
+            
+            <Route path="exams" element={<StudentExamPage />} />
             <Route path="exams/:examId" element={<ExamPage />} />
             <Route path="exams/:examId/result" element={<StudentExamResultPage />} />
             <Route path="exams/:examId/review" element={<StudentExamReviewPage />} />

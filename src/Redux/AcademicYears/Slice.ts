@@ -2,11 +2,11 @@ import { customToast } from '@/Common/Components/ShowToast';
 import type { Pagination } from '@/Utils/Types';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getPaginatedLearningHub } from '../LearningHub/Slice';
-import type { TeacherDataResponse } from '@/pages/Dashboard/Teachers/Types';
+import type { TeacherDataResponse } from '@/pages/Dashboard/AdminPanel/Teachers/Types';
 import { createStudent, getStudentData, getStudentDataById } from '@/Services/Students/Students';
 import type { CreateStudentTypes } from '@/Forms/CreateStudentForm';
 import { createAcademicYear, deleteAcademicYearDataById, getAcademicYearDataById, getAcademicYearsData, updateAcademicYearDataById } from '@/Services/AcademicYears/AcademicYears';
-import type { AcademicYearDataResponse } from '@/pages/Dashboard/AcademicYears/Types';
+import type { AcademicYearDataResponse } from '@/pages/Dashboard/AdminPanel/AcademicYears/Types';
 import type { CreateAcademicYearTypes } from '@/Forms/CreateAcademicYearForm';
 
 

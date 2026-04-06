@@ -2,13 +2,6 @@ import { PageName } from '@/Utils/Constants';
 import type { INavItem } from '@/Utils/Types';
 
 export const studentNavItems: INavItem[] = [
-    // {
-    //     title: 'Results',
-    //     link: '/dashboard/student',
-    //     icon: '/icons/sidebar-chart-pie.svg',
-    //     iconActive: '/icons/sidebar-chart-pie-active.svg',
-    //     pageName: PageName.DASHBOARD,
-    // },
      {
          title: 'Submit Exams',
          link: '/dashboard/student/exams',
@@ -25,7 +18,7 @@ export const StudentApplicationPages = {
   },
   exams: {
     title: 'Exams',
-    description: 'Create and manage your exams.',
+    description: 'View, attempt, and submit your exams.',
   },
   questions: {
     title: 'Questions',

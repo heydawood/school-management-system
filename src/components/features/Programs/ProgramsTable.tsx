@@ -5,7 +5,7 @@ import type { Pagination } from '@/Utils/Types';
 import { useLearningHubActionManager } from '@/pages/Dashboard/LearningHub/LearningHubActionManager';
 import { useAppDispatch } from '@/Redux/Hooks';
 import { customToast } from '@/Common/Components/ShowToast';
-import type { ProgramsDataResponse } from '@/pages/Dashboard/Programs/Types';
+import type { ProgramsDataResponse } from '@/pages/Dashboard/AdminPanel/Programs/Types';
 import { deleteProgramsById, updateProgramsById } from '@/Redux/Programs/Slice';
 import ProgramsModal from '@/components/Modals/ProgramsModal';
 import DeleteProgramsModal from '@/components/Modals/DeleteProgramsModal';

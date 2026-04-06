@@ -7,19 +7,6 @@ export const ResetPassword = () => '/auth/reset-password';
 // Dashboard Module Routes
 export const Dashboard = () => '/dashboard/home';
 
-// Workout Module Routes
-export const WorkoutList = () => '/dashboard/workouts';
-export const WorkoutCreate = () => '/dashboard/workouts/create';
-export const WorkoutEdit = (id: number) => `/dashboard/workouts/${id}`;
-
-//category Module Routes
-export const CategoryList = () => '/dashboard/categories';
-export const CategoryCreate = () => '/dashboard/categories/create';
-export const CategoryEdit = (id: number) => `/dashboard/categories/${id}`;
-
-// User Profile Module Routes
-export const UsersList = () => '/dashboard/user-management';
-export const UserProfile = (id: number) => `/dashboard/user-management/${id}`;
 
 // Settings Module Routes
 export const Settings = () => '/dashboard/settings';

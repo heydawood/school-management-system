@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAppDispatch } from '@/Redux/Hooks';
 import { getPrograms } from '@/Redux/Programs/Slice';
-import type { ProgramsDataResponse } from '@/pages/Dashboard/Programs/Types';
+import type { ProgramsDataResponse } from '@/pages/Dashboard/AdminPanel/Programs/Types';
 
 type Option = {
   name: string;

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import type { Pagination } from '@/Utils/Types';
 import { useLearningHubActionManager } from '@/pages/Dashboard/LearningHub/LearningHubActionManager';
-import type { StudentDataResponse } from '@/pages/Dashboard/Students/Types';
+import type { StudentDataResponse } from '@/pages/Dashboard/AdminPanel/Students/Types';
 import StudentModal from '@/components/Modals/StudentModal';
 
 const StudentTable: FC<{

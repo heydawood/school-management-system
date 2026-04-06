@@ -12,15 +12,16 @@ import type { CreateTeacherTypes } from '@/Forms/CreateTeacherForm';
 import { createNewTeacher } from '@/Redux/Teachers/Slice';
 import Dropdown from '@/components/ui/dropdown/Dropdown';
 import { getAcademicYears } from '@/Redux/AcademicYears/Slice';
-import type { AcademicYearDataResponse } from '@/pages/Dashboard/AcademicYears/Types';
-import type { AcademicTermDataResponse } from '@/pages/Dashboard/AcademicTerms/Types';
+import type { AcademicYearDataResponse } from '@/pages/Dashboard/AdminPanel/AcademicYears/Types';
+import type { AcademicTermDataResponse } from '@/pages/Dashboard/AdminPanel/AcademicTerms/Types';
 import { getAcademicTerms } from '@/Redux/AcademicTerms/Slice';
 import { getClassLevels } from '@/Redux/ClassLevels/Slice';
-import type { ClassLevelDataResponse } from '@/pages/Dashboard/ClassLevels/Types';
+import type { ClassLevelDataResponse } from '@/pages/Dashboard/AdminPanel/ClassLevels/Types';
 import { getPrograms } from '@/Redux/Programs/Slice';
-import type { ProgramsDataResponse } from '@/pages/Dashboard/Programs/Types';
-import type { SubjectsDataResponse } from '@/pages/Dashboard/Subjects/Types';
+import type { ProgramsDataResponse } from '@/pages/Dashboard/AdminPanel/Programs/Types';
+import type { SubjectsDataResponse } from '@/pages/Dashboard/AdminPanel/Subjects/Types';
 import { getSubjects } from '@/Redux/Subjects/Slice';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -31,6 +32,7 @@ interface Props {
 const CreateTeacherForm = ({ setLoading }: Props) => {
 
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
 
     //fetch subjects years for dropdown
@@ -324,6 +326,7 @@ const CreateTeacherForm = ({ setLoading }: Props) => {
                         required: 'Subject is required',
                       }}
                       allowAsterisk={true}
+                      isSearchAble
                     />
                   </div>
                 </div>
@@ -339,6 +342,7 @@ const CreateTeacherForm = ({ setLoading }: Props) => {
                       required: 'Program is required',
                     }}
                     allowAsterisk={true}
+                    isSearchAble
                   />
                 </div>
 
@@ -353,6 +357,7 @@ const CreateTeacherForm = ({ setLoading }: Props) => {
                       required: 'Class Level is required',
                     }}
                     allowAsterisk={true}
+                    isSearchAble
                   />
                 </div>
 
@@ -367,6 +372,7 @@ const CreateTeacherForm = ({ setLoading }: Props) => {
                       required: 'Academic Year is required',
                     }}
                     allowAsterisk={true}
+                    isSearchAble
                   />
                 </div>
 
@@ -381,12 +387,14 @@ const CreateTeacherForm = ({ setLoading }: Props) => {
                       required: 'Academic Term is required',
                     }}
                     allowAsterisk={true}
+                    isSearchAble
                   />
                 </div>
 
                 <Button
                   type="submit"
                   className="w-full h-[44px] rounded-[12px] bg-primary-500 hover:bg-primary-600 text-center text-white"
+                  onClick={() => navigate('/dashboard/teachers')}
                 >
                   Create Teacher
                 </Button>

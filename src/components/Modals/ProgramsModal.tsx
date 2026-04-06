@@ -7,7 +7,7 @@ import Modalbody from '../ui/modal/Body';
 import Icon from '../ui/svg_icon/SvgIcon';
 import { useAppDispatch } from '@/Redux/Hooks';
 import Spinner from '../ui/spinner';
-import type { ProgramsDataResponse } from '@/pages/Dashboard/Programs/Types';
+import type { ProgramsDataResponse } from '@/pages/Dashboard/AdminPanel/Programs/Types';
 import { getProgramsById } from '@/Redux/Programs/Slice';
 
 

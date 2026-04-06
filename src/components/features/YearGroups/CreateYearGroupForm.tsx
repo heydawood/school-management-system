@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from '@/Redux/Hooks';
 import { getAcademicYears } from '@/Redux/AcademicYears/Slice';
 import { CreateYearGroupsDefaultValues, type CreateYearGroupsTypes } from '@/Forms/CreateYearGroupsTypes';
 import { createNewYearGroup } from '@/Redux/YearGroups/Slice';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -20,6 +21,7 @@ interface Props {
 const CreateYearGroupForm = ({ setLoading }: Props) => {
 
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
 
   //fetching AcademicYears from db
@@ -138,6 +140,7 @@ const CreateYearGroupForm = ({ setLoading }: Props) => {
                       required: 'Academic Year is required',
                     }}
                     allowAsterisk={true}
+                    isSearchAble
                   />
                 </div>
 
@@ -147,6 +150,7 @@ const CreateYearGroupForm = ({ setLoading }: Props) => {
                 <Button
                   type="submit"
                   className="w-full h-[44px] rounded-[12px] bg-primary-500 hover:bg-primary-600 text-center text-white"
+                  onClick={() => navigate('/dashboard/year-groups')}
                 >
                   Create Year Group
                 </Button>

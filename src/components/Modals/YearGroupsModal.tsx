@@ -7,7 +7,7 @@ import Modalbody from '../ui/modal/Body';
 import Icon from '../ui/svg_icon/SvgIcon';
 import { useAppDispatch } from '@/Redux/Hooks';
 import Spinner from '../ui/spinner';
-import type { YearGroupsDataResponse } from '@/pages/Dashboard/YearGroups/Types';
+import type { YearGroupsDataResponse } from '@/pages/Dashboard/AdminPanel/YearGroups/Types';
 import { getYearGroupsById } from '@/Redux/YearGroups/Slice';
 
 

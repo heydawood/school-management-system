@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import type { Pagination } from '@/Utils/Types';
 import { useLearningHubActionManager } from '@/pages/Dashboard/LearningHub/LearningHubActionManager';
-import type { AcademicYearDataResponse } from '@/pages/Dashboard/AcademicYears/Types';
+import type { AcademicYearDataResponse } from '@/pages/Dashboard/AdminPanel/AcademicYears/Types';
 import AcademicYearModal from '@/components/Modals/AcademicYearModal';
 import { deleteAcademicYearById, updateAcademicYearById } from '@/Redux/AcademicYears/Slice';
 import { useAppDispatch } from '@/Redux/Hooks';

@@ -66,13 +66,6 @@ export const navItems: INavItem[] = [
     iconActive: '/icons/year-group-active.svg',
     pageName: PageName.YEAR_GROUPS,
   },
-  {
-    title: 'Results',
-    link: '/dashboard/results',
-    icon: '/icons/sidebar-chart-pie.svg',
-    iconActive: '/icons/sidebar-chart-pie-active.svg',
-    pageName: PageName.RESULTS,
-  },
 
 ];
 
@@ -124,4 +117,3 @@ export const ApplicationPages = {
     description: 'Here you can manage and see details of all Results.',
   },
 };
-

@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import * as routes from '@/routes/Index';
 import Icon from '@/components/ui/svg_icon/SvgIcon';
-import { getStudents } from '@/Redux/Students/Slice';
 import type { AcademicYearDataResponse } from './Types';
 import AcademicYearsTable from '@/components/features/AcademicYears/AcademicYearsTable';
 import { getAcademicYears } from '@/Redux/AcademicYears/Slice';

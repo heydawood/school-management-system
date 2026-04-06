@@ -3,7 +3,6 @@ import * as ColumnFormatters from './ColumnFormatters/ColumnFormatters';
 import Table from '@/components/ui/table/Table';
 import type { FC } from 'react';
 import { Button } from '@/components/ui/button';
-import { getTierBadge } from '@/pages/Dashboard/UsersManagement/Utils';
 import { useNavigate } from 'react-router-dom';
 import type { Pagination } from '@/Utils/Types';
 import { useAppDispatch } from '@/Redux/Hooks';

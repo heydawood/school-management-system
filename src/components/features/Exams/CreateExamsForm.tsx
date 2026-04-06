@@ -12,7 +12,7 @@ import { useSubjects } from '@/Hooks/dropdowns/useSubjects';
 import { useClassLevels } from '@/Hooks/dropdowns/useClassLevels';
 import { useAcademicTerms } from '@/Hooks/dropdowns/useAcademicTerms';
 import { useAcademicYears } from '@/Hooks/dropdowns/useAcademicYears';
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -47,23 +47,23 @@ const CreateExamForm = ({ setLoading }: any) => {
 
 
   const onSubmit = (data: CreateExamTypes) => {
-  setLoading(true);
+    setLoading(true);
 
-  dispatch(createNewExam(data))
-    .unwrap()
-    .then((res: any) => {
-      console.log('res: ', res)
-      const examId = res.newExam._id;
+    dispatch(createNewExam(data))
+      .unwrap()
+      .then((res: any) => {
+        console.log('res: ', res)
+        const examId = res.newExam._id;
 
-      customToast.success("Exam created. Now add questions");
+        customToast.success("Exam created. Now add questions");
 
-      navigate(`/dashboard/teacher/exams/${examId}/questions/create`);
-    })
-    .catch((err: any) => {
-      customToast.error(err);
-    })
-    .finally(() => setLoading(false));
-};
+        navigate(`/dashboard/teacher/exams/${examId}/questions/create`);
+      })
+      .catch((err: any) => {
+        customToast.error(err);
+      })
+      .finally(() => setLoading(false));
+  };
 
 
   return (
@@ -152,18 +152,78 @@ const CreateExamForm = ({ setLoading }: any) => {
           </div>
 
           {/* MARKS */}
-          <Input placeholder='100' type="number" label="Total Marks" {...register('totalMark', { required: true })} />
-          <Input placeholder='33' type="number" label="Pass Marks" {...register('passMark', { required: true })} />
+          <Input placeholder='100'
+           type="number"
+           label="Total Marks"
+           name='totalMark'
+           allowAsterisk={true}
+           rules={{
+            required: 'Total Marks are required',
+          }}
+          />
+
+          <Input
+          name='passMark'
+          placeholder='33'
+          type="number"
+          label="Pass Marks"
+          allowAsterisk={true}
+          rules={{
+            required: 'Pass Marks are required',
+          }}
+           />
 
           {/* TIME */}
-          <Input placeholder='Date' type="date" label="Exam Date" {...register('examDate')} />
-          <Input placeholder='12AM' label="Exam Time" {...register('examTime')} />
-          <Input placeholder='60mins' label="Duration" {...register('duration')} />
+          <Input
+          name='examDate'
+          placeholder='Date'
+          type="date"
+          label="Exam Date"
+          allowAsterisk={true}
+          rules={{
+            required: 'Exam Date is required',
+          }} />
+
+          <Input 
+          name='examTime'
+          placeholder='12AM'
+          label="Exam Time"
+          allowAsterisk={true}
+          rules={{
+            required: 'Exam Time is required',
+          }}
+           />
+
+          <Input 
+          name='duration'
+          placeholder='60mins' 
+          label="Duration" 
+          allowAsterisk={true}
+          rules={{
+            required: 'Duration is required',
+          }}
+           />
 
           {/* TYPE */}
-          <Input placeholder='Finals, Mid, etc' label="Exam Type" {...register('examType')} />
-          <Input placeholder='Pending or Fulfuilled' label="Status" {...register('examStatus')} />
+          <Input 
+          name='examType'
+          placeholder='Finals, Mid, etc'
+          label="Exam Type"
+          allowAsterisk={true}
+          rules={{
+            required: 'Exam Type is required',
+          }}
+          />
 
+          <Input
+          name='examStatus'
+          placeholder='Pending or Fulfuilled'
+          label="Status"
+          allowAsterisk={true}
+          rules={{
+            required: 'Status is required',
+          }}
+          />
 
 
           <Button type="submit" className="w-full bg-primary text-white">

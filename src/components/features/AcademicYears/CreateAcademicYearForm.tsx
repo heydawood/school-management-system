@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import Input from '@/components/ui/input/input';
 import { CreateAcademicYearDefaultValues, type CreateAcademicYearTypes } from '@/Forms/CreateAcademicYearForm';
 import { createNewAcademicYear } from '@/Redux/AcademicYears/Slice';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -25,6 +26,7 @@ const CreateAcademicYearForm = ({ setLoading }: Props) => {
   });
 
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const onSubmit = (data: CreateAcademicYearTypes) => {
     console.log("Submit clicked: ", data)
@@ -126,6 +128,7 @@ const CreateAcademicYearForm = ({ setLoading }: Props) => {
                 <Button
                   type="submit"
                   className="w-full h-[44px] rounded-[12px] bg-primary-500 hover:bg-primary-600 text-center text-white"
+                   onClick={() => navigate('/dashboard/academic-years')}
                 >
                   Create Academic Year
                 </Button>

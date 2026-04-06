@@ -5,7 +5,7 @@ import type { Pagination } from '@/Utils/Types';
 import { useLearningHubActionManager } from '@/pages/Dashboard/LearningHub/LearningHubActionManager';
 import { useAppDispatch } from '@/Redux/Hooks';
 import { customToast } from '@/Common/Components/ShowToast';
-import type { ClassLevelDataResponse } from '@/pages/Dashboard/ClassLevels/Types';
+import type { ClassLevelDataResponse } from '@/pages/Dashboard/AdminPanel/ClassLevels/Types';
 import { deleteClassLevelById, updateClassLevelById } from '@/Redux/ClassLevels/Slice';
 import DeleteClassLevelsModal from '@/components/Modals/DeleteClassLevelsModal';
 import ClassLevelsModal from '@/components/Modals/ClassLevelsModal';

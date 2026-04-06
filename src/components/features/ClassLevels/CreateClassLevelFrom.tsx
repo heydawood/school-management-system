@@ -8,12 +8,14 @@ import Input from '@/components/ui/input/input';
 import { CreateClassLevelDefaultValues, type CreateClassLevelTypes } from '@/Forms/CreateClassLevelTypes';
 import { createNewClassLevel } from '@/Redux/ClassLevels/Slice';
 import { useFieldArray } from 'react-hook-form';
-import type { SubjectsDataResponse } from '@/pages/Dashboard/Subjects/Types';
+import type { SubjectsDataResponse } from '@/pages/Dashboard/AdminPanel/Subjects/Types';
 import { getSubjects } from '@/Redux/Subjects/Slice';
-import type { StudentDataResponse } from '@/pages/Dashboard/Students/Types';
+import type { StudentDataResponse } from '@/pages/Dashboard/AdminPanel/Students/Types';
 import { getStudents } from '@/Redux/Students/Slice';
-import type { TeacherDataResponse } from '@/pages/Dashboard/Teachers/Types';
+import type { TeacherDataResponse } from '@/pages/Dashboard/AdminPanel/Teachers/Types';
 import { getTeachers } from '@/Redux/Teachers/Slice';
+import Dropdown from '@/components/ui/dropdown/Dropdown';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -25,6 +27,7 @@ interface Props {
 
 const CreateClassLevelFrom = ({ setLoading }: Props) => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
 
   //subjects data
@@ -238,94 +241,137 @@ const CreateClassLevelFrom = ({ setLoading }: Props) => {
                 </div>
 
 
+                {/* <div className='flex gap-2'> */}
+
                 {/* students */}
                 <div className="mb-6">
-
                   {studentFields.map((field, index) => (
-                    <div key={field.id} className="flex gap-2 mb-2 items-center">
-                      <Input
-                        allowAsterisk={true}
-                        label={"Students"}
-                        placeholder="Enter student"
-                        {...register(`students.${index}.value` as const, {
+                    <div key={field.id} >
+
+                      <Dropdown
+                      //classNames='w-80'
+                        name={`students.${index}.value`}
+                        label="Student"
+                        placeholder="Select Student"
+                        data={studentsData}
+                        rules={{
                           required: 'Student is required',
-                        })}
+                        }}
+                        allowAsterisk
+                        isSearchAble
                       />
-                      <div className='mt-6 flex gap-1'>
-                        <Button type="button" disabled={studentFields.length === 1} className={`${studentFields.length === 1 ? 'opacity-50 cursor-not-allowed' : ''}`} onClick={() => removeStudent(index)}>
+
+                      <div className="mt-6 flex gap-1">
+                        <Button
+                          type="button"
+                          disabled={studentFields.length === 1}
+                          onClick={() => removeStudent(index)}
+                        >
                           Remove
                         </Button>
 
-                        <Button type="button" onClick={() => addStudent({ value: '' })}>
-                          + Add Student
+                        <Button
+                          type="button"
+                          onClick={() => addStudent({ value: '' })}
+                        >
+                          + Add
                         </Button>
                       </div>
+
                     </div>
                   ))}
-
-
                 </div>
+
 
 
                 {/* subjects */}
                 <div className="mb-6">
 
                   {subjectFields.map((field, index) => (
-                    <div key={field.id} className="flex gap-2 mb-2 items-center">
+                    <div key={field.id} >
 
-                      <Input
-                        allowAsterisk={true}
-                        label={"Subjects"}
-                        placeholder="Enter subject"
-                        {...register(`subjects.${index}.value` as const)}
+                      <Dropdown
+                      
+                        name={`subjects.${index}.value`}
+                        label="Subject"
+                        placeholder="Select Subject"
+                        data={subjectsData}
+                        rules={{
+                          required: 'Subject is required',
+                        }}
+                        allowAsterisk
+                        isSearchAble
                       />
 
-                      <div className='mt-6 flex gap-1'>
-                        <Button type="button" disabled={subjectFields.length === 1} className={`${subjectFields.length === 1 ? 'opacity-50 cursor-not-allowed' : ''}`} onClick={() => removeSubject(index)}>
+                      <div className="mt-6 flex gap-1">
+                        <Button
+                          type="button"
+                          disabled={subjectFields.length === 1}
+                          onClick={() => removeSubject(index)}
+                        >
                           Remove
                         </Button>
 
-                        <Button type="button" onClick={() => addSubject({ value: '' })}>
-                          + Add Subject
+                        <Button
+                          type="button"
+                          onClick={() => addSubject({ value: '' })}
+                        >
+                          + Add
                         </Button>
                       </div>
+
                     </div>
                   ))}
                 </div>
+
 
 
                 {/* teachers */}
                 <div className="mb-6">
-
-
                   {teacherFields.map((field, index) => (
-                    <div key={field.id} className="flex gap-2 mb-2 items-center">
-                      <Input
-                        allowAsterisk={true}
-                        label={"Teachers"}
-                        placeholder="Enter teacher"
-                        {...register(`teachers.${index}.value` as const)}
+                    <div key={field.id} >
+
+                      <Dropdown
+                      
+                        name={`teachers.${index}.value`}
+                        label="Teacher"
+                        placeholder="Select Teacher"
+                        data={teachersData}
+                        rules={{
+                          required: 'Teacher is required',
+                        }}
+                        allowAsterisk
+                        isSearchAble
                       />
 
-                      <div className='mt-6 flex gap-1'>
-                        <Button type="button" disabled={teacherFields.length === 1} className={`${teacherFields.length === 1 ? 'opacity-50 cursor-not-allowed' : ''}`} onClick={() => removeTeacher(index)}>
+                      <div className="mt-6 flex gap-1">
+                        <Button
+                          type="button"
+                          disabled={teacherFields.length === 1}
+                          onClick={() => removeTeacher(index)}
+                        >
                           Remove
                         </Button>
 
-                        <Button type="button" onClick={() => addTeacher({ value: '' })}>
-                          + Add Teacher
+                        <Button
+                          type="button"
+                          onClick={() => addTeacher({ value: '' })}
+                        >
+                          + Add
                         </Button>
                       </div>
+
                     </div>
                   ))}
-
-
                 </div>
+                {/* </div> */}
+
 
 
                 <Button
                   type="submit"
                   className="w-full h-[44px] rounded-[12px] bg-primary-500 hover:bg-primary-600 text-center text-white"
+                  onClick={() => navigate('/dashboard/class-levels')}
                 >
                   Create Class Level
                 </Button>

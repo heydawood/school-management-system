@@ -13,11 +13,12 @@ import type { CreateStudentTypes } from '@/Forms/CreateStudentForm';
 import { createNewStudent } from '@/Redux/Students/Slice';
 import { useAppSelector } from '@/Redux/Hooks';
 import { getAcademicYears } from '@/Redux/AcademicYears/Slice';
-import type { AcademicYearDataResponse } from '@/pages/Dashboard/AcademicYears/Types';
+import type { AcademicYearDataResponse } from '@/pages/Dashboard/AdminPanel/AcademicYears/Types';
 import { getClassLevels } from '@/Redux/ClassLevels/Slice';
-import type { ClassLevelDataResponse } from '@/pages/Dashboard/ClassLevels/Types';
+import type { ClassLevelDataResponse } from '@/pages/Dashboard/AdminPanel/ClassLevels/Types';
 import { getPrograms } from '@/Redux/Programs/Slice';
-import type { ProgramsDataResponse } from '@/pages/Dashboard/Programs/Types';
+import type { ProgramsDataResponse } from '@/pages/Dashboard/AdminPanel/Programs/Types';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -32,6 +33,7 @@ const CreateStudentForm = ({ setLoading }: Props) => {
 
 
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
     //fetching progrm data
     const [programsDataState, setProgramsDataState] = useState<ProgramsDataResponse[]>([]);
@@ -264,6 +266,7 @@ const CreateStudentForm = ({ setLoading }: Props) => {
                       required: 'Program is required',
                     }}
                     allowAsterisk={true}
+                    isSearchAble
                   />
                 </div>
 
@@ -278,6 +281,7 @@ const CreateStudentForm = ({ setLoading }: Props) => {
                       required: 'Class Level is required',
                     }}
                     allowAsterisk={true}
+                    isSearchAble
                   />
                 </div>
 
@@ -292,26 +296,14 @@ const CreateStudentForm = ({ setLoading }: Props) => {
                       required: 'Academic Year is required',
                     }}
                     allowAsterisk={true}
+                    isSearchAble
                   />
                 </div>
-
-                {/* Academic Term Select */}
-                {/* <div className="mb-6">
-                  <Dropdown
-                    name="academicTerm"
-                    label="Academic Term"
-                    placeholder="Select Academic Term"
-                    data={academicTermsData}
-                    rules={{
-                      required: 'Academic Term is required',
-                    }}
-                    allowAsterisk={true}
-                  />
-                </div> */}
 
                 <Button
                   type="submit"
                   className="w-full h-[44px] rounded-[12px] bg-primary-500 hover:bg-primary-600 text-center text-white"
+                  onClick={() => navigate('/dashboard/students')}
                 >
                   Create Student
                 </Button>

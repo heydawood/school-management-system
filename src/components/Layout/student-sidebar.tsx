@@ -56,7 +56,7 @@ export default function StudentSidebar() {
   };
 
   useEffect(() => {
-    const pageMatch = teacherNavItems.find((item) => pathName.includes(item.link));
+    const pageMatch = studentNavItems.find((item) => pathName.includes(item.link));
     if (pathName === routes.Dashboard()) {
       setPageInfo({ title: `Hello ${name} 👋🏻`, description: `Here’s what’s happening in your apps.` });
       return;

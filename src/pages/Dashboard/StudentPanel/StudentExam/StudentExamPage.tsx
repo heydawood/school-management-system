@@ -42,7 +42,7 @@ function StudentExamPage() {
         setLoading(true);
         dispatch(getStudentExam())
           .unwrap()
-          .then((res: StudentExamDataResponse[]) => {
+          .then((res: any) => {
             setData(res.exams);
             console.log("Data:", res);
           })
@@ -70,7 +70,7 @@ function StudentExamPage() {
                 </div>
               }
               onChange={(e: any) => {}}
-              logo={<Icon icon="/icons/user-management.svg" className="text-primary-800" />}
+              logo={<Icon icon="/icons/sidebar-chart-pie.svg" className="text-primary-800" />}
               logoClasses="bg-primary-25"
             />
              <StudentExamTable loading={loading} filters={filters} data={data} pagination={pagination} />

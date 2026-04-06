@@ -8,7 +8,7 @@ import Icon from '../ui/svg_icon/SvgIcon';
 import { useAppDispatch } from '@/Redux/Hooks';
 import Spinner from '../ui/spinner';
 import { getAcademicYearById } from '@/Redux/AcademicYears/Slice';
-import type { AcademicYearDataResponse } from '@/pages/Dashboard/AcademicYears/Types';
+import type { AcademicYearDataResponse } from '@/pages/Dashboard/AdminPanel/AcademicYears/Types';
 
 
 interface Props {

@@ -5,7 +5,7 @@ import type { Pagination } from '@/Utils/Types';
 import { useLearningHubActionManager } from '@/pages/Dashboard/LearningHub/LearningHubActionManager';
 import { useAppDispatch } from '@/Redux/Hooks';
 import { customToast } from '@/Common/Components/ShowToast';
-import type { SubjectsDataResponse } from '@/pages/Dashboard/Subjects/Types';
+import type { SubjectsDataResponse } from '@/pages/Dashboard/AdminPanel/Subjects/Types';
 import { deleteSubjectsById, updateSubjectsById } from '@/Redux/Subjects/Slice';
 import SubjectsModal from '@/components/Modals/SubjectsModal';
 import DeleteSubjectsModal from '@/components/Modals/DeleteSubjectsModal';

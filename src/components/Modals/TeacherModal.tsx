@@ -8,7 +8,7 @@ import Icon from '../ui/svg_icon/SvgIcon';
 import { useAppDispatch } from '@/Redux/Hooks';
 import Spinner from '../ui/spinner';
 import { getTeacherById } from '@/Redux/Teachers/Slice';
-import type { TeacherDataResponse } from '@/pages/Dashboard/Teachers/Types';
+import type { TeacherDataResponse } from '@/pages/Dashboard/AdminPanel/Teachers/Types';
 
 
 interface Props {

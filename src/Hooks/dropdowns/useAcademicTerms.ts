@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAppDispatch } from '@/Redux/Hooks';
 import { getAcademicTerms } from '@/Redux/AcademicTerms/Slice';
-import type { AcademicTermDataResponse } from '@/pages/Dashboard/AcademicTerms/Types';
+import type { AcademicTermDataResponse } from '@/pages/Dashboard/AdminPanel/AcademicTerms/Types';
 
 type Option = {
   name: string;

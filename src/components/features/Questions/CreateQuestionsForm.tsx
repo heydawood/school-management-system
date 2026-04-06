@@ -143,18 +143,6 @@ const CreateQuestionsForm = ({ setLoading }: Props) => {
                 <label className="text-sm">Mark as Correct</label>
               </div>
 
-              {/* Created By */}
-              {/* <div className="mb-6">
-                <Input
-                  allowAsterisk
-                  label="Created By"
-                  placeholder="Enter creator ID"
-                  {...form.register('createdBy', {
-                    required: 'Created By is required',
-                  })}
-                />
-              </div> */}
-
               {/* Submit */}
               <Button
                 type="submit"
@@ -177,8 +165,3 @@ const CreateQuestionsForm = ({ setLoading }: Props) => {
 };
 
 export default CreateQuestionsForm;
-
-
-
-
-//CreateQuestionsForm

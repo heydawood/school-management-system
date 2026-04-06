@@ -2,7 +2,7 @@ import { customToast } from '@/Common/Components/ShowToast';
 import type { Pagination } from '@/Utils/Types';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getPaginatedLearningHub } from '../LearningHub/Slice';
-import type { SubjectsDataResponse } from '@/pages/Dashboard/Subjects/Types';
+import type { SubjectsDataResponse } from '@/pages/Dashboard/AdminPanel/Subjects/Types';
 import { createSubject, deleteSubjectsDataById, getSubjectsData, getSubjectsDataById, updateSubjectsDataById } from '@/Services/Subjects/Subjects';
 import type { CreateSubjectsTypes } from '@/Forms/CreateSubjectsTypes';
 

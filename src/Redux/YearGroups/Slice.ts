@@ -4,7 +4,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getPaginatedLearningHub } from '../LearningHub/Slice';
 import type { CreateProgramsTypes } from '@/Forms/CreateProgramTypes';
 import { createYearGroup, deleteYearGroupsDataById, getYearGroupsData, getYearGroupsDataById, updateYearGroupsDataById } from '@/Services/YearGroups/YearGroups';
-import type { YearGroupsDataResponse } from '@/pages/Dashboard/YearGroups/Types';
+import type { YearGroupsDataResponse } from '@/pages/Dashboard/AdminPanel/YearGroups/Types';
 import type { CreateYearGroupsTypes } from '@/Forms/CreateYearGroupsTypes';
 
 

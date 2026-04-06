@@ -1,5 +1,5 @@
 
-import type { AdminDataResponse } from '@/pages/Dashboard/Admins/Types';
+import type { AdminDataResponse } from '@/pages/Dashboard/AdminPanel/Admins/Types';
 import type { Pagination } from '@/Utils/Types';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getPaginatedLearningHub } from '../LearningHub/Slice';
@@ -57,7 +57,7 @@ export const getExamAttempt = createAsyncThunk('getExamAttempt', async (examId: 
 });
 
 //patch save answer
-export const getSaveAnswer = createAsyncThunk('getSaveAnswer', async ({ examId, questionId, selectedOption }: { examId: string; questionId: string; selectedOption: string }, { rejectWithValue }) => {
+export const getSaveAnswer = createAsyncThunk('getSaveAnswer', async ({ examId, questionId, selectedOption }: { examId: any; questionId: string; selectedOption: string }, { rejectWithValue }) => {
     try {
         const response = await getSaveAnswerData(examId, questionId, selectedOption);
         return response.data;

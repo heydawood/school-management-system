@@ -1,13 +1,21 @@
 import { FormProvider, useForm, type UseFormReturn } from 'react-hook-form';
 import StatChartCard from '../Dashboard/StatChartCard';
 import { customToast } from '@/Common/Components/ShowToast';
-import { useAppDispatch } from '@/Redux/Hooks';
-import type { Dispatch, SetStateAction } from 'react';
+import { useAppDispatch, useAppSelector } from '@/Redux/Hooks';
+import { useEffect, useState, type Dispatch, type SetStateAction } from 'react';
 import { Button } from '@/components/ui/button';
 import Input from '@/components/ui/input/input';
 import { useFieldArray } from 'react-hook-form';
 import { CreateProgramsDefaultValues, type CreateProgramsTypes } from '@/Forms/CreateProgramTypes';
 import { createNewProgram } from '@/Redux/Programs/Slice';
+import Dropdown from '@/components/ui/dropdown/Dropdown';
+import type { TeacherDataResponse } from '@/pages/Dashboard/AdminPanel/Teachers/Types';
+import { getTeachers } from '@/Redux/Teachers/Slice';
+import type { StudentDataResponse } from '@/pages/Dashboard/AdminPanel/Students/Types';
+import { getStudents } from '@/Redux/Students/Slice';
+import { getSubjects } from '@/Redux/Subjects/Slice';
+import type { SubjectsDataResponse } from '@/pages/Dashboard/AdminPanel/Subjects/Types';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -18,6 +26,110 @@ interface Props {
 
 
 const CreateProgramForm = ({ setLoading }: Props) => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+    //subjects data
+    const [subjectData, setSubjectData] = useState<SubjectsDataResponse[]>([]);
+  
+    const handleGetSubjects = () => {
+      setLoading(true);
+      dispatch(getSubjects())
+        .unwrap()
+        .then((res: SubjectsDataResponse[]) => {
+          setSubjectData(res);
+          console.log("Data:", res);
+        })
+        .catch((err) => {
+          console.log("Error: ", err);
+        })
+        .finally(() => {
+          setLoading(false);
+  
+        });
+    };
+  
+    useEffect(() => {
+      handleGetSubjects();
+    }, [dispatch]);
+  
+    const subjects = useAppSelector(
+      (state) => state.SubjectsRecords.subjects
+    );
+  
+    const subjectsData = subjects.map((subject) => ({
+      name: subject.name,
+      value: subject.id,
+    }));
+  
+  
+    //students data
+    const [studentData, setStudentData] = useState<StudentDataResponse[]>([]);
+  
+    const handleGetStudents = () => {
+      setLoading(true);
+      dispatch(getStudents())
+        .unwrap()
+        .then((res: StudentDataResponse[]) => {
+          setStudentData(res);
+          console.log("Data:", res);
+        })
+        .catch((err) => {
+          console.log("Error: ", err);
+        })
+        .finally(() => {
+          setLoading(false);
+  
+        });
+    };
+  
+    useEffect(() => {
+      handleGetStudents();
+    }, [dispatch]);
+  
+    const students = useAppSelector(
+      (state) => state.StudentRecords.students
+    );
+  
+    const studentsData = students.map((student) => ({
+      name: student.name,
+      value: student.id,
+    }));
+
+  //teachers data
+  const [teacherData, setTeacherData] = useState<TeacherDataResponse[]>([]);
+
+  const handleGetTeachers = () => {
+    setLoading(true);
+    dispatch(getTeachers())
+      .unwrap()
+      .then((res: TeacherDataResponse[]) => {
+        setTeacherData(res);
+        console.log("Data:", res);
+      })
+      .catch((err) => {
+        console.log("Error: ", err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    handleGetTeachers();
+  }, [dispatch]);
+
+  const teachers = useAppSelector(
+    (state) => state.TeacherRecords.teachers
+  );
+
+  const teachersData = teachers.map((teacher) => ({
+    name: teacher.name,
+    value: teacher.id,
+  }));
+
+
+
 
   const createProgramsForm = useForm<CreateProgramsTypes>({
     defaultValues: CreateProgramsDefaultValues,
@@ -36,19 +148,19 @@ const CreateProgramForm = ({ setLoading }: Props) => {
   const { fields: teacherFields, append: addTeacher, remove: removeTeacher } =
     useFieldArray({ control, name: 'teachers' });
 
-  const dispatch = useAppDispatch();
+
 
   const onSubmit = (data: CreateProgramsTypes) => {
 
-     const formattedData = {
-    ...data,
-    // returing new array of values instead of objects because of backend schema
-    students: data.students.map(s => s.value), 
-    subjects: data.subjects.map(s => s.value),
-    teachers: data.teachers.map(t => t.value),
-  };
-    
-    
+    const formattedData = {
+      ...data,
+      // returing new array of values instead of objects because of backend schema
+      students: data.students.map(s => s.value),
+      subjects: data.subjects.map(s => s.value),
+      teachers: data.teachers.map(t => t.value),
+    };
+
+
     console.log("Sent data:", formattedData)
     setLoading(true);
     dispatch(createNewProgram(formattedData as any))
@@ -166,31 +278,43 @@ const CreateProgramForm = ({ setLoading }: Props) => {
 
                 {/* students */}
                 <div className="mb-6">
-
                   {studentFields.map((field, index) => (
                     <div key={field.id} className="flex gap-2 mb-2 items-center">
-                      <Input
-                      allowAsterisk={true}
-                      label={"Students"}
-                        placeholder="Enter student"
-                        {...register(`students.${index}.value` as const, {
-                          required: 'Student is required',
-                        })}
-                      />
-                      <div className='mt-6 flex gap-1'>
-                      <Button type="button" disabled={studentFields.length === 1} className={`${studentFields.length === 1 ? 'opacity-50 cursor-not-allowed' : ''}`} onClick={() => removeStudent(index)}>
-                        Remove
-                      </Button>
 
-                      <Button type="button" onClick={() => addStudent({ value: '' })}>
-                    + Add Student
-                  </Button>
-                  </div>
+                      <Dropdown
+                        classNames='w-80'
+                        name={`students.${index}.value`}
+                        label="Student"
+                        placeholder="Select Student"
+                        data={studentsData}
+                        rules={{
+                          required: 'Student is required',
+                        }}
+                        allowAsterisk
+                        isSearchAble
+                      />
+
+                      <div className="mt-6 flex gap-1">
+                        <Button
+                          type="button"
+                          disabled={studentFields.length === 1}
+                          onClick={() => removeStudent(index)}
+                        >
+                          Remove
+                        </Button>
+
+                        <Button
+                          type="button"
+                          onClick={() => addStudent({ value: '' })}
+                        >
+                          + Add
+                        </Button>
+                      </div>
+
                     </div>
                   ))}
-
-                  
                 </div>
+
 
 
                 {/* subjects */}
@@ -198,23 +322,37 @@ const CreateProgramForm = ({ setLoading }: Props) => {
 
                   {subjectFields.map((field, index) => (
                     <div key={field.id} className="flex gap-2 mb-2 items-center">
-                      
-                      <Input
-                      allowAsterisk={true}
-                      label={"Subjects"}
-                        placeholder="Enter subject"
-                        {...register(`subjects.${index}.value` as const)}
+
+                      <Dropdown
+                        classNames='w-80'
+                        name={`subjects.${index}.value`}
+                        label="Subject"
+                        placeholder="Select Subject"
+                        data={subjectsData}
+                        rules={{
+                          required: 'Subject is required',
+                        }}
+                        allowAsterisk
+                        isSearchAble
                       />
 
-                      <div className='mt-6 flex gap-1'>
-                      <Button type="button"  disabled={subjectFields.length === 1} className={`${subjectFields.length === 1 ? 'opacity-50 cursor-not-allowed' : ''}`} onClick={() => removeSubject(index)}>
-                        Remove
-                      </Button>
+                      <div className="mt-6 flex gap-1">
+                        <Button
+                          type="button"
+                          disabled={subjectFields.length === 1}
+                          onClick={() => removeSubject(index)}
+                        >
+                          Remove
+                        </Button>
 
-                      <Button type="button" onClick={() => addSubject({ value: '' })}>
-                    + Add Subject
-                  </Button>
-                  </div>
+                        <Button
+                          type="button"
+                          onClick={() => addSubject({ value: '' })}
+                        >
+                          + Add
+                        </Button>
+                      </div>
+
                     </div>
                   ))}
                 </div>
@@ -222,36 +360,48 @@ const CreateProgramForm = ({ setLoading }: Props) => {
 
                 {/* teachers */}
                 <div className="mb-6">
-                  
-
                   {teacherFields.map((field, index) => (
                     <div key={field.id} className="flex gap-2 mb-2 items-center">
-                      <Input
-                      allowAsterisk={true}
-                      label={"Teachers"}
-                        placeholder="Enter teacher"
-                        {...register(`teachers.${index}.value` as const)}
+
+                      <Dropdown
+                        classNames='w-80'
+                        name={`teachers.${index}.value`}
+                        label="Teacher"
+                        placeholder="Select Teacher"
+                        data={teachersData}
+                        rules={{
+                          required: 'Teacher is required',
+                        }}
+                        allowAsterisk
+                        isSearchAble
                       />
 
-                      <div className='mt-6 flex gap-1'>
-                      <Button type="button" disabled={teacherFields.length === 1}className={`${teacherFields.length === 1 ? 'opacity-50 cursor-not-allowed' : ''}`} onClick={() => removeTeacher(index)}>
-                        Remove
-                      </Button>
+                      <div className="mt-6 flex gap-1">
+                        <Button
+                          type="button"
+                          disabled={teacherFields.length === 1}
+                          onClick={() => removeTeacher(index)}
+                        >
+                          Remove
+                        </Button>
 
-                      <Button type="button" onClick={() => addTeacher({ value: '' })}>
-                    + Add Teacher
-                  </Button>
-                  </div>
+                        <Button
+                          type="button"
+                          onClick={() => addTeacher({ value: '' })}
+                        >
+                          + Add
+                        </Button>
+                      </div>
+
                     </div>
                   ))}
-
-                  
                 </div>
 
 
                 <Button
                   type="submit"
                   className="w-full h-[44px] rounded-[12px] bg-primary-500 hover:bg-primary-600 text-center text-white"
+                  onClick={() => navigate('/dashboard/programs')}
                 >
                   Create Programs
                 </Button>

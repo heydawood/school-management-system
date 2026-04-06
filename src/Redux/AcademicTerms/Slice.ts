@@ -2,7 +2,7 @@ import { customToast } from '@/Common/Components/ShowToast';
 import type { Pagination } from '@/Utils/Types';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getPaginatedLearningHub } from '../LearningHub/Slice';
-import type { AcademicTermDataResponse } from '@/pages/Dashboard/AcademicTerms/Types';
+import type { AcademicTermDataResponse } from '@/pages/Dashboard/AdminPanel/AcademicTerms/Types';
 import { createAcademicTerm, deleteAcademicTermDataById, getAcademicTermDataById, getAcademicTermsData, updateAcademicTermDataById } from '@/Services/AcademicTerms/AcademicTerms';
 import type { CreateAcademicTermTypes } from '@/Forms/CreateAcademicTermTypes';
 

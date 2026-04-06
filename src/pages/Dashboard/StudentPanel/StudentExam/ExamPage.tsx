@@ -3,134 +3,207 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '@/Redux/Hooks';
 import { Button } from '@/components/ui/button';
 import { customToast } from '@/Common/Components/ShowToast';
-import { getExamAttempt, getSaveAnswer, getStartExam, getSubmitExam } from '@/Redux/StudentExam/Slice';
+import {
+  getExamAttempt,
+  getSaveAnswer,
+  getStartExam,
+  getSubmitExam,
+} from '@/Redux/StudentExam/Slice';
 
 const ExamPage = () => {
+  const { examId } = useParams();
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
-    const { examId } = useParams();
-    const navigate = useNavigate();
-    const dispatch = useAppDispatch();
+  const [loading, setLoading] = useState(false);
+  const [questions, setQuestions] = useState<any[]>([]);
+  const [answers, setAnswers] = useState<Record<string, string>>({});
+  const [savedAnswers, setSavedAnswers] = useState<Record<string, boolean>>({});
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-    const [loading, setLoading] = useState(false);
-    const [questions, setQuestions] = useState<any[]>([]);
-    const [answers, setAnswers] = useState<Record<string, string>>({});
+  const currentQuestion = questions[currentIndex];
 
-    
-    const initExam = async () => {
-        if (!examId) return;
+  // INIT EXAM
+  // First, start the exam to create an attempt, then fetch the questions for that attempt
+  const initExam = async () => {
+    if (!examId) return;
 
-        try {
-            setLoading(true);
+    try {
+      setLoading(true);
 
-            // First, start the exam to create an attempt
-            await dispatch(getStartExam(examId)).unwrap();
+      await dispatch(getStartExam(examId)).unwrap();
+      const res = await dispatch(getExamAttempt(examId)).unwrap();
 
-            // Second, fetch the attempt data which includes the questions
-            const res = await dispatch(getExamAttempt(examId)).unwrap();
-            console.log("Attempt Data:", res.data.questions);
-            setQuestions(res.data.questions || []);
-        } catch (err: any) {
-            customToast.error(err);
-        } finally {
-            setLoading(false);
-        }
-    };
+      setQuestions(res.data.questions || []);
+    } catch (err: any) {
+      customToast.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    useEffect(() => {
-        initExam();
-    }, [examId]);
+  useEffect(() => {
+    initExam();
+  }, [examId]);
 
-    // Third, handle answer selection
-    const handleSelect = (questionId: string, option: string) => {
-        // update UI instantly
-        setAnswers((prev) => ({
-            ...prev,
-            [questionId]: option,
+  // SELECT OPTION (UI ONLY)
+  // Second, handle answer selection
+  const handleSelect = (questionId: string, option: string) => {
+    console.log("Selected option:", { questionId, option });
+    setAnswers((prev) => ({
+      ...prev,
+      [questionId]: option,
+    }));
+  };
+
+  // SAVE ANSWER API
+  //Third, save the answer to the backend
+  const handleSave = () => {
+    if (!examId || !currentQuestion) return;
+
+    const selected = answers[currentQuestion.id];
+
+    console.log("Saving answer:", { examId, questionId: currentQuestion.id, selectedOption: `option${selected}` });
+
+    if (!selected) {
+      customToast.error('Please select an option');
+      return;
+    }
+
+    dispatch(
+      getSaveAnswer({
+        examId,
+        questionId: currentQuestion.id,
+        selectedOption: `option${selected}`,
+      })
+    )
+      .unwrap()
+      .then(() => {
+        customToast.success('Answer saved');
+
+        setSavedAnswers((prev) => ({
+          ...prev,
+          [currentQuestion.id]: true,
         }));
+      })
+      .catch((err: any) => {
+        customToast.error(err);
+      });
+  };
 
-        // Fourth, save the answer to the backend
-        console.log("Saving answer...", { examId, questionId, option });
-        dispatch(
-            getSaveAnswer({
-                examId,
-                questionId,
-                selectedOption: `option${option}`, // converts B to optionB
-            })
-        );
-    };
+  //HANDLEING QUESTIONS NAVIGATION
 
-    // Fifth, handle exam submission
-    const handleSubmit = () => {
-        if (!examId) return;
+  // NEXT QUESTION Button
+  const handleNext = () => {
+    if (currentIndex < questions.length - 1) {
+      setCurrentIndex((prev) => prev + 1);
+    }
+  };
 
-        setLoading(true);
+  // PREVIOUS Button
+  const handlePrev = () => {
+    if (currentIndex > 0) {
+      setCurrentIndex((prev) => prev - 1);
+    }
+  };
 
-        dispatch(getSubmitExam(examId))
-            .unwrap()
-            .then(() => {
-                customToast.success('Exam submitted successfully');
-                navigate(`/dashboard/student/exams/${examId}/result`);
-            })
-            .catch((err: any) => {
-                customToast.error(err);
-            })
-            .finally(() => setLoading(false));
-    };
+  // SUBMIT EXAM
+  // Fourth, handle exam submission
+  const handleSubmit = () => {
+    if (!examId) return;
 
-    if (loading) return <div className="p-6">Loading exam...</div>;
+    setLoading(true);
 
-    return (
-        <div className="p-6 space-y-6">
+    dispatch(getSubmitExam(examId))
+      .unwrap()
+      .then(() => {
+        customToast.success('Exam submitted successfully');
+        navigate(`/dashboard/student/exams/${examId}/result`);
+      })
+      .catch((err: any) => {
+        customToast.error(err);
+      })
+      .finally(() => setLoading(false));
+  };
 
-            {/* HEADER */}
-            <div className="flex justify-between items-center">
-                <h1 className="text-xl font-bold">Exam Attempt</h1>
+  if (loading) return <div className="p-6">Loading exam...</div>;
 
-                <Button onClick={handleSubmit}>
-                    Submit Exam
-                </Button>
-            </div>
+  if (!currentQuestion) return <div className="p-6">No questions found</div>;
 
-            {/* QUESTIONS */}
-            <div className="space-y-6">
-                {questions.length === 0 ? (
-                    <p>No questions available</p>
-                ) : (
-                    questions.map((q: any, index: number) => (
-                        <div key={q.id} className="p-4 border rounded-xl">
+  return (
+    <div className="p-6 space-y-6">
 
-                            <h3 className="font-semibold mb-3">
-                                Q{index + 1}: {q.question}
-                            </h3>
+      {/* HEADER */}
+      <div className="flex justify-between items-center">
+        <h1 className="text-xl font-bold">
+          Question {currentIndex + 1} / {questions.length}
+        </h1>
+      </div>
 
-                            <div className="space-y-2">
-                                {['A', 'B', 'C', 'D'].map((key) => {
-                                    const optionValue = q[`option${key}`];
+      {/* QUESTION */}
+      <div className="p-4 border rounded-xl">
+        <h3 className="font-semibold mb-3">
+          {currentQuestion.question}
+        </h3>
 
-                                    if (!optionValue) return null;
+        <div className="space-y-2">
+          {['A', 'B', 'C', 'D'].map((key) => {
+            const optionValue = currentQuestion[`option${key}`];
+            if (!optionValue) return null;
 
-                                    return (
-                                        <label key={key} className="flex items-center gap-2 cursor-pointer">
-                                            <input
-                                                type="radio"
-                                                name={q.id}
-                                                value={key}
-                                                checked={answers[q.id] === key}
-                                                onChange={() => handleSelect(q.id, key)}
-                                            />
-                                            {key}. {optionValue}
-                                        </label>
-                                    );
-                                })}
-
-                            </div>
-
-                        </div>
-                    ))
-                )}
-            </div>
+            return (
+              <label key={key} className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name={currentQuestion.id}
+                  value={key}
+                  checked={answers[currentQuestion.id] === key}
+                  onChange={() => handleSelect(currentQuestion.id, key)}
+                />
+                {key}. {optionValue}
+              </label>
+            );
+          })}
         </div>
-    );
+      </div>
+
+      {/* ACTION BUTTONS */}
+      <div className="flex justify-between">
+
+        <Button
+          onClick={handlePrev}
+          disabled={currentIndex === 0}
+          variant="outline"
+        >
+          Previous
+        </Button>
+
+        <div className="flex gap-2">
+
+          {/* SAVE BUTTON */}
+          <Button onClick={handleSave}>
+            Save Answer
+          </Button>
+
+          {/* NEXT OR SUBMIT */}
+          {currentIndex === questions.length - 1 ? (
+            <Button onClick={handleSubmit}>
+              Submit Exam
+            </Button>
+          ) : (
+            <Button
+              onClick={handleNext}
+              disabled={!savedAnswers[currentQuestion.id]}
+            >
+              Next
+            </Button>
+          )}
+
+        </div>
+      </div>
+
+    </div>
+  );
 };
 
 export default ExamPage;
