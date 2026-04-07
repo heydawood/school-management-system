@@ -161,13 +161,14 @@ const CreateSubjectForm = ({ setLoading }: Props) => {
                     label="Subject Name"
                     type="text"
                     placeholder="Enter Term Name"
-                    {...createSubjectsForm.register('name', {
+                    name='name'
+                    rules={{
                       required: 'Academic Year Name is required',
                       minLength: {
                         value: 3,
                         message: 'Academic Year Name must be at least 3 characters long',
                       },
-                    })}
+                    }}
                   />
                 </div>
 
@@ -179,13 +180,14 @@ const CreateSubjectForm = ({ setLoading }: Props) => {
                     label="Description"
                     type="text"
                     placeholder="Enter Description"
-                    {...createSubjectsForm.register('description', {
+                    name='description'
+                    rules={{
                       required: 'Description is required',
                       minLength: {
                         value: 3,
                         message: 'Description must be at least 3 characters long',
                       },
-                    })}
+                    }}
                   />
                 </div>
 
@@ -196,13 +198,14 @@ const CreateSubjectForm = ({ setLoading }: Props) => {
                     label="Duration"
                     type="text"
                     placeholder="Enter duration"
-                    {...createSubjectsForm.register('duration', {
+                    name='duration'
+                    rules={{
                       required: 'duration is required',
                       minLength: {
                         value: 3,
                         message: 'Duration must be at least 3 characters long',
                       },
-                    })}
+                    }}
                   />
                 </div>
 
@@ -229,13 +232,15 @@ const CreateSubjectForm = ({ setLoading }: Props) => {
                     label="Created By"
                     type="text"
                     placeholder="Enter createdBy"
-                    {...createSubjectsForm.register('createdBy', {
+                    name='createdBy'
+                    rules={{
                       required: 'createdBy is required',
                       minLength: {
                         value: 3,
                         message: 'createdBy must be at least 3 characters long',
                       },
-                    })}
+                    }}
+                    
                   />
                 </div>
 

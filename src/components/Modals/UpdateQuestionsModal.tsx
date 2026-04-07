@@ -7,7 +7,6 @@ import Modalbody from '../ui/modal/Body';
 import Icon from '../ui/svg_icon/SvgIcon';
 import { FormProvider, useForm } from 'react-hook-form';
 import Input from '../ui/input/input';
-import Dropdown from '../ui/dropdown/Dropdown';
 
 interface FormValues {
   question: string;
@@ -22,9 +21,17 @@ interface Props {
   close: () => void;
   onUpdate: (data: FormValues) => void;
   updating: boolean;
-
   initialData?: Partial<FormValues>;
 }
+
+const defaultValues: FormValues = {
+  question: '',
+  optionA: '',
+  optionB: '',
+  optionC: '',
+  optionD: '',
+  correctAnswer: '',
+};
 
 const UpdateQuestionModal: FC<Props> = ({
   close,
@@ -32,30 +39,26 @@ const UpdateQuestionModal: FC<Props> = ({
   onUpdate,
   initialData,
 }) => {
+
   const form = useForm<FormValues>({
-    defaultValues: {
-      question: '',
-      optionA: '',
-      optionB: '',
-      optionC: '',
-      optionD: '',
-      correctAnswer: '',
-    },
+    defaultValues,
     mode: 'onChange',
   });
 
   const {
-    register,
     handleSubmit,
     reset,
     formState: { errors, isValid },
     watch,
   } = form;
 
-  // Prefill form when data comes
+  // Prefill form
   useEffect(() => {
     if (initialData) {
-      reset(initialData);
+      reset({
+        ...defaultValues,
+        ...initialData,
+      });
     }
   }, [initialData, reset]);
 
@@ -86,95 +89,81 @@ const UpdateQuestionModal: FC<Props> = ({
           </div>
         </Modalheader>
 
-        
-        <Modalbody>
-          <FormProvider {...form}>
-            <form onSubmit={handleSubmit(onSubmit)} className="p-4 space-y-4">
+        {/* BODY */}
+        <FormProvider {...form}>
+          <form onSubmit={handleSubmit(onSubmit)}>
 
-              {/* Question */}
-              <div>
+            <Modalbody>
+
+              <div className="p-4 space-y-4">
+
+                {/* Question */}
                 <Input
-                  {...register('question', {
-                    required: 'Question is required',
-                  })}
-                 label='Question'
+                  name="question"
+                  label="Question"
                   placeholder="Enter question"
+                  rules={{ required: 'Question is required' }}
                 />
-                {errors.question && (
-                  <p className="text-red-500 text-xs mt-1">
-                    {errors.question.message}
-                  </p>
-                )}
-              </div>
 
-              {/* Options */}
-              <div className="grid grid-cols-2 gap-4">
-
-                {['optionA', 'optionB', 'optionC', 'optionD'].map((opt) => (
-                  <div key={opt}>
-                    <label className="text-sm font-medium">
-                      {opt.replace('option', 'Option ')}
-                    </label>
-
+                {/* Options */}
+                <div className="grid grid-cols-2 gap-4">
+                  {['optionA', 'optionB', 'optionC', 'optionD'].map((opt) => (
                     <Input
-                      {...register(opt as keyof FormValues, {
-                        required: 'This option is required',
-                      })}
-                      classNames={`w-full border rounded-lg px-4 py-2 mt-1 ${
+                      key={opt}
+                      name={opt as keyof FormValues}
+                      label={opt.replace('option', 'Option ')}
+                      placeholder={`Enter ${opt}`}
+                      rules={{ required: 'This option is required' }}
+                      classNames={`${
                         selectedAnswer === opt
                           ? 'border-green-500 bg-green-50'
                           : ''
                       }`}
                     />
+                  ))}
+                </div>
 
-                    {errors[opt as keyof FormValues] && (
-                      <p className="text-red-500 text-xs mt-1">
-                        {errors[opt as keyof FormValues]?.message as string}
-                      </p>
-                    )}
-                  </div>
-                ))}
+                {/* Correct Answer */}
+                <div>
+                  <label className="text-sm font-medium">Correct Answer</label>
+
+                  <select
+                    {...form.register('correctAnswer', {
+                      required: 'Please select correct answer',
+                    })}
+                    className="w-full border rounded-lg px-4 py-2 mt-1"
+                  >
+                    <option value="">Select correct option</option>
+                    <option value="optionA">Option A</option>
+                    <option value="optionB">Option B</option>
+                    <option value="optionC">Option C</option>
+                    <option value="optionD">Option D</option>
+                  </select>
+
+                  {errors.correctAnswer && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.correctAnswer.message}
+                    </p>
+                  )}
+                </div>
 
               </div>
 
-              {/* Correct Answer */}
-              <div>
-                <label className="text-sm font-medium">Correct Answer</label>
+            </Modalbody>
 
-                <select
-                  {...register('correctAnswer', {
-                    required: 'Please select correct answer',
-                  })}
-                  className="w-full border rounded-lg px-4 py-2 mt-1"
-                >
-                  <option value="">Select correct option</option>
-                  <option value="optionA">Option A</option>
-                  <option value="optionB">Option B</option>
-                  <option value="optionC">Option C</option>
-                  <option value="optionD">Option D</option>
-                </select>
+            {/* FOOTER */}
+            <Modalfooter>
+              <Button
+                type="submit"
+                className="rounded-xl bg-primary-500 hover:bg-primary-600 text-black px-5 py-3 h-12 w-full"
+                disabled={updating || !isValid}
+              >
+                {updating ? 'Updating...' : 'Update Question'}
+              </Button>
+            </Modalfooter>
 
-                {errors.correctAnswer && (
-                  <p className="text-red-500 text-xs mt-1">
-                    {errors.correctAnswer.message}
-                  </p>
-                )}
-              </div>
-
-              
-              <Modalfooter>
-                <Button
-                  type="submit"
-                  className="rounded-xl bg-primary-500 hover:bg-primary-600 text-black px-5 py-3 h-12 w-full"
-                  disabled={updating || !isValid}
-                >
-                  {updating ? 'Updating...' : 'Update Question'}
-                </Button>
-              </Modalfooter>
-
-            </form>
-          </FormProvider>
-        </Modalbody>
+          </form>
+        </FormProvider>
 
       </Fragment>
     </Modal>

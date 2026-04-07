@@ -68,13 +68,14 @@ const CreateQuestionsForm = ({ setLoading }: Props) => {
                   allowAsterisk
                   label="Question"
                   placeholder="Enter question"
-                  {...form.register('question', {
+                  name='question'
+                  rules={{
                     required: 'Question is required',
                     minLength: {
                       value: 5,
                       message: 'Question must be at least 5 characters',
                     },
-                  })}
+                  }}
                 />
               </div>
 
@@ -85,28 +86,32 @@ const CreateQuestionsForm = ({ setLoading }: Props) => {
                   allowAsterisk
                   label="Option A"
                   placeholder="Enter option A"
-                  {...form.register('optionA', { required: 'Option A is required' })}
+                  name='optionA'
+                  rules={ { required: 'Option A is required' }}
                 />
 
                 <Input
                   allowAsterisk
                   label="Option B"
                   placeholder="Enter option B"
-                  {...form.register('optionB', { required: 'Option B is required' })}
+                  name='optionB'
+                  rules={{ required: 'Option B is required' }}
                 />
 
                 <Input
                   allowAsterisk
                   label="Option C"
                   placeholder="Enter option C"
-                  {...form.register('optionC', { required: 'Option C is required' })}
+                  name='optionC'
+                  rules={{ required: 'Option C is required' }}
                 />
 
                 <Input
                   allowAsterisk
                   label="Option D"
                   placeholder="Enter option D"
-                  {...form.register('optionD', { required: 'Option D is required' })}
+                  name='optionD'
+                  rules={{ required: 'Option D is required' }}
                 />
 
               </div>
@@ -148,13 +153,13 @@ const CreateQuestionsForm = ({ setLoading }: Props) => {
                 type="submit"
                 className="w-full mb-3 h-[44px] rounded-[12px] bg-green-500 hover:bg-green-600 text-white"
               >
-                Create Question
+                Save Question
               </Button>
           
             </form>
 
             <Button className="w-full h-[44px] rounded-[12px] bg-primary-500 hover:bg-primary-600 text-white" onClick={() => navigate('/dashboard/teacher/exams')}>
-                Done Adding Questions
+                Go Back
               </Button>
               
             </FormProvider>

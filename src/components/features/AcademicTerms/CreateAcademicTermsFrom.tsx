@@ -62,13 +62,14 @@ const CreateAcademicTermsFrom = ({ setLoading }: Props) => {
                     label="Academic Term Name"
                     type="text"
                     placeholder="Enter Term Name"
-                    {...createAcademicTermForm.register('name', {
+                    name='name'
+                    rules={{
                       required: 'Academic Year Name is required',
                       minLength: {
                         value: 3,
                         message: 'Academic Year Name must be at least 3 characters long',
                       },
-                    })}
+                    }}
                   />
                 </div>
 
@@ -80,13 +81,14 @@ const CreateAcademicTermsFrom = ({ setLoading }: Props) => {
                     label="Description"
                     type="text"
                     placeholder="Enter Description"
-                    {...createAcademicTermForm.register('description', {
+                    name='description'
+                    rules={{
                       required: 'Description is required',
                       minLength: {
                         value: 3,
                         message: 'Description must be at least 3 characters long',
                       },
-                    })}
+                    }}
                   />
                 </div>
 
@@ -97,13 +99,14 @@ const CreateAcademicTermsFrom = ({ setLoading }: Props) => {
                     label="Duration"
                     type="text"
                     placeholder="Enter duration"
-                    {...createAcademicTermForm.register('duration', {
+                    name='duration'
+                    rules={{
                       required: 'duration is required',
                       minLength: {
                         value: 3,
-                        message: 'Duration must be at least 3 characters long',
+                        message: 'duration must be at least 3 characters long',
                       },
-                    })}
+                    }}
                   />
                 </div>
 
@@ -114,13 +117,14 @@ const CreateAcademicTermsFrom = ({ setLoading }: Props) => {
                     label="Created By"
                     type="text"
                     placeholder="Enter createdBy"
-                    {...createAcademicTermForm.register('createdBy', {
+                    name='createdBy'
+                    rules={{
                       required: 'createdBy is required',
                       minLength: {
                         value: 3,
                         message: 'createdBy must be at least 3 characters long',
                       },
-                    })}
+                    }}
                   />
                 </div>
 

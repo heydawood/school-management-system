@@ -101,13 +101,14 @@ const CreateYearGroupForm = ({ setLoading }: Props) => {
                     label="Year Group Name"
                     type="text"
                     placeholder="Enter Year Group Name"
-                    {...createYearGroupForm.register('name', {
+                    name='name'
+                    rules={{
                       required: 'Year Group Name is required',
                       minLength: {
                         value: 3,
                         message: 'Academic Year Name must be at least 3 characters long',
                       },
-                    })}
+                    }}
                   />
                 </div>
 
@@ -119,13 +120,14 @@ const CreateYearGroupForm = ({ setLoading }: Props) => {
                     label="Created By"
                     type="text"
                     placeholder="Enter createdBy"
-                    {...createYearGroupForm.register('createdBy', {
+                    name='createdBy'
+                    rules={{
                       required: 'createdBy is required',
                       minLength: {
                         value: 3,
                         message: 'createdBy must be at least 3 characters long',
                       },
-                    })}
+                    }}
                   />
                 </div>
 
@@ -143,9 +145,6 @@ const CreateYearGroupForm = ({ setLoading }: Props) => {
                     isSearchAble
                   />
                 </div>
-
-
-
 
                 <Button
                   type="submit"

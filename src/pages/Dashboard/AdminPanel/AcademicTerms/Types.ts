@@ -7,3 +7,4 @@ export interface AcademicTermDataResponse {
   createdAt: string;
   updatedAt: string;
 }
+

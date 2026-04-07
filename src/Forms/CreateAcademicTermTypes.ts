@@ -11,3 +11,8 @@ export const CreateAcademicTermDefaultValues: CreateAcademicTermTypes = {
     duration: '',
     createdBy: '',
 }
+
+export interface UpdateAcademicTermFormTypes {
+  name: string;
+  description: string;
+}

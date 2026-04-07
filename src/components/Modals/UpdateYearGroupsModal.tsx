@@ -1,18 +1,21 @@
-import { Fragment, useEffect, useState, type FC } from 'react';
+import { Fragment, useEffect, type FC } from 'react';
 import { Button } from '../ui/button';
 import Modalfooter from '../ui/modal/Footer';
 import Modal from '../ui/modal/Modal';
 import Modalheader from '../ui/modal/Header';
 import Modalbody from '../ui/modal/Body';
 import Icon from '../ui/svg_icon/SvgIcon';
+import { FormProvider, useForm } from 'react-hook-form';
+import Input from '../ui/input/input';
+import { defaultValues, setDefaultValues, type FormTypes } from '@/Forms/UpdateFormTypes';
 
 interface Props {
     close: () => void;
-    onUpdate: (updatedData: { name: string; description: string}) => void;
+    onUpdate: (updatedData: { name: string; description: string }) => void;
     yearGroupsId: string | null;
     updating: boolean;
-    initialName?: string; // pass existing name
-    initialDescription?: string; // pass existing description
+    initialName?: string;
+    initialDescription?: string;
 }
 
 const UpdateYearGroupsModal: FC<Props> = ({
@@ -20,21 +23,28 @@ const UpdateYearGroupsModal: FC<Props> = ({
     updating,
     onUpdate,
     initialName = '',
-    initialDescription = ''
+    initialDescription = '',
 }) => {
 
-    const [name, setName] = useState(initialName);
-    const [description, setDescription] = useState(initialDescription);
+    const form = useForm<FormTypes>({
+        defaultValues,
+        mode: 'onChange',
+    });
+
+    const { handleSubmit, reset } = form;
 
     useEffect(() => {
-        setName(initialName);
-        setDescription(initialDescription);
-    }, [initialName, initialDescription]);
+        reset(
+            setDefaultValues({
+                name: initialName,
+                description: initialDescription,
+            })
+        );
+    }, [initialName, initialDescription, reset]);
 
-    const handleSubmit = () => {
-        if (!name.trim()) return;
-
-        onUpdate({ name, description });
+    const onSubmit = (data: FormTypes) => {
+        if (!data.name.trim()) return;
+        onUpdate(data);
     };
 
     return (
@@ -61,53 +71,42 @@ const UpdateYearGroupsModal: FC<Props> = ({
                 </Modalheader>
 
                 {/* BODY */}
-                <Modalbody fixedHeight={false}>
-                    <div className="p-4 space-y-3">
+                <FormProvider {...form}>
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        <Modalbody fixedHeight={false}>
 
-                        <label className="text-sm font-medium">
-                            Year Group Name
-                        </label>
+                            <div className="p-4 space-y-3">
+                                <Input
+                                    label="Year Group Name"
+                                    name="name"
+                                    rules={{ required: 'Name is required' }}
+                                    placeholder="Enter year group name"
+                                />
+                            </div>
 
-                        <input
-                            type="text"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            placeholder="Enter year name (e.g. 2023-2024)"
-                            className="w-full border border-border rounded-lg px-4 py-2 bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-                        />
+                            <div className="p-4 space-y-3">
+                                <Input
+                                    label="Year Group Description"
+                                    name="description"
+                                    rules={{ required: 'Description is required' }}
+                                    placeholder="Enter description"
+                                />
+                            </div>
 
-                    </div>
-                    
-            
-                    <div className="p-4 space-y-3">
+                        </Modalbody>
 
-                        <label className="text-sm font-medium">
-                            Year Group Description
-                        </label>
-
-                        <input
-                            type="text"
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
-                            placeholder="Enter Description(e.g. second term)"
-                            className="w-full border border-border rounded-lg px-4 py-2 bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-                        />
-
-                    </div>
-                </Modalbody>
-
-                {/* FOOTER */}
-                <Modalfooter>
-
-                    <Button
-                        onClick={handleSubmit}
-                        className="rounded-xl bg-primary-500 hover:bg-primary-600 text-black px-5 py-3 h-12"
-                        disabled={updating || !name.trim()}
-                    >
-                        {updating ? 'Updating...' : 'Update'}
-                    </Button>
-
-                </Modalfooter>
+                        {/* FOOTER */}
+                        <Modalfooter>
+                            <Button
+                                type="submit"
+                                disabled={updating}
+                                className="rounded-xl bg-primary-500 text-black px-5 py-3 h-12"
+                            >
+                                {updating ? 'Updating...' : 'Update'}
+                            </Button>
+                        </Modalfooter>
+                    </form>
+                </FormProvider>
 
             </Fragment>
         </Modal>
@@ -115,6 +114,3 @@ const UpdateYearGroupsModal: FC<Props> = ({
 };
 
 export default UpdateYearGroupsModal;
-
-
-//UpdateYearGroupsModal

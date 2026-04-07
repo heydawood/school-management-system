@@ -19,9 +19,9 @@ const QuestionsTable: FC<{
     filters: { search: string };
 }> = ({ loading, data, pagination, filters }) => {
 
-  const [openQuestionsActionsModal, setOpenQuestionsActionsModal] = useState<boolean>(false);
+    const [openQuestionsActionsModal, setOpenQuestionsActionsModal] = useState<boolean>(false);
 
-  const [selectedQuestionsId, setSelectedQuestionsId] = useState<string | null>(null);
+    const [selectedQuestionsId, setSelectedQuestionsId] = useState<string | null>(null);
 
     const [updateQuestionsId, setUpdateQuestionsId] = useState<string | null>(null);
     const [openUpdateQuestionsModal, setOpenUpdateQuestionsModal] = useState<boolean>(false);
@@ -29,47 +29,47 @@ const QuestionsTable: FC<{
     const [updating, setUpdating] = useState(false);
 
 
-const dispatch = useAppDispatch();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
-      const { handleGetLearningHub } = useLearningHubActionManager();
+    const { handleGetLearningHub } = useLearningHubActionManager();
 
-      //update function
-          const handleUpdateQuestions = async (updatedData: any) => {
-              if (!updateQuestionsId) return;
-      
-              setUpdating(true);
-              try {
-                  await dispatch(updateQuestionsById({ questionsId: updateQuestionsId, questionsData: updatedData }))
-                      .unwrap();
-                  customToast.success('Questions updated successfully.');
-      
-                  // Close the modal
-                  setOpenUpdateQuestionsModal(false);
-      
-                  // Refresh the list after update
-                  setUpdateQuestionsId(null);
-              } catch (error: any) {
-                  customToast.error(error?.message || 'Failed to update Questions');
-              } finally {
-                  setUpdating(false);
-              }
-          };
+    //update function
+    const handleUpdateQuestions = async (updatedData: any) => {
+        if (!updateQuestionsId) return;
+
+        setUpdating(true);
+        try {
+            await dispatch(updateQuestionsById({ questionsId: updateQuestionsId, questionsData: updatedData }))
+                .unwrap();
+            customToast.success('Questions updated successfully.');
+
+            // Close the modal
+            setOpenUpdateQuestionsModal(false);
+
+            // Refresh the list after update
+            setUpdateQuestionsId(null);
+        } catch (error: any) {
+            customToast.error(error?.message || 'Failed to update Questions');
+        } finally {
+            setUpdating(false);
+        }
+    };
 
     const QuestionsListColumns = [
         {
-          title: 'Questions',
-          dataIndex: 'questions',
-          key: 'questions',
-          sorter: (a: QuestionsDataResponse, b: QuestionsDataResponse) => { // these(sorter & render) are built in sorters for the table columns, they sort the data based on the column values
-            const nameA = a?.question?.toLowerCase() || '';
-            const nameB = b?.question?.toLowerCase() || '';
-            return nameA.localeCompare(nameB);
-          },
-          render: (_: any, record: QuestionsDataResponse) => (
-            <div className="flex items-center">
-              <span className="text-paragraph overflow-hidden">{record.question}</span>
-            </div>
-          ),
+            title: 'Questions',
+            dataIndex: 'questions',
+            key: 'questions',
+            sorter: (a: QuestionsDataResponse, b: QuestionsDataResponse) => { // these(sorter & render) are built in sorters for the table columns, they sort the data based on the column values
+                const nameA = a?.question?.toLowerCase() || '';
+                const nameB = b?.question?.toLowerCase() || '';
+                return nameA.localeCompare(nameB);
+            },
+            render: (_: any, record: QuestionsDataResponse) => (
+                <div className="flex items-center">
+                    <span className="text-paragraph overflow-hidden">{record.question}</span>
+                </div>
+            ),
         },
 
         // {
@@ -89,35 +89,36 @@ const dispatch = useAppDispatch();
         // },
 
         {
-          title: 'Action',
-          dataIndex: 'action',
-          key: 'action',
-          render: (_: any, record: QuestionsDataResponse) => (
-            <div>
-              <Button onClick={() => {
+            title: 'Action',
+            dataIndex: 'action',
+            key: 'action',
+            render: (_: any, record: QuestionsDataResponse) => (
+                <div>
+                    <Button onClick={() => {
 
-              
-                setSelectedQuestionsId(record.id);
-                setOpenQuestionsActionsModal(true)}} variant="link" className="text-primary-800 font-semibold">
-                View
-              </Button>
-              <Button 
+
+                        setSelectedQuestionsId(record.id);
+                        setOpenQuestionsActionsModal(true)
+                    }} variant="link" className="text-primary-800 font-semibold">
+                        View
+                    </Button>
+                    <Button
 
                         onClick={() => {
                             setUpdateQuestionsId(record.id);
                             //setModalAction('update');
                             setOpenUpdateQuestionsModal(true)
-                        }} 
-                        variant="link" 
+                        }}
+                        variant="link"
                         className="text-green-600 font-semibold"
                         disabled={updating}
                     >
                         Update
                     </Button>
-            </div>
-          ),
+                </div>
+            ),
         },
-      ];
+    ];
 
     return (
         <>
@@ -147,19 +148,28 @@ const dispatch = useAppDispatch();
             {openQuestionsActionsModal && <QuestionsModal questionsId={selectedQuestionsId} close={() => setOpenQuestionsActionsModal(false)} />}
 
             {openUpdateQuestionsModal && <UpdateQuestionsModal
-            questionsId={updateQuestionsId}
-            onUpdate={handleUpdateQuestions}
-            updating={updating}
-            close={() => setOpenUpdateQuestionsModal(false)}
-            
-            initialName={data.find((term) => term.id === updateQuestionsId)?.question || ''}
-            initialDescription={data.find((term) => term.id === updateQuestionsId)?.description || ''}/>
-        
-        }
+                questionsId={updateQuestionsId}
+                onUpdate={handleUpdateQuestions}
+                updating={updating}
+                close={() => setOpenUpdateQuestionsModal(false)}
+                initialData={(() => {
+                    const q = data.find((item) => item.id === updateQuestionsId);
+
+                    if (!q) return undefined;
+
+                    return {
+                        question: q.question,
+                        optionA: q.optionA,
+                        optionB: q.optionB,
+                        optionC: q.optionC,
+                        optionD: q.optionD,
+                        correctAnswer: q.correctAnswer,
+                    };
+                })()}
+            />
+            }
         </>
     )
 }
 
 export default QuestionsTable
-
-//QuestionsTable

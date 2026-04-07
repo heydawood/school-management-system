@@ -72,8 +72,15 @@ const CreateExamForm = ({ setLoading }: any) => {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
 
           {/* BASIC INFO */}
-          <Input allowAsterisk={true} placeholder='Subject Name' label="Exam Name" {...register('name', { required: true })} />
-          <Input allowAsterisk={true} placeholder='Enter Description' label="Description" {...register('description', { required: true })} />
+          <Input allowAsterisk={true} placeholder='Subject Name' label="Exam Name"
+          name='name'
+          rules={{ required: true }}/>
+          <Input
+          allowAsterisk={true}
+          placeholder='Enter Description'
+          label="Description"
+          name='description'
+          rules={{ required: true }} />
 
           {/* RELATIONS */}
 

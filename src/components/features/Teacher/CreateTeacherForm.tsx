@@ -242,13 +242,14 @@ const CreateTeacherForm = ({ setLoading }: Props) => {
                     label="Full Name"
                     type="text"
                     placeholder="Enter Full Name"
-                    {...createTeacherForm.register('name', {
+                    name='name'
+                    rules={{
                       required: 'Full Name is required',
                       minLength: {
                         value: 2,
                         message: 'Full Name must be at least 2 characters long',
                       },
-                    })}
+                    }}
                   />
                 </div>
 
@@ -259,13 +260,14 @@ const CreateTeacherForm = ({ setLoading }: Props) => {
                     label="Email Address"
                     type="email"
                     placeholder="Enter Email"
-                    {...createTeacherForm.register('email', {
+                    name='email'
+                    rules={{
                       required: 'Email is required',
                       pattern: {
                         value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                         message: 'Please enter a valid email address',
                       },
-                    })}
+                    }}
                   />
                 </div>
 

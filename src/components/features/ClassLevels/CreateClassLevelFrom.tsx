@@ -193,13 +193,15 @@ const CreateClassLevelFrom = ({ setLoading }: Props) => {
                     label="Class Level Name"
                     type="text"
                     placeholder="Enter Term Name"
-                    {...createClassLevelForm.register('name', {
+                    name='name'
+                    rules={{
                       required: 'Academic Year Name is required',
                       minLength: {
                         value: 3,
                         message: 'Class Level must be at least 3 characters long',
                       },
-                    })}
+                    }}
+                    
                   />
                 </div>
 
@@ -211,13 +213,14 @@ const CreateClassLevelFrom = ({ setLoading }: Props) => {
                     label="Description"
                     type="text"
                     placeholder="Enter Description"
-                    {...createClassLevelForm.register('description', {
+                    name='description'
+                    rules={{
                       required: 'Description is required',
                       minLength: {
                         value: 3,
                         message: 'Description must be at least 3 characters long',
                       },
-                    })}
+                    }}
                   />
                 </div>
 
@@ -230,13 +233,14 @@ const CreateClassLevelFrom = ({ setLoading }: Props) => {
                     label="Created By"
                     type="text"
                     placeholder="Enter createdBy"
-                    {...createClassLevelForm.register('createdBy', {
+                    name='createdBy'
+                    rules={{
                       required: 'createdBy is required',
                       minLength: {
                         value: 3,
                         message: 'createdBy must be at least 3 characters long',
                       },
-                    })}
+                    }}
                   />
                 </div>
 

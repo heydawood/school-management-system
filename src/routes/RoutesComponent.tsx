@@ -66,8 +66,8 @@ const CreateQuestionsPage = lazy(() => import('@/pages/Dashboard/TeacherPanel/Qu
 // const StudentHomePage = lazy(() => import('@/pages/Dashboard/StudentPanel/Results/ResultsPage'));
 const StudentExamPage = lazy(() => import('@/pages/Dashboard/StudentPanel/StudentExam/StudentExamPage'));
 const ExamPage = lazy(() => import('@/pages/Dashboard/StudentPanel/StudentExam/ExamPage'));
-const StudentExamResultPage = lazy(() =>import('@/pages/Dashboard/StudentPanel/StudentExam/StudentExamResultPage'));
-const StudentExamReviewPage = lazy(() =>import('@/pages/Dashboard/StudentPanel/StudentExam/StudentExamReviewPage'));
+const StudentExamResultPage = lazy(() => import('@/pages/Dashboard/StudentPanel/StudentExam/StudentExamResultPage'));
+const StudentExamReviewPage = lazy(() => import('@/pages/Dashboard/StudentPanel/StudentExam/StudentExamReviewPage'));
 
 
 
@@ -130,40 +130,116 @@ const RoutesComponent: React.FC = () => {
 
 
           {/* Admins */}
-          <Route path="admins" element={<AdminsPage />} />
-          <Route path="admins/create" element={<CreateAdminsPage />} />
+          <Route path="admins" element={
+            <RoleGuard allowedRoles={["admin"]}>
+              <AdminsPage />
+            </RoleGuard>
+          } />
+          <Route path="admins/create" element={<RoleGuard allowedRoles={["admin"]}>
+            <CreateAdminsPage />
+          </RoleGuard>} />
 
           {/* Teachers */}
-          <Route path="teachers" element={<TeachersPage />} />
-          <Route path="teachers/create" element={<CreateTeachersPage />} />
+          <Route path="teachers" element={
+            <RoleGuard allowedRoles={["admin"]}>
+              <TeachersPage />
+            </RoleGuard>} />
+
+          <Route path="teachers/create" element={
+            <RoleGuard allowedRoles={["admin"]}>
+              <CreateTeachersPage />
+            </RoleGuard>} />
 
           {/* Students */}
-          <Route path="students" element={<StudentsPage />} />
-          <Route path="students/create" element={<CreateStudentsPage />} />
+          <Route path="students" element={<RoleGuard allowedRoles={["admin"]}>
+            <StudentsPage />
+          </RoleGuard>} />
+          <Route path="students/create" element={<RoleGuard allowedRoles={["admin"]}>
+            <CreateStudentsPage />
+          </RoleGuard>} />
 
           {/* Academic Years */}
-          <Route path="academic-years" element={<AcademicYears />} />
-          <Route path="academic-years/create" element={<CreateAcademicYearPage />} />
+          <Route path="academic-years" element={<RoleGuard allowedRoles={["admin"]}>
+            <AcademicYears />
+          </RoleGuard>} 
+          />
+          <Route path="academic-years/create" element={
+            <RoleGuard allowedRoles={["admin"]}>
+            <CreateAcademicYearPage />
+          </RoleGuard>} />
 
           {/* Academic Terms */}
-          <Route path="academic-terms" element={<AcademicTermsPage />} />
-          <Route path="academic-terms/create" element={<CreateAcademicTermPage />} />
+          <Route path="academic-terms" element={
+            <RoleGuard allowedRoles={["admin"]}>
+            <AcademicTermsPage />
+            </RoleGuard>
+          } 
+            />
+          <Route path="academic-terms/create" element={
+            <RoleGuard allowedRoles={["admin"]}>
+
+            <CreateAcademicTermPage />
+            </RoleGuard>
+          } 
+            />
 
           {/* Class Levels */}
-          <Route path="class-levels" element={<ClassLevelsPage />} />
-          <Route path="class-levels/create" element={<CreateClassLevelPage />} />
+          <Route path="class-levels" element={
+            <RoleGuard allowedRoles={["admin"]}>
+
+            <ClassLevelsPage />
+            </RoleGuard>
+          } 
+            />
+          <Route path="class-levels/create" element={
+            <RoleGuard allowedRoles={["admin"]}>
+
+            <CreateClassLevelPage />
+            </RoleGuard>
+          }
+             />
 
           {/* Programs */}
-          <Route path="programs" element={<ProgramsPage />} />
-          <Route path="programs/create" element={<CreateProgramPage />} />
+          <Route path="programs" element={
+            <RoleGuard allowedRoles={["admin"]}>
+
+            <ProgramsPage />
+            </RoleGuard>
+            } />
+          <Route path="programs/create" element={
+            <RoleGuard allowedRoles={["admin"]}>
+
+            <CreateProgramPage />
+            </RoleGuard>
+            } />
 
           {/* Subjects */}
-          <Route path="subjects" element={<SubjectsPage />} />
-          <Route path="subjects/create" element={<CreateSubjectPage />} />
+          <Route path="subjects" element={
+            <RoleGuard allowedRoles={["admin"]}>
+
+            <SubjectsPage />
+            </RoleGuard>
+            } />
+          <Route path="subjects/create" element={
+            <RoleGuard allowedRoles={["admin"]}>
+
+            <CreateSubjectPage />
+            </RoleGuard>
+            } />
 
           {/* Year Groups */}
-          <Route path="year-groups" element={<YearGroupsPage />} />
-          <Route path="year-groups/create" element={<CreateYearGroupsPage />} />
+          <Route path="year-groups" element={
+            <RoleGuard allowedRoles={["admin"]}>
+
+            <YearGroupsPage />
+            </RoleGuard>
+            } />
+          <Route path="year-groups/create" element={
+            <RoleGuard allowedRoles={["admin"]}>
+
+            <CreateYearGroupsPage />
+            </RoleGuard>
+            } />
 
 
           {/* Teacher Panel */}
@@ -186,7 +262,6 @@ const RoutesComponent: React.FC = () => {
             {/* <Route path="questions/create" element={<CreateQuestionsPage />} /> */}
             <Route path="exams/:examId/questions/create" element={<CreateQuestionsPage />} />
 
-            {/*<Route path="results" element={<TeacherResultsPage />} /> */}
           </Route>
 
           {/* Student Panel */}
@@ -199,7 +274,7 @@ const RoutesComponent: React.FC = () => {
             }
           >
             <Route index element={<Navigate to="exams" replace />} />
-            
+
             <Route path="exams" element={<StudentExamPage />} />
             <Route path="exams/:examId" element={<ExamPage />} />
             <Route path="exams/:examId/result" element={<StudentExamResultPage />} />

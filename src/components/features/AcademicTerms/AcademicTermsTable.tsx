@@ -175,8 +175,6 @@ const AcademicTermsTable: FC<{
         },
     ];
 
-
-
     return (
         <>
             <Table
@@ -224,7 +222,7 @@ const AcademicTermsTable: FC<{
             initialDescription={data.find((term) => term.id === updateAcademicTermId)?.description || ''}
         />
         }
-        </>
+    </>
     )
 }
 

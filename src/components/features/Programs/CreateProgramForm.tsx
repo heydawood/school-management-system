@@ -194,13 +194,14 @@ const CreateProgramForm = ({ setLoading }: Props) => {
                     label="Program Name"
                     type="text"
                     placeholder="Enter Program Name"
-                    {...createProgramsForm.register('name', {
+                    name='name'
+                    rules={{
                       required: 'Program Name is required',
                       minLength: {
                         value: 3,
                         message: 'Program must be at least 3 characters long',
                       },
-                    })}
+                    }}
                   />
                 </div>
 
@@ -212,13 +213,14 @@ const CreateProgramForm = ({ setLoading }: Props) => {
                     label="Description"
                     type="text"
                     placeholder="Enter Description"
-                    {...createProgramsForm.register('description', {
+                    name='description'
+                    rules={{
                       required: 'Description is required',
                       minLength: {
                         value: 3,
                         message: 'Description must be at least 3 characters long',
                       },
-                    })}
+                    }}
                   />
                 </div>
 
@@ -229,13 +231,14 @@ const CreateProgramForm = ({ setLoading }: Props) => {
                     label="Duration"
                     type="text"
                     placeholder="Enter duration"
-                    {...createProgramsForm.register('duration', {
+                    name='duration'
+                    rules={{
                       required: 'Duration is required',
                       minLength: {
                         value: 3,
                         message: 'Description must be at least 3 characters long',
                       },
-                    })}
+                    }}
                   />
                 </div>
 
@@ -246,13 +249,14 @@ const CreateProgramForm = ({ setLoading }: Props) => {
                     label="Code"
                     type="text"
                     placeholder="Enter Code"
-                    {...createProgramsForm.register('code', {
+                    name='code'
+                    rules={{
                       required: 'Code is required',
                       minLength: {
                         value: 3,
                         message: 'Code must be at least 3 characters long',
                       },
-                    })}
+                    }}
                   />
                 </div>
 
@@ -265,13 +269,14 @@ const CreateProgramForm = ({ setLoading }: Props) => {
                     label="Created By"
                     type="text"
                     placeholder="Enter createdBy"
-                    {...createProgramsForm.register('createdBy', {
+                    name='createdBy'
+                    rules={{
                       required: 'createdBy is required',
                       minLength: {
                         value: 3,
                         message: 'createdBy must be at least 3 characters long',
                       },
-                    })}
+                    }}
                   />
                 </div>
 

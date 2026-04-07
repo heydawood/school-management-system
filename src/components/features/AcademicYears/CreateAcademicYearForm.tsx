@@ -63,13 +63,14 @@ const CreateAcademicYearForm = ({ setLoading }: Props) => {
                     label="Academic Year Name"
                     type="text"
                     placeholder="Enter Academic Year Name"
-                    {...createAcademicYearForm.register('name', {
+                    name='name'
+                    rules={{
                       required: 'Academic Year Name is required',
                       minLength: {
                         value: 9,
                         message: 'Academic Year Name must be at least 9 characters long',
                       },
-                    })}
+                    }}
                   />
                 </div>
 
@@ -80,13 +81,14 @@ const CreateAcademicYearForm = ({ setLoading }: Props) => {
                     label="From Year"
                     type="text"
                     placeholder="Enter From Year"
-                    {...createAcademicYearForm.register('fromYear', {
+                    name='fromYear'
+                    rules={{
                       required: 'From Year is required',
                       minLength: {
                         value: 4,
                         message: 'From Year must be at least 4 characters long',
                       },
-                    })}
+                    }}
                   />
                 </div>
 
@@ -97,13 +99,14 @@ const CreateAcademicYearForm = ({ setLoading }: Props) => {
                     label="To Year"
                     type="text"
                     placeholder="Enter To Year"
-                    {...createAcademicYearForm.register('toYear', {
+                    name='toYear'
+                    rules={{
                       required: 'To Year is required',
                       minLength: {
                         value: 4,
                         message: 'To Year must be at least 4 characters long',
                       },
-                    })}
+                    }}
                   />
                 </div>
 
@@ -114,13 +117,14 @@ const CreateAcademicYearForm = ({ setLoading }: Props) => {
                     label="Created By"
                     type="text"
                     placeholder="Enter Created By"
-                    {...createAcademicYearForm.register('createdBy', {
+                    name='createdBy'
+                    rules={{
                       required: 'Created By is required',
                       minLength: {
                         value: 2,
                         message: 'Created By must be at least 2 characters long',
-                      },
-                    })}
+                      }}
+                    }
                   />
                 </div>
 
