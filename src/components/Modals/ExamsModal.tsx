@@ -8,6 +8,7 @@ import Icon from '../ui/svg_icon/SvgIcon';
 import { useAppDispatch } from '@/Redux/Hooks';
 import Spinner from '../ui/spinner';
 import { getExamById } from '@/Redux/Exams/Slice';
+import { useExamById } from '@/Hooks/TanStack/Exams/useExamsById';
 
 interface Props {
   close: () => void;
@@ -17,30 +18,32 @@ interface Props {
 const ExamsModal: FC<Props> = ({ close, examId }) => {
   const dispatch = useAppDispatch();
 
-  const [loading, setLoading] = useState<boolean>(false);
-  const [data, setData] = useState<any>(null);
+  // const [loading, setLoading] = useState<boolean>(false);
+  // const [data, setData] = useState<any>(null);
 
-  const handleGetExam = () => {
-    setLoading(true);
+  // const handleGetExam = () => {
+  //   setLoading(true);
 
-    dispatch(getExamById(examId!))
-      .unwrap()
-      .then((res: any) => {
-        setData(res.exam);
-      })
-      .catch((err) => {
-        console.log('Error: ', err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
+  //   dispatch(getExamById(examId!))
+  //     .unwrap()
+  //     .then((res: any) => {
+  //       setData(res.exam);
+  //     })
+  //     .catch((err) => {
+  //       console.log('Error: ', err);
+  //     })
+  //     .finally(() => {
+  //       setLoading(false);
+  //     });
+  // };
 
-  useEffect(() => {
-    if (examId) {
-      handleGetExam();
-    }
-  }, [examId]);
+  // useEffect(() => {
+  //   if (examId) {
+  //     handleGetExam();
+  //   }
+  // }, [examId]);
+
+  const { data, isLoading } = useExamById(examId);
 
   return (
     <Modal
@@ -67,8 +70,8 @@ const ExamsModal: FC<Props> = ({ close, examId }) => {
 
         {/* Body */}
         <Modalbody fixedHeight={false}>
-          {!data && !loading && <p>No data found</p>}
-          {loading && <Spinner />}
+          {!data && !isLoading && <p>No data found</p>}
+          {isLoading && <Spinner />}
 
           {data && (
             <div className="space-y-6">

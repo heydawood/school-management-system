@@ -8,7 +8,8 @@ import Icon from '../ui/svg_icon/SvgIcon';
 import { useAppDispatch } from '@/Redux/Hooks';
 import Spinner from '../ui/spinner';
 import type { ClassLevelDataResponse } from '@/pages/Dashboard/AdminPanel/ClassLevels/Types';
-import { getClassLevelById } from '@/Redux/ClassLevels/Slice';
+import { getClassLevelById } from '@/Redux/AdminPanel/ClassLevels/Slice';
+import { useClassLevelsById } from '@/Hooks/TanStack/ClassLevels/useClassLevelsById';
 
 
 interface Props {
@@ -23,34 +24,35 @@ const ClassLevelsModal: FC<Props> = ({ close, classLevelsId }) => {
 
   const dispatch = useAppDispatch();
 
-  const [loading, setLoading] = useState<boolean>(false);
-  const [data, setData] = useState<ClassLevelDataResponse | null>(null);
+  // const [loading, setLoading] = useState<boolean>(false);
+  // const [data, setData] = useState<ClassLevelDataResponse | null>(null);
 
 
-  const handleGetClassLevel = () => {
-    setLoading(true);
-    dispatch(getClassLevelById(classLevelsId!))
-      .unwrap()
-      .then((res: any) => {
+  // const handleGetClassLevel = () => {
+  //   setLoading(true);
+  //   dispatch(getClassLevelById(classLevelsId!))
+  //     .unwrap()
+  //     .then((res: any) => {
 
-         setData(res.classLevel);
-         console.log("Data:", res.classLevel);
+  //        setData(res.classLevel);
+  //        console.log("Data:", res.classLevel);
 
-      })
-      .catch((err) => {
-        console.log("Error: ", err);
-      })
-      .finally(() => {
-        setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       console.log("Error: ", err);
+  //     })
+  //     .finally(() => {
+  //       setLoading(false);
 
-      });
-  };
+  //     });
+  // };
 
-  useEffect(() => {
-    if (classLevelsId) {
-      handleGetClassLevel();
-    }
-  }, [classLevelsId]);
+  // useEffect(() => {
+  //   if (classLevelsId) {
+  //     handleGetClassLevel();
+  //   }
+  // }, [classLevelsId]);
+  const { data, isLoading } = useClassLevelsById(classLevelsId);
 
 
 
@@ -79,10 +81,10 @@ const ClassLevelsModal: FC<Props> = ({ close, classLevelsId }) => {
               <div className="mt-2">
                 <div>
                   <div className="after:absolute after:inset-y-0 after:w-px after:bg-gray-500/20 relative pl-6 after:left-0 grid dark:after:bg-gray-400/20">
-                    {!data && !loading && (
+                    {!data && !isLoading && (
                       <p>No data found</p>
                     )}
-                    {loading && <Spinner />}
+                    {isLoading && <Spinner />}
 
 
                     {data && (

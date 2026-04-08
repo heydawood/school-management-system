@@ -4,9 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import * as routes from '@/routes/Index';
 import Icon from '@/components/ui/svg_icon/SvgIcon';
-import { getStudents } from '@/Redux/Students/Slice';
 import StudentTable from '@/components/features/Student/StudentTable';
 import type { StudentDataResponse } from './Types';
+import { useStudents } from '@/Hooks/TanStack/Students/useStudents';
 
 
 
@@ -39,33 +39,35 @@ const StudentsPage = () => {
     const { pagination } = useAppSelector((state) => state.StudentRecords);
     
         const [loading, setLoading] = useState<boolean>(false);
-        const [data, setData] = useState<StudentDataResponse[]>([]);
+        //const [data, setData] = useState<StudentDataResponse[]>([]);
         const [filters, setFilters] = useState<{ search: string }>({ search: '' });
     
     
-        const dispatch = useAppDispatch();
         const navigate = useNavigate();
+        // const dispatch = useAppDispatch();
     
-        const handleGetStudents = () => {
-            setLoading(true);
-            dispatch(getStudents())
-              .unwrap()
-              .then((res: StudentDataResponse[]) => {
-                setData(res);
-                console.log("Data:", res);
-              })
-              .catch((err) => {
-                console.log("Error: ", err);
-              })
-              .finally(() => {
-                setLoading(false);
+        // const handleGetStudents = () => {
+        //     setLoading(true);
+        //     dispatch(getStudents())
+        //       .unwrap()
+        //       .then((res: StudentDataResponse[]) => {
+        //         setData(res);
+        //         console.log("Data:", res);
+        //       })
+        //       .catch((err) => {
+        //         console.log("Error: ", err);
+        //       })
+        //       .finally(() => {
+        //         setLoading(false);
                 
-              });
-          };
+        //       });
+        //   };
         
-          useEffect(() => {
-            handleGetStudents();
-          }, [dispatch]);
+        //   useEffect(() => {
+        //     handleGetStudents();
+        //   }, [dispatch]);
+
+        const { data = [], isLoading } = useStudents();
 
   return (
     <div className="space-y-4">

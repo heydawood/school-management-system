@@ -7,15 +7,17 @@ import { Button } from '@/components/ui/button';
 import Input from '@/components/ui/input/input';
 import { useFieldArray } from 'react-hook-form';
 import { CreateProgramsDefaultValues, type CreateProgramsTypes } from '@/Forms/CreateProgramTypes';
-import { createNewProgram } from '@/Redux/Programs/Slice';
+import { createNewProgram } from '@/Redux/AdminPanel/Programs/Slice';
 import Dropdown from '@/components/ui/dropdown/Dropdown';
 import type { TeacherDataResponse } from '@/pages/Dashboard/AdminPanel/Teachers/Types';
 import { getTeachers } from '@/Redux/Teachers/Slice';
 import type { StudentDataResponse } from '@/pages/Dashboard/AdminPanel/Students/Types';
 import { getStudents } from '@/Redux/Students/Slice';
-import { getSubjects } from '@/Redux/Subjects/Slice';
+import { getSubjects } from '@/Redux/AdminPanel/Subjects/Slice';
 import type { SubjectsDataResponse } from '@/pages/Dashboard/AdminPanel/Subjects/Types';
 import { useNavigate } from 'react-router-dom';
+import { useCreatePrograms } from '@/Hooks/TanStack/Programs/useCreatePrograms';
+import { useStudentsOptions } from '@/Hooks/dropdowns/useStudents';
 
 
 
@@ -26,75 +28,17 @@ interface Props {
 
 
 const CreateProgramForm = ({ setLoading }: Props) => {
+
+
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
     //subjects data
-    const [subjectData, setSubjectData] = useState<SubjectsDataResponse[]>([]);
-  
-    const handleGetSubjects = () => {
-      setLoading(true);
-      dispatch(getSubjects())
-        .unwrap()
-        .then((res: SubjectsDataResponse[]) => {
-          setSubjectData(res);
-          console.log("Data:", res);
-        })
-        .catch((err) => {
-          console.log("Error: ", err);
-        })
-        .finally(() => {
-          setLoading(false);
-  
-        });
-    };
-  
-    useEffect(() => {
-      handleGetSubjects();
-    }, [dispatch]);
-  
-    const subjects = useAppSelector(
-      (state) => state.SubjectsRecords.subjects
-    );
-  
-    const subjectsData = subjects.map((subject) => ({
-      name: subject.name,
-      value: subject.id,
-    }));
+    const subjectsData = useStudentsOptions().options
   
   
     //students data
-    const [studentData, setStudentData] = useState<StudentDataResponse[]>([]);
-  
-    const handleGetStudents = () => {
-      setLoading(true);
-      dispatch(getStudents())
-        .unwrap()
-        .then((res: StudentDataResponse[]) => {
-          setStudentData(res);
-          console.log("Data:", res);
-        })
-        .catch((err) => {
-          console.log("Error: ", err);
-        })
-        .finally(() => {
-          setLoading(false);
-  
-        });
-    };
-  
-    useEffect(() => {
-      handleGetStudents();
-    }, [dispatch]);
-  
-    const students = useAppSelector(
-      (state) => state.StudentRecords.students
-    );
-  
-    const studentsData = students.map((student) => ({
-      name: student.name,
-      value: student.id,
-    }));
+    const studentsData = useStudentsOptions().options
 
   //teachers data
   const [teacherData, setTeacherData] = useState<TeacherDataResponse[]>([]);
@@ -149,8 +93,10 @@ const CreateProgramForm = ({ setLoading }: Props) => {
     useFieldArray({ control, name: 'teachers' });
 
 
-
+const createMutation = useCreatePrograms();
   const onSubmit = (data: CreateProgramsTypes) => {
+
+    
 
     const formattedData = {
       ...data,
@@ -161,20 +107,28 @@ const CreateProgramForm = ({ setLoading }: Props) => {
     };
 
 
-    console.log("Sent data:", formattedData)
-    setLoading(true);
-    dispatch(createNewProgram(formattedData as any))
-      .unwrap()
-      .then((res) => {
-        customToast.success(res.message ?? 'Academic Term created successfully.');
+    // console.log("Sent data:", formattedData)
+    // setLoading(true);
+    // dispatch(createNewProgram(formattedData as any))
+    //   .unwrap()
+    //   .then((res) => {
+    //     customToast.success(res.message ?? 'Academic Term created successfully.');
+    //     createProgramsForm.reset();
+    //   })
+    //   .catch((err) => {
+    //     customToast.error(err);
+    //   })
+    //   .finally(() => {
+    //     setLoading(false);
+    //   });
+
+    createMutation.mutate(formattedData, {
+      onSuccess: () => {
         createProgramsForm.reset();
-      })
-      .catch((err) => {
-        customToast.error(err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+
+        navigate('/dashboard/programs');
+      },
+    });
   };
 
 

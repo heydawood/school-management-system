@@ -7,7 +7,7 @@ import Modalbody from '../ui/modal/Body';
 import Icon from '../ui/svg_icon/SvgIcon';
 import { useAppDispatch, useAppSelector } from '@/Redux/Hooks';
 import Spinner from '../ui/spinner';
-import { getAdminById } from '@/Redux/Admin/Slice';
+import { getAdminById } from '@/Redux/AdminPanel/Admin/Slice';
 import type { AdminDataByIdResponse, AdminDataResponse } from '@/pages/Dashboard/AdminPanel/Admins/Types';
 
 interface Props {

@@ -25,11 +25,7 @@ const UpdateAcademicTermModal: FC<Props> = ({
     initialName = '',
     initialDescription = ''
 }) => {
-    
-    // useEffect(() => {
-    //     setName(initialName);
-    //     setDescription(initialDescription);
-    // }, [initialName, initialDescription]);
+
 
     const form = useForm<FormTypes>({
         defaultValues,
@@ -83,34 +79,20 @@ const UpdateAcademicTermModal: FC<Props> = ({
                         <Modalbody fixedHeight={false}>
                             <div className="p-4 space-y-3">
 
-                                {/* <label className="text-sm font-medium">
-                                    Academic Term Name
-                                </label> */}
-
                                 <Input
                                 label='Academic Term Name'
                                 name='name'
                                 rules={{ required: true }}
                                 placeholder="Enter term name"
-                                //className="w-full border rounded-lg px-4 py-2"
                                 />
-
                             </div>
 
                             <div className="p-4 space-y-3">
-
-                                <label className="text-sm font-medium">
-                                    Description
-                                </label>
-
                                 <Input
                                     name='description'
                                     rules={{ required: true }}
                                     label='Description'
-                                    placeholder="Enter description"
-                                   // className="w-full border rounded-lg px-4 py-2"
-                                />
-
+                                    placeholder="Enter description"/>
                             </div>
                         </Modalbody>
 
@@ -124,10 +106,8 @@ const UpdateAcademicTermModal: FC<Props> = ({
                                 {updating ? 'Updating...' : 'Update'}
                             </Button>
                         </Modalfooter>
-
                     </form>
                 </FormProvider>
-
             </Fragment>
         </Modal>
     );

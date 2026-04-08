@@ -8,6 +8,7 @@ import Icon from '../ui/svg_icon/SvgIcon';
 import { useAppDispatch } from '@/Redux/Hooks';
 import Spinner from '../ui/spinner';
 import { getQuestionById } from '@/Redux/Questions/Slice';
+import { useQuestionsById } from '@/Hooks/TanStack/Questions/useQuestionsById';
 
 interface Props {
   close: () => void;
@@ -17,31 +18,33 @@ interface Props {
 const QuestionsModal: FC<Props> = ({ close, questionsId }) => {
   const dispatch = useAppDispatch();
 
-  const [loading, setLoading] = useState<boolean>(false);
-  const [data, setData] = useState<any>(null);
+  // const [loading, setLoading] = useState<boolean>(false);
+  // const [data, setData] = useState<any>(null);
 
-  const handleGetQuestion = () => {
-    setLoading(true);
+  // const handleGetQuestion = () => {
+  //   setLoading(true);
 
-    dispatch(getQuestionById(questionsId!))
-      .unwrap()
-      .then((res: any) => {
-        console.log('modal:', res.question)
-        setData(res.question);
-      })
-      .catch((err) => {
-        console.log('Error: ', err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
+  //   dispatch(getQuestionById(questionsId!))
+  //     .unwrap()
+  //     .then((res: any) => {
+  //       console.log('modal:', res.question)
+  //       setData(res.question);
+  //     })
+  //     .catch((err) => {
+  //       console.log('Error: ', err);
+  //     })
+  //     .finally(() => {
+  //       setLoading(false);
+  //     });
+  // };
 
-  useEffect(() => {
-    if (questionsId) {
-      handleGetQuestion();
-    }
-  }, [questionsId]);
+  // useEffect(() => {
+  //   if (questionsId) {
+  //     handleGetQuestion();
+  //   }
+  // }, [questionsId]);
+
+  const { data, isLoading } = useQuestionsById(questionsId);
 
   return (
     <Modal
@@ -68,8 +71,8 @@ const QuestionsModal: FC<Props> = ({ close, questionsId }) => {
 
         {/* Body */}
         <Modalbody>
-          {!data && !loading && <p>No data found</p>}
-          {loading && <Spinner />}
+          {!data && !isLoading && <p>No data found</p>}
+          {isLoading && <Spinner />}
 
           {data && (
             <div className="space-y-6">

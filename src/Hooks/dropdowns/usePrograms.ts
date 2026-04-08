@@ -1,32 +1,45 @@
 import { useEffect, useState } from 'react';
 import { useAppDispatch } from '@/Redux/Hooks';
-import { getPrograms } from '@/Redux/Programs/Slice';
+import { getPrograms } from '@/Redux/AdminPanel/Programs/Slice';
 import type { ProgramsDataResponse } from '@/pages/Dashboard/AdminPanel/Programs/Types';
+import { usePrograms } from '../TanStack/Programs/usePrograms';
 
 type Option = {
   name: string;
   value: string;
 };
 
-export const usePrograms = (setLoading?: (val: boolean) => void) => {
-  const dispatch = useAppDispatch();
-  const [data, setData] = useState<Option[]>([]);
+// export const usePrograms = (setLoading?: (val: boolean) => void) => {
+//   const dispatch = useAppDispatch();
+//   const [data, setData] = useState<Option[]>([]);
 
-  useEffect(() => {
-    setLoading?.(true);
+//   useEffect(() => {
+//     setLoading?.(true);
 
-    dispatch(getPrograms())
-      .unwrap()
-      .then((res: ProgramsDataResponse[]) => {
-        setData(
-          res.map((p) => ({
-            name: p.name,
-            value: p._id,
-          }))
-        );
-      })
-      .finally(() => setLoading?.(false));
-  }, [dispatch]);
+//     dispatch(getPrograms())
+//       .unwrap()
+//       .then((res: ProgramsDataResponse[]) => {
+//         setData(
+//           res.map((p) => ({
+//             name: p.name,
+//             value: p._id,
+//           }))
+//         );
+//       })
+//       .finally(() => setLoading?.(false));
+//   }, [dispatch]);
 
-  return data;
+//   return data;
+// };
+
+export const useProgramsOptions = () => {
+  const { data = [], isLoading } = usePrograms();
+
+  return {
+    options: data.map((p: ProgramsDataResponse) => ({
+      name: p.name,
+      value: p._id,
+    })),
+    isLoading,
+  };
 };

@@ -7,7 +7,7 @@ import PasswordInput from '@/components/ui/password_input/password-input';
 import Icon from '@/components/ui/svg_icon/SvgIcon';
 import { Button } from '@/components/ui/button';
 import { CreateAdminDefaultValues, type CreateAdminTypes } from '@/Forms/CreateAdminForm';
-import { createNewAdmin } from '@/Redux/Admin/Slice';
+import { createNewAdmin } from '@/Redux/AdminPanel/Admin/Slice';
 import Input from '@/components/ui/input/input';
 import { useNavigate } from 'react-router-dom';
 

@@ -7,8 +7,9 @@ import Modalbody from '../ui/modal/Body';
 import Icon from '../ui/svg_icon/SvgIcon';
 import { useAppDispatch } from '@/Redux/Hooks';
 import Spinner from '../ui/spinner';
-import { getAcademicYearById } from '@/Redux/AcademicYears/Slice';
+import { getAcademicYearById } from '@/Redux/AdminPanel/AcademicYears/Slice';
 import type { AcademicYearDataResponse } from '@/pages/Dashboard/AdminPanel/AcademicYears/Types';
+import { useAcademicYearsById } from '@/Hooks/TanStack/AcademicYears/useAcademicYearsById';
 
 
 interface Props {
@@ -23,34 +24,34 @@ const AcademicYearModal: FC<Props> = ({ close, academicYearId }) => {
 
     const dispatch = useAppDispatch();
 
-    const [loading, setLoading] = useState<boolean>(false);
-    const [data, setData] = useState<AcademicYearDataResponse | null>(null);
+    // const [loading, setLoading] = useState<boolean>(false);
+    // const [data, setData] = useState<AcademicYearDataResponse | null>(null);
 
 
-    const handleGetAcademicYear = () => {
-        setLoading(true);
-        dispatch(getAcademicYearById(academicYearId!))
-            .unwrap()
-            .then((res: any) => {
-                setData(res.data.academicYear);
-                console.log("Data:", res.data.academicYear);
-            })
-            .catch((err) => {
-                console.log("Error: ", err);
-            })
-            .finally(() => {
-                setLoading(false);
+    // const handleGetAcademicYear = () => {
+    //     setLoading(true);
+    //     dispatch(getAcademicYearById(academicYearId!))
+    //         .unwrap()
+    //         .then((res: any) => {
+    //             setData(res.data.academicYear);
+    //             console.log("Data:", res.data.academicYear);
+    //         })
+    //         .catch((err) => {
+    //             console.log("Error: ", err);
+    //         })
+    //         .finally(() => {
+    //             setLoading(false);
 
-            });
-    };
+    //         });
+    // };
 
-    useEffect(() => {
-        if (academicYearId) {
-            handleGetAcademicYear();
-        }
-    }, [academicYearId]);
+    // useEffect(() => {
+    //     if (academicYearId) {
+    //         handleGetAcademicYear();
+    //     }
+    // }, [academicYearId]);
 
-
+const { data, isLoading } = useAcademicYearsById(academicYearId);
 
 
     return (
@@ -77,10 +78,10 @@ const AcademicYearModal: FC<Props> = ({ close, academicYearId }) => {
                             <div className="mt-2">
                                 <div>
                                     <div className="after:absolute after:inset-y-0 after:w-px after:bg-gray-500/20 relative pl-6 after:left-0 grid dark:after:bg-gray-400/20">
-                                        {!data && !loading && (
+                                        {!data && !isLoading && (
                                             <p>No data found</p>
                                         )}
-                                        {loading && <Spinner />}
+                                        {isLoading && <Spinner />}
 
 
                                         {data && (

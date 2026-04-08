@@ -6,8 +6,9 @@ import type { Dispatch, SetStateAction } from 'react';
 import { Button } from '@/components/ui/button';
 import Input from '@/components/ui/input/input';
 import { CreateAcademicYearDefaultValues, type CreateAcademicYearTypes } from '@/Forms/CreateAcademicYearForm';
-import { createNewAcademicYear } from '@/Redux/AcademicYears/Slice';
+import { createNewAcademicYear } from '@/Redux/AdminPanel/AcademicYears/Slice';
 import { useNavigate } from 'react-router-dom';
+import { useCreateAcademicYears } from '@/Hooks/TanStack/AcademicYears/useCreateAcademicYears';
 
 
 
@@ -28,21 +29,18 @@ const CreateAcademicYearForm = ({ setLoading }: Props) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+
+  const createMutation = useCreateAcademicYears();
+
   const onSubmit = (data: CreateAcademicYearTypes) => {
     console.log("Submit clicked: ", data)
-    setLoading(true);
-    dispatch(createNewAcademicYear(data))
-      .unwrap()
-      .then((res) => {
-        customToast.success(res.message ?? 'Academic year created successfully.');
+    createMutation.mutate(data, {
+      onSuccess: () => {
         createAcademicYearForm.reset();
-      })
-      .catch((err) => {
-        customToast.error(err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+
+        navigate('/dashboard/academic-years');
+      },
+    });
   };
 
 
@@ -132,7 +130,6 @@ const CreateAcademicYearForm = ({ setLoading }: Props) => {
                 <Button
                   type="submit"
                   className="w-full h-[44px] rounded-[12px] bg-primary-500 hover:bg-primary-600 text-center text-white"
-                   onClick={() => navigate('/dashboard/academic-years')}
                 >
                   Create Academic Year
                 </Button>

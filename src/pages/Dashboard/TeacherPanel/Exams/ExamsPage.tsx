@@ -7,6 +7,7 @@ import * as routes from '@/routes/Index';
 import { getExams } from '@/Redux/Exams/Slice';
 import ExamsTable from '@/components/features/Exams/ExamsTable';
 import type { ExamsDataResponse } from './Types';
+import { useExams } from '@/Hooks/TanStack/Exams/useExams';
 
 const Header = ({
   onChange,
@@ -35,33 +36,35 @@ function ExamsPage() {
   const { pagination } = useAppSelector((state) => state.ExamsRecords);
 
     const [loading, setLoading] = useState<boolean>(false);
-    const [data, setData] = useState<ExamsDataResponse[]>([]);
+   // const [data, setData] = useState<ExamsDataResponse[]>([]);
     const [filters, setFilters] = useState<{ search: string }>({ search: '' });
 
 
-    const dispatch = useAppDispatch();
     const navigate = useNavigate();
+    // const dispatch = useAppDispatch();
 
-    const handleGetExams = () => {
-        setLoading(true);
-        dispatch(getExams())
-          .unwrap()
-          .then((res: ExamsDataResponse[]) => {
-            setData(res);
-            console.log("Data:", res);
-          })
-          .catch((err) => {
-            console.log("Error: ", err);
-          })
-          .finally(() => {
-            setLoading(false);
+    // const handleGetExams = () => {
+    //     setLoading(true);
+    //     dispatch(getExams())
+    //       .unwrap()
+    //       .then((res: ExamsDataResponse[]) => {
+    //         setData(res);
+    //         console.log("Data:", res);
+    //       })
+    //       .catch((err) => {
+    //         console.log("Error: ", err);
+    //       })
+    //       .finally(() => {
+    //         setLoading(false);
             
-          });
-      };
+    //       });
+    //   };
     
-      useEffect(() => {
-        handleGetExams();
-      }, [dispatch]);
+    //   useEffect(() => {
+    //     handleGetExams();
+    //   }, [dispatch]);
+
+      const { data = [], isLoading } = useExams();
 
   return (
     <div className="space-y-4">

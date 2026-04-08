@@ -6,7 +6,8 @@ import * as routes from '@/routes/Index';
 import Icon from '@/components/ui/svg_icon/SvgIcon';
 import AcademicTermsTable from '@/components/features/AcademicTerms/AcademicTermsTable';
 import type { AcademicTermDataResponse } from './Types';
-import { getAcademicTerms } from '@/Redux/AcademicTerms/Slice';
+import { getAcademicTerms } from '@/Redux/AdminPanel/AcademicTerms/Slice';
+import { useAcademicTerms } from '@/Hooks/TanStack/AcademicTerms/useAcademicTerms';
 
 
 
@@ -35,37 +36,41 @@ const Header = ({
 
 
 const AcademicTermsPage = () => {
+  const navigate = useNavigate();
 
     const { pagination } = useAppSelector((state) => state.AcademicTermsRecords);
     
         const [loading, setLoading] = useState<boolean>(false);
-        const [data, setData] = useState<AcademicTermDataResponse[]>([]);
+        //const [data, setData] = useState<AcademicTermDataResponse[]>([]);
         const [filters, setFilters] = useState<{ search: string }>({ search: '' });
     
     
-        const dispatch = useAppDispatch();
-        const navigate = useNavigate();
+        // const dispatch = useAppDispatch();
+        // const navigate = useNavigate();
     
-        const handleGetAcademicTerms = () => {
-            setLoading(true);
-            dispatch(getAcademicTerms())
-              .unwrap()
-              .then((res: AcademicTermDataResponse[]) => {
-                setData(res);
-                console.log("Data:", res);
-              })
-              .catch((err) => {
-                console.log("Error: ", err);
-              })
-              .finally(() => {
-                setLoading(false);
+        // const handleGetAcademicTerms = () => {
+        //     setLoading(true);
+        //     dispatch(getAcademicTerms())
+        //       .unwrap()
+        //       .then((res: AcademicTermDataResponse[]) => {
+        //         setData(res);
+        //         console.log("Data:", res);
+        //       })
+        //       .catch((err) => {
+        //         console.log("Error: ", err);
+        //       })
+        //       .finally(() => {
+        //         setLoading(false);
                 
-              });
-          };
+        //       });
+        //   };
         
-          useEffect(() => {
-            handleGetAcademicTerms();
-          }, [dispatch]);
+        //   useEffect(() => {
+        //     handleGetAcademicTerms();
+        //   }, [dispatch]);
+        
+        const { data = [], isLoading } = useAcademicTerms();
+        
 
   return (
     <div className="space-y-4">

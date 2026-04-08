@@ -6,10 +6,12 @@ import { Button } from '@/components/ui/button';
 import Input from '@/components/ui/input/input';
 import Dropdown from '@/components/ui/dropdown/Dropdown';
 import { useAppDispatch, useAppSelector } from '@/Redux/Hooks';
-import { getAcademicYears } from '@/Redux/AcademicYears/Slice';
+import { getAcademicYears } from '@/Redux/AdminPanel/AcademicYears/Slice';
 import { CreateYearGroupsDefaultValues, type CreateYearGroupsTypes } from '@/Forms/CreateYearGroupsTypes';
-import { createNewYearGroup } from '@/Redux/YearGroups/Slice';
+import { createNewYearGroup } from '@/Redux/AdminPanel/YearGroups/Slice';
 import { useNavigate } from 'react-router-dom';
+import { useCreateYearGroups } from '@/Hooks/TanStack/YearGroups/useCreateYearGroups';
+import { useAcademicYearsOptions } from '@/Hooks/dropdowns/useAcademicYears';
 
 
 
@@ -25,38 +27,40 @@ const CreateYearGroupForm = ({ setLoading }: Props) => {
 
 
   //fetching AcademicYears from db
-  const [yeardata, setyearData] = useState<CreateYearGroupsTypes[]>([]);
+  // const [yeardata, setyearData] = useState<CreateYearGroupsTypes[]>([]);
 
 
-  const handleGetAcademicYears = () => {
-              setLoading(true);
-              dispatch(getAcademicYears())
-                .unwrap()
-                .then((res: CreateYearGroupsTypes[]) => {
-                  setyearData(res);
-                  console.log("Data:", res);
-                })
-                .catch((err) => {
-                  console.log("Error: ", err);
-                })
-                .finally(() => {
-                  setLoading(false);
+  // const handleGetAcademicYears = () => {
+  //             setLoading(true);
+  //             dispatch(getAcademicYears())
+  //               .unwrap()
+  //               .then((res: CreateYearGroupsTypes[]) => {
+  //                 setyearData(res);
+  //                 console.log("Data:", res);
+  //               })
+  //               .catch((err) => {
+  //                 console.log("Error: ", err);
+  //               })
+  //               .finally(() => {
+  //                 setLoading(false);
                   
-                });
-            };
+  //               });
+  //           };
           
-            useEffect(() => {
-              handleGetAcademicYears();
-            }, [dispatch]);
+  //           useEffect(() => {
+  //             handleGetAcademicYears();
+  //           }, [dispatch]);
 
-  const academicYears = useAppSelector(
-    (state) => state.AcademicYearsRecords.academicYears
-  );
+  // const academicYears = useAppSelector(
+  //   (state) => state.AcademicYearsRecords.academicYears
+  // );
 
-  const academicYearsData = academicYears.map((year) => ({
-    name: year.name,
-    value: year.id,
-  }));
+  // const academicYearsData = academicYears.map((year) => ({
+  //   name: year.name,
+  //   value: year.id,
+  // }));
+
+  const academicYearsData = useAcademicYearsOptions().options
 
 
 
@@ -66,22 +70,15 @@ const CreateYearGroupForm = ({ setLoading }: Props) => {
     mode: 'onChange',
   });
 
-
+const createMutation = useCreateYearGroups();
   const onSubmit = (data: CreateYearGroupsTypes) => {
-    setLoading(true);
-    console.log("Sent Data:", data)
-    dispatch(createNewYearGroup(data))
-      .unwrap()
-      .then((res) => {
-        customToast.success(res.message ?? 'YearGroup created successfully.');
+    createMutation.mutate(data, {
+      onSuccess: () => {
         createYearGroupForm.reset();
-      })
-      .catch((err) => {
-        customToast.error(err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+
+        navigate('/dashboard/year-groups');
+      },
+    });
   };
 
 

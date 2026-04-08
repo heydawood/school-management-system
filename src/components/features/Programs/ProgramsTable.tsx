@@ -6,10 +6,12 @@ import { useLearningHubActionManager } from '@/pages/Dashboard/LearningHub/Learn
 import { useAppDispatch } from '@/Redux/Hooks';
 import { customToast } from '@/Common/Components/ShowToast';
 import type { ProgramsDataResponse } from '@/pages/Dashboard/AdminPanel/Programs/Types';
-import { deleteProgramsById, updateProgramsById } from '@/Redux/Programs/Slice';
+import { deleteProgramsById, updateProgramsById } from '@/Redux/AdminPanel/Programs/Slice';
 import ProgramsModal from '@/components/Modals/ProgramsModal';
 import DeleteProgramsModal from '@/components/Modals/DeleteProgramsModal';
 import UpdateProgramsModal from '@/components/Modals/UpdateProgramsModal';
+import { useUpdatePrograms } from '@/Hooks/TanStack/Programs/useUpdatePrograms';
+import { useDeletePrograms } from '@/Hooks/TanStack/Programs/useDeletePrograms';
 
 const ProgramsTable: FC<{
     loading: boolean;
@@ -35,53 +37,26 @@ const ProgramsTable: FC<{
     const { handleGetLearningHub } = useLearningHubActionManager();
 
 
+    const deleteMutation = useDeletePrograms();
+    const updateMutation = useUpdatePrograms();
+
     //delete function
     const handleDeletePrograms= async () => {
       console.log('deleted clicked. id:', selectedProgramsId)
         if (!selectedProgramsId) return;
 
-        setDeleting(true);
-        try {
-            await dispatch(deleteProgramsById(selectedProgramsId))
-                .unwrap();
-            customToast.success('Program deleted successfully.');
+        deleteMutation.mutate(selectedProgramsId);
+        setOpenDeleteProgramsModal(false);
 
-            // Close the modal
-            setOpenDeleteProgramsModal(false);
-
-            // Refresh the list after deletion
-            setSelectedProgramsId(null);
-
-
-
-        } catch (error: any) {
-            customToast.error(error?.message || 'Failed to delete Programs.');
-        } finally {
-            setDeleting(false);
-        }
     };
 
     //update function
     const handleUpdatePrograms = async (updatedData: any) => {
         if (!updateProgramsId) return;
 
-        setUpdating(true);
-        try {
-          console.log(updatedData)
-            await dispatch(updateProgramsById({ programsId: updateProgramsId, programsData: updatedData }))
-                .unwrap();
-            customToast.success('Programs updated successfully.');
+        updateMutation.mutate({ id: updateProgramsId, data: updatedData });
+        setOpenUpdateProgramsModal(false);
 
-            // Close the modal
-            setOpenUpdateProgramsModal(false);
-
-            // Refresh the list after update
-            setUpdateProgramsId(null);
-        } catch (error: any) {
-            customToast.error(error?.message || 'Failed to update Programs.');
-        } finally {
-            setUpdating(false);
-        }
     };
 
     const ProgramsListColumns = [

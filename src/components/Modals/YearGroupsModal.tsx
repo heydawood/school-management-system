@@ -8,7 +8,8 @@ import Icon from '../ui/svg_icon/SvgIcon';
 import { useAppDispatch } from '@/Redux/Hooks';
 import Spinner from '../ui/spinner';
 import type { YearGroupsDataResponse } from '@/pages/Dashboard/AdminPanel/YearGroups/Types';
-import { getYearGroupsById } from '@/Redux/YearGroups/Slice';
+import { getYearGroupsById } from '@/Redux/AdminPanel/YearGroups/Slice';
+import { useYearGroupsById } from '@/Hooks/TanStack/YearGroups/useYearGroupsById';
 
 
 interface Props {
@@ -23,34 +24,36 @@ const YearGroupsModal: FC<Props> = ({ close, YearGroupsId }) => {
 
   const dispatch = useAppDispatch();
 
-  const [loading, setLoading] = useState<boolean>(false);
-  const [data, setData] = useState<YearGroupsDataResponse | null>(null);
+  // const [loading, setLoading] = useState<boolean>(false);
+  // const [data, setData] = useState<YearGroupsDataResponse | null>(null);
 
 
-  const handleGetYearGroups = () => {
-    setLoading(true);
-    dispatch(getYearGroupsById(YearGroupsId!))
-      .unwrap()
-      .then((res: any) => {
+  // const handleGetYearGroups = () => {
+  //   setLoading(true);
+  //   dispatch(getYearGroupsById(YearGroupsId!))
+  //     .unwrap()
+  //     .then((res: any) => {
 
-         setData(res.data.yearGroup);
-         console.log("Data:", res.data.yearGroup);
+  //        setData(res.data.yearGroup);
+  //        console.log("Data:", res.data.yearGroup);
 
-      })
-      .catch((err) => {
-        console.log("Error: ", err);
-      })
-      .finally(() => {
-        setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       console.log("Error: ", err);
+  //     })
+  //     .finally(() => {
+  //       setLoading(false);
 
-      });
-  };
+  //     });
+  // };
 
-  useEffect(() => {
-    if (YearGroupsId) {
-      handleGetYearGroups();
-    }
-  }, [YearGroupsId]);
+  // useEffect(() => {
+  //   if (YearGroupsId) {
+  //     handleGetYearGroups();
+  //   }
+  // }, [YearGroupsId]);
+
+  const { data, isLoading } = useYearGroupsById(YearGroupsId);
 
 
 
@@ -79,10 +82,10 @@ const YearGroupsModal: FC<Props> = ({ close, YearGroupsId }) => {
               <div className="mt-2">
                 <div>
                   <div className="after:absolute after:inset-y-0 after:w-px after:bg-gray-500/20 relative pl-6 after:left-0 grid dark:after:bg-gray-400/20">
-                    {!data && !loading && (
+                    {!data && !isLoading && (
                       <p>No data found</p>
                     )}
-                    {loading && <Spinner />}
+                    {isLoading && <Spinner />}
 
 
                     {data && (

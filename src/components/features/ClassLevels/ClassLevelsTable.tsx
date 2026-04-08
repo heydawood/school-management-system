@@ -6,10 +6,11 @@ import { useLearningHubActionManager } from '@/pages/Dashboard/LearningHub/Learn
 import { useAppDispatch } from '@/Redux/Hooks';
 import { customToast } from '@/Common/Components/ShowToast';
 import type { ClassLevelDataResponse } from '@/pages/Dashboard/AdminPanel/ClassLevels/Types';
-import { deleteClassLevelById, updateClassLevelById } from '@/Redux/ClassLevels/Slice';
 import DeleteClassLevelsModal from '@/components/Modals/DeleteClassLevelsModal';
 import ClassLevelsModal from '@/components/Modals/ClassLevelsModal';
 import UpdateClassLevelsModal from '@/components/Modals/UpdateClassLevelsModal';
+import { useDeleteClassLevels } from '@/Hooks/TanStack/ClassLevels/useDeleteClassLevels';
+import { useUpdateClassLevels } from '@/Hooks/TanStack/ClassLevels/useUpdateClassLevels';
 
 const ClassLevelsTable: FC<{
     loading: boolean;
@@ -35,52 +36,26 @@ const ClassLevelsTable: FC<{
     const { handleGetLearningHub } = useLearningHubActionManager();
 
 
+    const deleteMutation = useDeleteClassLevels();
+    const updateMutation = useUpdateClassLevels();
+
+
     //delete function
-    const handleDeleteClassLevels= async () => {
+    const handleDeleteClassLevels = async () => {
         console.log('deleted clicked. id:', selectedClassLevelsId)
         if (!selectedClassLevelsId) return;
 
-        setDeleting(true);
-        try {
-            await dispatch(deleteClassLevelById(selectedClassLevelsId))
-                .unwrap();
-            customToast.success('Class Level deleted successfully.');
+        deleteMutation.mutate(selectedClassLevelsId);
+        setOpenDeleteClassLevelsModal(false);
+    }
 
-            // Close the modal
-            setOpenDeleteClassLevelsModal(false);
-
-            // Refresh the list after deletion
-            setSelectedClassLevelsId(null);
-
-
-
-        } catch (error: any) {
-            customToast.error(error?.message || 'Failed to delete Class Level.');
-        } finally {
-            setDeleting(false);
-        }
-    };
 
     //update function
     const handleUpdateClassLevels = async (updatedData: any) => {
         if (!updateClassLevelsId) return;
 
-        setUpdating(true);
-        try {
-            await dispatch(updateClassLevelById({ classLevelId: updateClassLevelsId, classLevelData: updatedData }))
-                .unwrap();
-            customToast.success('class Levels updated successfully.');
-
-            // Close the modal
-            setOpenUpdateClassLevelsModal(false);
-
-            // Refresh the list after update
-            setUpdateClassLevelsId(null);
-        } catch (error: any) {
-            customToast.error(error?.message || 'Failed to update academic term.');
-        } finally {
-            setUpdating(false);
-        }
+        updateMutation.mutate({ id: updateClassLevelsId, data: updatedData });
+        setOpenUpdateClassLevelsModal(false);
     };
 
     const ClassLevelsListColumns = [
@@ -131,26 +106,26 @@ const ClassLevelsTable: FC<{
                         View
                     </Button>
 
-                    <Button 
+                    <Button
                         onClick={() => {
                             setSelectedClassLevelsId(record.id);
-                           // setModalAction('delete');
+                            // setModalAction('delete');
                             setOpenDeleteClassLevelsModal(true)
-                        }} 
-                        variant="link" 
+                        }}
+                        variant="link"
                         className="text-error-800 font-semibold"
                         disabled={deleting}
                     >
                         {deleting ? 'Deleting...' : 'Delete'}
                     </Button>
-                    <Button 
+                    <Button
 
                         onClick={() => {
                             setUpdateClassLevelsId(record.id);
                             //setModalAction('update');
                             setOpenUpdateClassLevelsModal(true)
-                        }} 
-                        variant="link" 
+                        }}
+                        variant="link"
                         className="text-green-600 font-semibold"
                         disabled={updating}
                     >
@@ -189,27 +164,27 @@ const ClassLevelsTable: FC<{
 
             {/* View Modal */}
             {openClassLevelsActionsModal && <ClassLevelsModal
-             classLevelsId={selectedClassLevelsId} 
-             close={() => setOpenClassLevelsActionsModal(false)} />}
+                classLevelsId={selectedClassLevelsId}
+                close={() => setOpenClassLevelsActionsModal(false)} />}
 
             {openDeleteClassLevelsModal && <DeleteClassLevelsModal
                 onDelete={handleDeleteClassLevels}
                 deleting={deleting}
-             
-             close={() => setOpenDeleteClassLevelsModal(false)} />}
 
-                {/* Update Modal */}
+                close={() => setOpenDeleteClassLevelsModal(false)} />}
 
-        {openUpdateClassLevelsModal && <UpdateClassLevelsModal
-            classLevelsId={updateClassLevelsId}
-            onUpdate={handleUpdateClassLevels}
-            updating={updating}
-            close={() => setOpenUpdateClassLevelsModal(false)}
-            
-            initialName={data.find((term) => term.id === updateClassLevelsId)?.name || ''}
-            initialDescription={data.find((term) => term.id === updateClassLevelsId)?.description || ''}
-        />
-        }
+            {/* Update Modal */}
+
+            {openUpdateClassLevelsModal && <UpdateClassLevelsModal
+                classLevelsId={updateClassLevelsId}
+                onUpdate={handleUpdateClassLevels}
+                updating={updating}
+                close={() => setOpenUpdateClassLevelsModal(false)}
+
+                initialName={data.find((term) => term.id === updateClassLevelsId)?.name || ''}
+                initialDescription={data.find((term) => term.id === updateClassLevelsId)?.description || ''}
+            />
+            }
         </>
     )
 }

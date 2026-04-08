@@ -8,7 +8,8 @@ import Icon from '../ui/svg_icon/SvgIcon';
 import { useAppDispatch } from '@/Redux/Hooks';
 import Spinner from '../ui/spinner';
 import type { ProgramsDataResponse } from '@/pages/Dashboard/AdminPanel/Programs/Types';
-import { getProgramsById } from '@/Redux/Programs/Slice';
+import { getProgramsById } from '@/Redux/AdminPanel/Programs/Slice';
+import { useProgramsById } from '@/Hooks/TanStack/Programs/useProgramsById';
 
 
 interface Props {
@@ -21,37 +22,38 @@ interface Props {
 const ProgramsModal: FC<Props> = ({ close, programsId }) => {
 
 
-  const dispatch = useAppDispatch();
+  //const dispatch = useAppDispatch();
 
-  const [loading, setLoading] = useState<boolean>(false);
-  const [data, setData] = useState<ProgramsDataResponse | null>(null);
+  // const [loading, setLoading] = useState<boolean>(false);
+  // const [data, setData] = useState<ProgramsDataResponse | null>(null);
 
 
-  const handleGetPrograms = () => {
-    setLoading(true);
-    dispatch(getProgramsById(programsId!))
-      .unwrap()
-      .then((res: any) => {
+  // const handleGetPrograms = () => {
+  //   setLoading(true);
+  //   dispatch(getProgramsById(programsId!))
+  //     .unwrap()
+  //     .then((res: any) => {
 
-         setData(res.data.program);
-         console.log("Data:", res.data.program);
+  //        setData(res.data.program);
+  //        console.log("Data:", res.data.program);
 
-      })
-      .catch((err) => {
-        console.log("Error: ", err);
-      })
-      .finally(() => {
-        setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       console.log("Error: ", err);
+  //     })
+  //     .finally(() => {
+  //       setLoading(false);
 
-      });
-  };
+  //     });
+  // };
 
-  useEffect(() => {
-    if (programsId) {
-      handleGetPrograms();
-    }
-  }, [programsId]);
+  // useEffect(() => {
+  //   if (programsId) {
+  //     handleGetPrograms();
+  //   }
+  // }, [programsId]);
 
+  const { data, isLoading } = useProgramsById(programsId);
 
 
 
@@ -79,10 +81,10 @@ const ProgramsModal: FC<Props> = ({ close, programsId }) => {
               <div className="mt-2">
                 <div>
                   <div className="after:absolute after:inset-y-0 after:w-px after:bg-gray-500/20 relative pl-6 after:left-0 grid dark:after:bg-gray-400/20">
-                    {!data && !loading && (
+                    {!data && !isLoading && (
                       <p>No data found</p>
                     )}
-                    {loading && <Spinner />}
+                    {isLoading && <Spinner />}
 
 
                     {data && (
@@ -164,4 +166,3 @@ const ProgramsModal: FC<Props> = ({ close, programsId }) => {
 }
 
 export default ProgramsModal
-//ProgramsModal

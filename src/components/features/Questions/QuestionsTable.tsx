@@ -11,6 +11,7 @@ import { useAppDispatch } from '@/Redux/Hooks';
 import { customToast } from '@/Common/Components/ShowToast';
 import UpdateQuestionsModal from '@/components/Modals/UpdateQuestionsModal';
 import { updateQuestionsById } from '@/Redux/Questions/Slice';
+import { useUpdateQuestions } from '@/Hooks/TanStack/Questions/useUpdateQuestions';
 
 const QuestionsTable: FC<{
     loading: boolean;
@@ -29,30 +30,18 @@ const QuestionsTable: FC<{
     const [updating, setUpdating] = useState(false);
 
 
-    const dispatch = useAppDispatch();
-    const navigate = useNavigate();
     const { handleGetLearningHub } = useLearningHubActionManager();
 
+
+    const updateMutation = useUpdateQuestions();
     //update function
     const handleUpdateQuestions = async (updatedData: any) => {
         if (!updateQuestionsId) return;
 
-        setUpdating(true);
-        try {
-            await dispatch(updateQuestionsById({ questionsId: updateQuestionsId, questionsData: updatedData }))
-                .unwrap();
-            customToast.success('Questions updated successfully.');
+        updateMutation.mutate({ id: updateQuestionsId, data: updatedData });
+        setOpenUpdateQuestionsModal(false);
 
-            // Close the modal
-            setOpenUpdateQuestionsModal(false);
 
-            // Refresh the list after update
-            setUpdateQuestionsId(null);
-        } catch (error: any) {
-            customToast.error(error?.message || 'Failed to update Questions');
-        } finally {
-            setUpdating(false);
-        }
     };
 
     const QuestionsListColumns = [

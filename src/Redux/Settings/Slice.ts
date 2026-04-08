@@ -1,5 +1,5 @@
 import { customToast } from '@/Common/Components/ShowToast';
-import { updateAdminInfo } from '@/Services/Admin/Admin';
+import { updateAdminInfo } from '@/Services/AdminPanel/Admin/Admin';
 import {
   getAdminBasicSettingsHandler,
   updateAdminPasswordHandler,

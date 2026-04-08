@@ -9,7 +9,9 @@ import AcademicTermModal from '@/components/Modals/AcademicTermModal';
 import DeleteAcademicTermModal from '@/components/Modals/DeleteAcademicTermModal';
 import UpdateAcademicTermModal from '@/components/Modals/UpdateAcademicTermModal';
 import type { AcademicTermDataResponse } from '@/pages/Dashboard/AdminPanel/AcademicTerms/Types';
-import { deleteAcademicTermById, updateAcademicTermById } from '@/Redux/AcademicTerms/Slice';
+import { deleteAcademicTermById, updateAcademicTermById } from '@/Redux/AdminPanel/AcademicTerms/Slice';
+import { useDeleteAcademicTerm } from '@/Hooks/TanStack/AcademicTerms/useDeleteAcademicTerm';
+import { useUpdateAcademicTerm } from '@/Hooks/TanStack/AcademicTerms/useUpdateAcademicTerm';
 
 const AcademicTermsTable: FC<{
     loading: boolean;
@@ -36,51 +38,72 @@ const AcademicTermsTable: FC<{
 
 
     //delete function
-    const handleDeleteAcademicTerm = async () => {
+    // const handleDeleteAcademicTerm = async () => {
+    //     if (!selectedAcademicTermId) return;
+
+    //     setDeleting(true);
+    //     try {
+    //         await dispatch(deleteAcademicTermById(selectedAcademicTermId))
+    //             .unwrap();
+    //         customToast.success('Academic term deleted successfully.');
+
+    //         // Close the modal
+    //         setOpenDeleteAcademicTermModal(false);
+
+    //         // Refresh the list after deletion
+    //         setSelectedAcademicTermId(null);
+
+
+
+    //     } catch (error: any) {
+    //         customToast.error(error?.message || 'Failed to delete academic term.');
+    //     } finally {
+    //         setDeleting(false);
+    //     }
+    // };
+    const deleteMutation = useDeleteAcademicTerm();
+    const updateMutation = useUpdateAcademicTerm();
+
+    const handleDeleteAcademicTerm = () => {
         if (!selectedAcademicTermId) return;
 
-        setDeleting(true);
-        try {
-            await dispatch(deleteAcademicTermById(selectedAcademicTermId))
-                .unwrap();
-            customToast.success('Academic term deleted successfully.');
-
-            // Close the modal
-            setOpenDeleteAcademicTermModal(false);
-
-            // Refresh the list after deletion
-            setSelectedAcademicTermId(null);
-
-
-
-        } catch (error: any) {
-            customToast.error(error?.message || 'Failed to delete academic term.');
-        } finally {
-            setDeleting(false);
-        }
+        deleteMutation.mutate(selectedAcademicTermId);
+        setOpenDeleteAcademicTermModal(false);
     };
+
 
     //update function
-    const handleUpdateAcademicTerm = async (updatedData: any) => {
+    // const handleUpdateAcademicTerm = async (updatedData: any) => {
+    //     if (!updateAcademicTermId) return;
+
+    //     setUpdating(true);
+    //     try {
+    //         await dispatch(updateAcademicTermById({ academicTermId: updateAcademicTermId, academicTermData: updatedData }))
+    //             .unwrap();
+    //         customToast.success('Academic term updated successfully.');
+
+    //         // Close the modal
+    //         setOpenUpdateAcademicTermModal(false);
+
+    //         // Refresh the list after update
+    //         setUpdateAcademicTermId(null);
+    //     } catch (error: any) {
+    //         customToast.error(error?.message || 'Failed to update academic term.');
+    //     } finally {
+    //         setUpdating(false);
+    //     }
+    // };
+    const handleUpdateAcademicTerm = (data: any) => {
         if (!updateAcademicTermId) return;
 
-        setUpdating(true);
-        try {
-            await dispatch(updateAcademicTermById({ academicTermId: updateAcademicTermId, academicTermData: updatedData }))
-                .unwrap();
-            customToast.success('Academic term updated successfully.');
+        updateMutation.mutate({
+            id: updateAcademicTermId,
+            data,
+        });
 
-            // Close the modal
-            setOpenUpdateAcademicTermModal(false);
-
-            // Refresh the list after update
-            setUpdateAcademicTermId(null);
-        } catch (error: any) {
-            customToast.error(error?.message || 'Failed to update academic term.');
-        } finally {
-            setUpdating(false);
-        }
+        setOpenUpdateAcademicTermModal(false);
     };
+
 
     const AcademicTermsListColumns = [
         {
@@ -145,28 +168,30 @@ const AcademicTermsTable: FC<{
                         View
                     </Button>
 
-                    <Button 
+                    <Button
                         onClick={() => {
                             setSelectedAcademicTermId(record.id);
-                           // setModalAction('delete');
+                            // setModalAction('delete');
                             setOpenDeleteAcademicTermModal(true)
-                        }} 
-                        variant="link" 
+                        }}
+                        variant="link"
                         className="text-error-800 font-semibold"
-                        disabled={deleting}
+                        //disabled={deleting}
+                        disabled={deleteMutation.isPending}
                     >
                         {deleting ? 'Deleting...' : 'Delete'}
                     </Button>
-                    <Button 
+                    <Button
 
                         onClick={() => {
                             setUpdateAcademicTermId(record.id);
                             //setModalAction('update');
                             setOpenUpdateAcademicTermModal(true)
-                        }} 
-                        variant="link" 
+                        }}
+                        variant="link"
                         className="text-green-600 font-semibold"
-                        disabled={updating}
+                        //disabled={updating}
+                        disabled={updateMutation.isPending}
                     >
                         Update
                     </Button>
@@ -201,28 +226,28 @@ const AcademicTermsTable: FC<{
 
             {/* View Modal */}
             {openAcademicTermActionsModal && <AcademicTermModal
-             academicTermId={selectedAcademicTermId} 
-             close={() => setOpenAcademicTermActionsModal(false)} />}
+                academicTermId={selectedAcademicTermId}
+                close={() => setOpenAcademicTermActionsModal(false)} />}
 
             {openDeleteAcademicTermModal && <DeleteAcademicTermModal
                 onDelete={handleDeleteAcademicTerm}
                 deleting={deleting}
-             
-             close={() => setOpenDeleteAcademicTermModal(false)} />}
 
-                {/* Update Modal */}
+                close={() => setOpenDeleteAcademicTermModal(false)} />}
 
-        {openUpdateAcademicTermModal && <UpdateAcademicTermModal
-            academicTermId={updateAcademicTermId}
-            onUpdate={handleUpdateAcademicTerm}
-            updating={updating}
-            close={() => setOpenUpdateAcademicTermModal(false)}
-            
-            initialName={data.find((term) => term.id === updateAcademicTermId)?.name || ''}
-            initialDescription={data.find((term) => term.id === updateAcademicTermId)?.description || ''}
-        />
-        }
-    </>
+            {/* Update Modal */}
+
+            {openUpdateAcademicTermModal && <UpdateAcademicTermModal
+                academicTermId={updateAcademicTermId}
+                onUpdate={handleUpdateAcademicTerm}
+                updating={updating}
+                close={() => setOpenUpdateAcademicTermModal(false)}
+
+                initialName={data.find((term) => term.id === updateAcademicTermId)?.name || ''}
+                initialDescription={data.find((term) => term.id === updateAcademicTermId)?.description || ''}
+            />
+            }
+        </>
     )
 }
 

@@ -6,7 +6,8 @@ import * as routes from '@/routes/Index';
 import Icon from '@/components/ui/svg_icon/SvgIcon';
 import type { ClassLevelDataResponse } from './Types';
 import ClassLevelsTable from '@/components/features/ClassLevels/ClassLevelsTable';
-import { getClassLevels } from '@/Redux/ClassLevels/Slice';
+import { getClassLevels } from '@/Redux/AdminPanel/ClassLevels/Slice';
+import { useClassLevels } from '@/Hooks/TanStack/ClassLevels/useClassLevels';
 
 
 
@@ -39,33 +40,13 @@ const ClassLevelsPage = () => {
     const { pagination } = useAppSelector((state) => state.AcademicTermsRecords);
     
         const [loading, setLoading] = useState<boolean>(false);
-        const [data, setData] = useState<ClassLevelDataResponse[]>([]);
+        //const [data, setData] = useState<ClassLevelDataResponse[]>([]);
         const [filters, setFilters] = useState<{ search: string }>({ search: '' });
     
-    
-        const dispatch = useAppDispatch();
         const navigate = useNavigate();
-    
-        const handleGetClassLevels = () => {
-            setLoading(true);
-            dispatch(getClassLevels())
-              .unwrap()
-              .then((res: ClassLevelDataResponse[]) => {
-                setData(res);
-                console.log("Data:", res);
-              })
-              .catch((err) => {
-                console.log("Error: ", err);
-              })
-              .finally(() => {
-                setLoading(false);
-                
-              });
-          };
+
         
-          useEffect(() => {
-            handleGetClassLevels();
-          }, [dispatch]);
+        const { data = [], isLoading } = useClassLevels();
 
   return (
     <div className="space-y-4">

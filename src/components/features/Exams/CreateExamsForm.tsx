@@ -7,12 +7,13 @@ import Input from '@/components/ui/input/input';
 import { createNewExam } from '@/Redux/Exams/Slice';
 import { CreateExamDefaultValues, type CreateExamTypes } from '@/Forms/CreateExamsTypes';
 import Dropdown from '@/components/ui/dropdown/Dropdown';
-import { usePrograms } from '@/Hooks/dropdowns/usePrograms';
-import { useSubjects } from '@/Hooks/dropdowns/useSubjects';
-import { useClassLevels } from '@/Hooks/dropdowns/useClassLevels';
-import { useAcademicTerms } from '@/Hooks/dropdowns/useAcademicTerms';
-import { useAcademicYears } from '@/Hooks/dropdowns/useAcademicYears';
+import { useProgramsOptions } from '@/Hooks/dropdowns/usePrograms';
+import {  useSubjectsOptions } from '@/Hooks/dropdowns/useSubjects';
+import {  useClassLevelsOptions } from '@/Hooks/dropdowns/useClassLevels';
+import {  useAcademicTermsOptions } from '@/Hooks/dropdowns/useAcademicTerms';
+import {  useAcademicYearsOptions } from '@/Hooks/dropdowns/useAcademicYears';
 import { useNavigate } from 'react-router-dom';
+import { useCreateExams } from '@/Hooks/TanStack/Exams/useCreateExams';
 
 
 
@@ -22,19 +23,19 @@ const CreateExamForm = ({ setLoading }: any) => {
 
 
   //fetching progrm data
-  const programsData = usePrograms(setLoading);
+  const programsData = useProgramsOptions().options
 
   //fetching years from db
-  const academicYearsData = useAcademicYears(setLoading);
+  const academicYearsData = useAcademicYearsOptions().options
 
   //fetching ClassLevels from db
-  const classLevelsData = useClassLevels(setLoading);
+  const classLevelsData = useClassLevelsOptions().options
 
   //fetching terms from db
-  const academicTermsData = useAcademicTerms(setLoading);
+  const academicTermsData = useAcademicTermsOptions().options
 
   //getting subjects
-  const subjectsData = useSubjects(setLoading);
+  const subjectsData = useSubjectsOptions().options
 
 
   const form = useForm<CreateExamTypes>({
@@ -42,28 +43,43 @@ const CreateExamForm = ({ setLoading }: any) => {
     mode: 'onChange',
   });
 
-  const { control, register } = form;
 
+  // const onSubmit = (data: CreateExamTypes) => {
+  //   setLoading(true);
 
+  //   dispatch(createNewExam(data))
+  //     .unwrap()
+  //     .then((res: any) => {
+  //       console.log('res: ', res)
+  //       const examId = res.newExam._id;
 
-  const onSubmit = (data: CreateExamTypes) => {
-    setLoading(true);
+  //       customToast.success("Exam created. Now add questions");
 
-    dispatch(createNewExam(data))
-      .unwrap()
-      .then((res: any) => {
-        console.log('res: ', res)
-        const examId = res.newExam._id;
+  //       navigate(`/dashboard/teacher/exams/${examId}/questions/create`);
+  //     })
+  //     .catch((err: any) => {
+  //       customToast.error(err);
+  //     })
+  //     .finally(() => setLoading(false));
+  // };
 
-        customToast.success("Exam created. Now add questions");
+  const createMutation = useCreateExams();
 
-        navigate(`/dashboard/teacher/exams/${examId}/questions/create`);
-      })
-      .catch((err: any) => {
-        customToast.error(err);
-      })
-      .finally(() => setLoading(false));
-  };
+const onSubmit = (data: CreateExamTypes) => {
+  createMutation.mutate(data, {
+    onSuccess: (res: any) => {
+      console.log('res: ', res);
+
+      const examId = res?.newExam?._id;
+
+      navigate(`/dashboard/teacher/exams/${examId}/questions/create`);
+    },
+    onError: (err: any) => {
+      customToast.error(err?.message || 'Something went wrong');
+    },
+  });
+};
+
 
 
   return (

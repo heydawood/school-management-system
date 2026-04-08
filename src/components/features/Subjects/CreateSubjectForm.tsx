@@ -5,16 +5,19 @@ import { useEffect, useState, type Dispatch, type SetStateAction } from 'react';
 import { Button } from '@/components/ui/button';
 import Input from '@/components/ui/input/input';
 import { CreateSubjectsDefaultValues, type CreateSubjectsTypes } from '@/Forms/CreateSubjectsTypes';
-import { createNewSubject } from '@/Redux/Subjects/Slice';
+import { createNewSubject } from '@/Redux/AdminPanel/Subjects/Slice';
 import Dropdown from '@/components/ui/dropdown/Dropdown';
-import { getAcademicTerms } from '@/Redux/AcademicTerms/Slice';
+import { getAcademicTerms } from '@/Redux/AdminPanel/AcademicTerms/Slice';
 import type { AcademicTermDataResponse } from '@/pages/Dashboard/AdminPanel/AcademicTerms/Types';
 import { useAppDispatch, useAppSelector } from '@/Redux/Hooks';
-import { getPrograms } from '@/Redux/Programs/Slice';
+import { getPrograms } from '@/Redux/AdminPanel/Programs/Slice';
 import type { ProgramsDataResponse } from '@/pages/Dashboard/AdminPanel/Programs/Types';
 import { useNavigate } from 'react-router-dom';
 import type { TeacherDataResponse } from '@/pages/Dashboard/AdminPanel/Teachers/Types';
 import { getTeachers } from '@/Redux/Teachers/Slice';
+import { useAcademicTermsOptions } from '@/Hooks/dropdowns/useAcademicTerms';
+import { useProgramsOptions } from '@/Hooks/dropdowns/usePrograms';
+import { useCreateSubjects } from '@/Hooks/TanStack/Subjects/useCreateSubjects';
 
 
 
@@ -62,62 +65,42 @@ const CreateSubjectForm = ({ setLoading }: Props) => {
 
 
   //fetching terms from db
-  const [termdata, setTermData] = useState<AcademicTermDataResponse[]>([]);
+  // const [termdata, setTermData] = useState<AcademicTermDataResponse[]>([]);
 
 
-  const handleGetAcademicTerms = () => {
-    setLoading(true);
-    dispatch(getAcademicTerms())
-      .unwrap()
-      .then((res: AcademicTermDataResponse[]) => {
-        setTermData(res);
-        console.log("Data:", res);
-      })
-      .catch((err) => {
-        console.log("Error: ", err);
-      })
-      .finally(() => {
-        setLoading(false);
+  // const handleGetAcademicTerms = () => {
+  //   setLoading(true);
+  //   dispatch(getAcademicTerms())
+  //     .unwrap()
+  //     .then((res: AcademicTermDataResponse[]) => {
+  //       setTermData(res);
+  //       console.log("Data:", res);
+  //     })
+  //     .catch((err) => {
+  //       console.log("Error: ", err);
+  //     })
+  //     .finally(() => {
+  //       setLoading(false);
 
-      });
-  };
+  //     });
+  // };
 
-  useEffect(() => {
-    handleGetAcademicTerms();
-  }, [dispatch]);
+  // useEffect(() => {
+  //   handleGetAcademicTerms();
+  // }, [dispatch]);
 
-  const academicTerms = useAppSelector(
-    (state) => state.AcademicTermsRecords.academicTerms
-  );
+  // const academicTerms = useAppSelector(
+  //   (state) => state.AcademicTermsRecords.academicTerms
+  // );
 
-  const academicTermsData = academicTerms.map((year) => ({
-    name: year.name,
-    value: year.id,
-  }));
+  // const academicTermsData = academicTerms.map((year) => ({
+  //   name: year.name,
+  //   value: year.id,
+  // }));
+  const academicTermsData = useAcademicTermsOptions().options; //new
 
-  const [programsDataState, setProgramsDataState] = useState<ProgramsDataResponse[]>([]);
 
-  const handleGetPrograms = () => {
-    setLoading(true);
-    dispatch(getPrograms())
-      .unwrap()
-      .then((res: ProgramsDataResponse[]) => {
-        setProgramsDataState(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => setLoading(false));
-  };
-
-  useEffect(() => {
-    handleGetPrograms();
-  }, [dispatch]);
-
-  const programsData = programsDataState.map((program) => ({
-    name: program.name,
-    value: program._id, // programId
-  }));
+  const programsData = useProgramsOptions().options
 
 
 
@@ -127,21 +110,31 @@ const CreateSubjectForm = ({ setLoading }: Props) => {
   });
 
 
+  // const onSubmit = (data: CreateSubjectsTypes) => {
+  //   setLoading(true);
+  //   console.log("Sent Data:", data)
+  //   dispatch(createNewSubject(data))
+  //     .unwrap()
+  //     .then((res) => {
+  //       customToast.success(res.message ?? 'Subjects created successfully.');
+  //       createSubjectsForm.reset();
+  //     })
+  //     .catch((err) => {
+  //       customToast.error(err);
+  //     })
+  //     .finally(() => {
+  //       setLoading(false);
+  //     });
+  // };
+  const createMutation = useCreateSubjects();
   const onSubmit = (data: CreateSubjectsTypes) => {
-    setLoading(true);
-    console.log("Sent Data:", data)
-    dispatch(createNewSubject(data))
-      .unwrap()
-      .then((res) => {
-        customToast.success(res.message ?? 'Subjects created successfully.');
+    createMutation.mutate(data, {
+      onSuccess: () => {
         createSubjectsForm.reset();
-      })
-      .catch((err) => {
-        customToast.error(err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+
+        navigate('/dashboard/subjects');
+      },
+    });
   };
 
 
@@ -293,6 +286,3 @@ const CreateSubjectForm = ({ setLoading }: Props) => {
 }
 
 export default CreateSubjectForm
-
-
-//CreateSubjectForm

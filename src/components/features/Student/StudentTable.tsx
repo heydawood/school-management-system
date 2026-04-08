@@ -1,6 +1,5 @@
 import { useState, type FC } from 'react'
 import Table from '@/components/ui/table/Table';
-import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import type { Pagination } from '@/Utils/Types';
 import { useLearningHubActionManager } from '@/pages/Dashboard/LearningHub/LearningHubActionManager';
@@ -18,9 +17,6 @@ const StudentTable: FC<{
 
     const [selectedStudentId, setSelectedStudentId] = useState<string | null>(null);
 
-
-
-    const navigate = useNavigate();
     const { handleGetLearningHub } = useLearningHubActionManager();
 
     const TeacherListColumns = [

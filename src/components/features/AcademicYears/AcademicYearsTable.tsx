@@ -6,11 +6,13 @@ import type { Pagination } from '@/Utils/Types';
 import { useLearningHubActionManager } from '@/pages/Dashboard/LearningHub/LearningHubActionManager';
 import type { AcademicYearDataResponse } from '@/pages/Dashboard/AdminPanel/AcademicYears/Types';
 import AcademicYearModal from '@/components/Modals/AcademicYearModal';
-import { deleteAcademicYearById, updateAcademicYearById } from '@/Redux/AcademicYears/Slice';
+import { deleteAcademicYearById, updateAcademicYearById } from '@/Redux/AdminPanel/AcademicYears/Slice';
 import { useAppDispatch } from '@/Redux/Hooks';
 import { customToast } from '@/Common/Components/ShowToast';
 import DeleteAcademicYearModal from '@/components/Modals/DeleteAcademicYearModal';
 import UpdateAcademicYearModal from '@/components/Modals/UpdateAcademicYearModal';
+import { useDeleteAcademicYears } from '@/Hooks/TanStack/AcademicYears/useDeleteAcademicYears';
+import { useUpdateAcademicYears } from '@/Hooks/TanStack/AcademicYears/useUpdateAcademicYears';
 
 const AcademicYearsTable: FC<{
     loading: boolean;
@@ -39,51 +41,24 @@ const AcademicYearsTable: FC<{
     const { handleGetLearningHub } = useLearningHubActionManager();
 
 
+    const deleteMutation = useDeleteAcademicYears();
+    const updateMutation = useUpdateAcademicYears();
+
+
     //delete function
     const handleDeleteAcademicYear = async () => {
         if (!selectedAcademicYearId) return;
 
-        setDeleting(true);
-        try {
-            await dispatch(deleteAcademicYearById(selectedAcademicYearId))
-                .unwrap();
-            customToast.success('Academic year deleted successfully.');
-
-            // Close the modal
+            deleteMutation.mutate(selectedAcademicYearId);
             setOpenDeleteAcademicYearModal(false);
 
-            // Refresh the list after deletion
-            setSelectedAcademicYearId(null);
-
-
-
-        } catch (error: any) {
-            customToast.error(error?.message || 'Failed to delete academic year.');
-        } finally {
-            setDeleting(false);
-        }
     };
 
     //update function
     const handleUpdateAcademicYear = async (updatedData: any) => {
         if (!updateAcademicYearId) return;
 
-        setUpdating(true);
-        try {
-            await dispatch(updateAcademicYearById({ academicYearId: updateAcademicYearId, academicYearData: updatedData }))
-                .unwrap();
-            customToast.success('Academic year updated successfully.');
-
-            // Close the modal
-            setOpenUpdateAcademicYearModal(false);
-
-            // Refresh the list after update
-            setUpdateAcademicYearId(null);
-        } catch (error: any) {
-            customToast.error(error?.message || 'Failed to update academic year.');
-        } finally {
-            setUpdating(false);
-        }
+            updateMutation.mutate({ id: updateAcademicYearId, data: updatedData });
     };
 
     const AcademicYearsListColumns = [

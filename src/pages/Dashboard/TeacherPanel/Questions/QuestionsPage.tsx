@@ -7,6 +7,7 @@ import * as routes from '@/routes/Index';
 import type { QuestionsDataResponse } from './Types';
 import { getQuestions } from '@/Redux/Questions/Slice';
 import QuestionsTable from '@/components/features/Questions/QuestionsTable';
+import { useQuestions } from '@/Hooks/TanStack/Questions/useQuestions';
 
 const Header = ({
   onChange,
@@ -35,33 +36,35 @@ function QuestionsPage() {
   const { pagination } = useAppSelector((state) => state.QuestionsRecords);
 
     const [loading, setLoading] = useState<boolean>(false);
-    const [data, setData] = useState<QuestionsDataResponse[]>([]);
+    //const [data, setData] = useState<QuestionsDataResponse[]>([]);
     const [filters, setFilters] = useState<{ search: string }>({ search: '' });
 
 
-    const dispatch = useAppDispatch();
     const navigate = useNavigate();
+    // const dispatch = useAppDispatch();
 
-    const handleGetQuestions = () => {
-        setLoading(true);
-        dispatch(getQuestions())
-          .unwrap()
-          .then((res: QuestionsDataResponse[]) => {
-            setData(res);
-            console.log("Data:", res);
-          })
-          .catch((err) => {
-            console.log("Error: ", err);
-          })
-          .finally(() => {
-            setLoading(false);
+    // const handleGetQuestions = () => {
+    //     setLoading(true);
+    //     dispatch(getQuestions())
+    //       .unwrap()
+    //       .then((res: QuestionsDataResponse[]) => {
+    //         setData(res);
+    //         console.log("Data:", res);
+    //       })
+    //       .catch((err) => {
+    //         console.log("Error: ", err);
+    //       })
+    //       .finally(() => {
+    //         setLoading(false);
             
-          });
-      };
+    //       });
+    //   };
     
-      useEffect(() => {
-        handleGetQuestions();
-      }, [dispatch]);
+    //   useEffect(() => {
+    //     handleGetQuestions();
+    //   }, [dispatch]);
+
+    const { data = [] } = useQuestions();
 
   return (
     <div className="space-y-4">

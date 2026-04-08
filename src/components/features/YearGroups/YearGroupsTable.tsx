@@ -6,10 +6,12 @@ import { useLearningHubActionManager } from '@/pages/Dashboard/LearningHub/Learn
 import { useAppDispatch } from '@/Redux/Hooks';
 import { customToast } from '@/Common/Components/ShowToast';
 import type { YearGroupsDataResponse } from '@/pages/Dashboard/AdminPanel/YearGroups/Types';
-import { deleteYearGroupsById, updateYearGroupsById } from '@/Redux/YearGroups/Slice';
+import { deleteYearGroupsById, updateYearGroupsById } from '@/Redux/AdminPanel/YearGroups/Slice';
 import DeleteYearGroupsModal from '@/components/Modals/DeleteYearGroupsModal';
 import YearGroupsModal from '@/components/Modals/YearGroupsModal';
 import UpdateYearGroupsModal from '@/components/Modals/UpdateYearGroupsModal';
+import { useDeleteYearGroups } from '@/Hooks/TanStack/YearGroups/useDeleteYearGroups';
+import { useUpdateYearGroups } from '@/Hooks/TanStack/YearGroups/useUpdateYearGroups';
 
 const YearGroupsTable: FC<{
     loading: boolean;
@@ -35,53 +37,27 @@ const YearGroupsTable: FC<{
     const { handleGetLearningHub } = useLearningHubActionManager();
 
 
+
+        const deleteMutation = useDeleteYearGroups();
+        const updateMutation = useUpdateYearGroups();
+    
     //delete function
     const handleDeleteYearGroups= async () => {
       console.log('deleted clicked. id:', selectedYearGroupsId)
         if (!selectedYearGroupsId) return;
 
-        setDeleting(true);
-        try {
-            await dispatch(deleteYearGroupsById(selectedYearGroupsId))
-                .unwrap();
-            customToast.success('YearGroup deleted successfully.');
-
-            // Close the modal
+        deleteMutation.mutate(selectedYearGroupsId);
             setOpenDeleteYearGroupsModal(false);
 
-            // Refresh the list after deletion
-            setSelectedYearGroupsId(null);
-
-
-
-        } catch (error: any) {
-            customToast.error(error?.message || 'Failed to delete Subjects.');
-        } finally {
-            setDeleting(false);
-        }
     };
 
     //update function
     const handleUpdateYearGroups = async (updatedData: any) => {
         if (!updateYearGroupsId) return;
 
-        setUpdating(true);
-        try {
-          console.log(updatedData)
-            await dispatch(updateYearGroupsById({ yearGroupsId: updateYearGroupsId, yearGroupsData: updatedData }))
-                .unwrap();
-            customToast.success('Subjects updated successfully.');
-
-            // Close the modal
+        updateMutation.mutate({ id: updateYearGroupsId, data: updatedData });
             setOpenUpdateYearGroupsModal(false);
 
-            // Refresh the list after update
-            setUpdateYearGroupsId(null);
-        } catch (error: any) {
-            customToast.error(error?.message || 'Failed to update Subjects.');
-        } finally {
-            setUpdating(false);
-        }
     };
 
     const YearGroupsListColumns = [

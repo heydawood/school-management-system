@@ -11,17 +11,22 @@ import { CreateTeacherDefaultValues } from '@/Forms/CreateTeacherForm';
 import type { CreateTeacherTypes } from '@/Forms/CreateTeacherForm';
 import { createNewTeacher } from '@/Redux/Teachers/Slice';
 import Dropdown from '@/components/ui/dropdown/Dropdown';
-import { getAcademicYears } from '@/Redux/AcademicYears/Slice';
+import { getAcademicYears } from '@/Redux/AdminPanel/AcademicYears/Slice';
 import type { AcademicYearDataResponse } from '@/pages/Dashboard/AdminPanel/AcademicYears/Types';
 import type { AcademicTermDataResponse } from '@/pages/Dashboard/AdminPanel/AcademicTerms/Types';
-import { getAcademicTerms } from '@/Redux/AcademicTerms/Slice';
-import { getClassLevels } from '@/Redux/ClassLevels/Slice';
+import { getAcademicTerms } from '@/Redux/AdminPanel/AcademicTerms/Slice';
+import { getClassLevels } from '@/Redux/AdminPanel/ClassLevels/Slice';
 import type { ClassLevelDataResponse } from '@/pages/Dashboard/AdminPanel/ClassLevels/Types';
-import { getPrograms } from '@/Redux/Programs/Slice';
+import { getPrograms } from '@/Redux/AdminPanel/Programs/Slice';
 import type { ProgramsDataResponse } from '@/pages/Dashboard/AdminPanel/Programs/Types';
 import type { SubjectsDataResponse } from '@/pages/Dashboard/AdminPanel/Subjects/Types';
-import { getSubjects } from '@/Redux/Subjects/Slice';
+import { getSubjects } from '@/Redux/AdminPanel/Subjects/Slice';
 import { useNavigate } from 'react-router-dom';
+import { useSubjectsOptions } from '@/Hooks/dropdowns/useSubjects';
+import { useAcademicYearsOptions } from '@/Hooks/dropdowns/useAcademicYears';
+import { useAcademicTermsOptions } from '@/Hooks/dropdowns/useAcademicTerms';
+import { useClassLevelsOptions } from '@/Hooks/dropdowns/useClassLevels';
+import { useProgramsOptions } from '@/Hooks/dropdowns/usePrograms';
 
 
 
@@ -36,168 +41,26 @@ const CreateTeacherForm = ({ setLoading }: Props) => {
 
 
     //fetch subjects years for dropdown
-  const [subjectsdata, setSubjectsData] = useState<SubjectsDataResponse[]>([]);
 
-  const handleGetSubjects = () => {
-              setLoading(true);
-              dispatch(getSubjects())
-                .unwrap()
-                .then((res: SubjectsDataResponse[]) => {
-                  setSubjectsData(res);
-                  console.log("Data:", res);
-                })
-                .catch((err) => {
-                  console.log("Error: ", err);
-                })
-                .finally(() => {
-                  setLoading(false);
-                  
-                });
-            };
-          
-            useEffect(() => {
-              handleGetSubjects();
-            }, [dispatch]);
 
-  const subjects = useAppSelector(
-    (state) => state.SubjectsRecords.subjects
-  );
-
-  const subjectsData = subjects.map((year) => ({
-    name: year.name,
-    value: year.id,
-  }));
-
+  const subjectsData = useSubjectsOptions().options
 
 
   //fetch academic years for dropdown
-  const [academicdata, setAcademicData] = useState<AcademicYearDataResponse[]>([]);
 
-  const handleGetAcademicYears = () => {
-    setLoading(true);
-    dispatch(getAcademicYears())
-      .unwrap()
-      .then((res: AcademicYearDataResponse[]) => {
-        setAcademicData(res);
-        console.log("Data:", res);
-      })
-      .catch((err) => {
-        console.log("Error: ", err);
-      })
-      .finally(() => {
-        setLoading(false);
-
-      });
-  };
-
-  useEffect(() => {
-    handleGetAcademicYears();
-  }, [dispatch]);
-
-  const academicYears = useAppSelector(
-    (state) => state.AcademicYearsRecords.academicYears
-  );
-
-  const academicYearsData = academicYears.map((year) => ({
-    name: year.name,
-    value: year.id,
-  }));
+  const academicYearsData = useAcademicYearsOptions().options
 
 
 
   //fetching terms from db
-  const [termdata, setTermData] = useState<AcademicTermDataResponse[]>([]);
-
-
-  const handleGetAcademicTerms = () => {
-    setLoading(true);
-    dispatch(getAcademicTerms())
-      .unwrap()
-      .then((res: AcademicTermDataResponse[]) => {
-        setTermData(res);
-        console.log("Data:", res);
-      })
-      .catch((err) => {
-        console.log("Error: ", err);
-      })
-      .finally(() => {
-        setLoading(false);
-
-      });
-  };
-
-  useEffect(() => {
-    handleGetAcademicTerms();
-  }, [dispatch]);
-
-  const academicTerms = useAppSelector(
-    (state) => state.AcademicTermsRecords.academicTerms
-  );
-
-  const academicTermsData = academicTerms.map((year) => ({
-    name: year.name,
-    value: year.id,
-  }));
+  const academicTermsData = useAcademicTermsOptions().options
 
   //fetching ClassLevels from db
-
-  const [classLeveldata, setClassLevel] = useState<AcademicYearDataResponse[]>([]);
-
-  const handleGetClassLevels = () => {
-    setLoading(true);
-    dispatch(getClassLevels())
-      .unwrap()
-      .then((res: ClassLevelDataResponse[]) => {
-        setClassLevel(res as any);
-        console.log("Data:", res);
-      })
-      .catch((err) => {
-        console.log("Error: ", err);
-      })
-      .finally(() => {
-        setLoading(false);
-
-      });
-  };
-
-  useEffect(() => {
-    handleGetClassLevels();
-  }, [dispatch]);
-
-  const classLevels = useAppSelector(
-    (state) => state.ClassLevelsRecords.classLevels
-  );
-
-  const classLevelsData = classLevels.map((year) => ({
-    name: year.name,
-    value: year.id,
-  }));
+  const classLevelsData = useClassLevelsOptions().options
 
 
   //fetching progrm data
-  const [programsDataState, setProgramsDataState] = useState<ProgramsDataResponse[]>([]);
-
-  const handleGetPrograms = () => {
-    setLoading(true);
-    dispatch(getPrograms())
-      .unwrap()
-      .then((res: ProgramsDataResponse[]) => {
-        setProgramsDataState(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => setLoading(false));
-  };
-
-  useEffect(() => {
-    handleGetPrograms();
-  }, [dispatch]);
-
-  const programsData = programsDataState.map((program) => ({
-    name: program.name,
-    value: program._id, // THIS is your programId
-  }));
+  const programsData = useProgramsOptions().options
 
 
 

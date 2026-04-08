@@ -6,7 +6,8 @@ import * as routes from '@/routes/Index';
 import Icon from '@/components/ui/svg_icon/SvgIcon';
 import type { AcademicYearDataResponse } from './Types';
 import AcademicYearsTable from '@/components/features/AcademicYears/AcademicYearsTable';
-import { getAcademicYears } from '@/Redux/AcademicYears/Slice';
+import { getAcademicYears } from '@/Redux/AdminPanel/AcademicYears/Slice';
+import { useAcademicYears } from '@/Hooks/TanStack/AcademicYears/useAcademicYears';
 
 
 
@@ -39,33 +40,35 @@ const AcademicYearsPage = () => {
     const { pagination } = useAppSelector((state) => state.AcademicYearsRecords);
     
         const [loading, setLoading] = useState<boolean>(false);
-        const [data, setData] = useState<AcademicYearDataResponse[]>([]);
+        //const [data, setData] = useState<AcademicYearDataResponse[]>([]);
         const [filters, setFilters] = useState<{ search: string }>({ search: '' });
     
     
         const dispatch = useAppDispatch();
         const navigate = useNavigate();
     
-        const handleGetAcademicYears = () => {
-            setLoading(true);
-            dispatch(getAcademicYears())
-              .unwrap()
-              .then((res: AcademicYearDataResponse[]) => {
-                setData(res);
-                console.log("Data:", res);
-              })
-              .catch((err) => {
-                console.log("Error: ", err);
-              })
-              .finally(() => {
-                setLoading(false);
+        // const handleGetAcademicYears = () => {
+        //     setLoading(true);
+        //     dispatch(getAcademicYears())
+        //       .unwrap()
+        //       .then((res: AcademicYearDataResponse[]) => {
+        //         setData(res);
+        //         console.log("Data:", res);
+        //       })
+        //       .catch((err) => {
+        //         console.log("Error: ", err);
+        //       })
+        //       .finally(() => {
+        //         setLoading(false);
                 
-              });
-          };
+        //       });
+        //   };
         
-          useEffect(() => {
-            handleGetAcademicYears();
-          }, [dispatch]);
+        //   useEffect(() => {
+        //     handleGetAcademicYears();
+        //   }, [dispatch]);
+
+        const { data = [], isLoading } = useAcademicYears();
 
   return (
     <div className="space-y-4">

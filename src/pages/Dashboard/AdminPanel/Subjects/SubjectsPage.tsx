@@ -5,8 +5,9 @@ import { Button } from '@/components/ui/button';
 import * as routes from '@/routes/Index';
 import Icon from '@/components/ui/svg_icon/SvgIcon';
 import SubjectsTable from '@/components/features/Subjects/SubjectsTable';
-import { getSubjects } from '@/Redux/Subjects/Slice';
+import { getSubjects } from '@/Redux/AdminPanel/Subjects/Slice';
 import type { SubjectsDataResponse } from './Types';
+import { useSubjects } from '@/Hooks/TanStack/Subjects/useSubjects';
 
 
 
@@ -39,33 +40,35 @@ const SubjectsPage = () => {
     const { pagination } = useAppSelector((state) => state.SubjectsRecords);
     
         const [loading, setLoading] = useState<boolean>(false);
-        const [data, setData] = useState<SubjectsDataResponse[]>([]);
+        //const [data, setData] = useState<SubjectsDataResponse[]>([]);
         const [filters, setFilters] = useState<{ search: string }>({ search: '' });
     
     
-        const dispatch = useAppDispatch();
         const navigate = useNavigate();
+        // const dispatch = useAppDispatch();
     
-        const handleGetSubjects = () => {
-            setLoading(true);
-            dispatch(getSubjects())
-              .unwrap()
-              .then((res: SubjectsDataResponse[]) => {
-                setData(res);
-                console.log("Data:", res);
-              })
-              .catch((err) => {
-                console.log("Error: ", err);
-              })
-              .finally(() => {
-                setLoading(false);
+        // const handleGetSubjects = () => {
+        //     setLoading(true);
+        //     dispatch(getSubjects())
+        //       .unwrap()
+        //       .then((res: SubjectsDataResponse[]) => {
+        //         setData(res);
+        //         console.log("Data:", res);
+        //       })
+        //       .catch((err) => {
+        //         console.log("Error: ", err);
+        //       })
+        //       .finally(() => {
+        //         setLoading(false);
                 
-              });
-          };
+        //       });
+        //   };
         
-          useEffect(() => {
-            handleGetSubjects();
-          }, [dispatch]);
+        //   useEffect(() => {
+        //     handleGetSubjects();
+        //   }, [dispatch]);
+
+        const { data = [], isLoading } = useSubjects();
 
   return (
     <div className="space-y-4">

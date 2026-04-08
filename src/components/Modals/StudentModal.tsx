@@ -9,6 +9,7 @@ import { useAppDispatch } from '@/Redux/Hooks';
 import Spinner from '../ui/spinner';
 import type { StudentDataResponse } from '@/pages/Dashboard/AdminPanel/Students/Types';
 import { getStudentById } from '@/Redux/Students/Slice';
+import { useStudentsById } from '@/Hooks/TanStack/Students/useStudentsById';
 
 
 interface Props {
@@ -23,32 +24,34 @@ const StudentModal: FC<Props> = ({ close, studentId }) => {
 
     const dispatch = useAppDispatch();
 
-    const [loading, setLoading] = useState<boolean>(false);
-    const [data, setData] = useState<StudentDataResponse | null>(null);
+    // const [loading, setLoading] = useState<boolean>(false);
+    // const [data, setData] = useState<StudentDataResponse | null>(null);
 
 
-    const handleGetStudent = () => {
-        setLoading(true);
-        dispatch(getStudentById(studentId!))
-            .unwrap()
-            .then((res: any) => {
-                setData(res.data.student);
-                console.log("Data:", res.data.student);
-            })
-            .catch((err) => {
-                console.log("Error: ", err);
-            })
-            .finally(() => {
-                setLoading(false);
+    // const handleGetStudent = () => {
+    //     setLoading(true);
+    //     dispatch(getStudentById(studentId!))
+    //         .unwrap()
+    //         .then((res: any) => {
+    //             setData(res.data.student);
+    //             console.log("Data:", res.data.student);
+    //         })
+    //         .catch((err) => {
+    //             console.log("Error: ", err);
+    //         })
+    //         .finally(() => {
+    //             setLoading(false);
 
-            });
-    };
+    //         });
+    // };
 
-    useEffect(() => {
-        if (studentId) {
-            handleGetStudent();
-        }
-    }, [studentId]);
+    // useEffect(() => {
+    //     if (studentId) {
+    //         handleGetStudent();
+    //     }
+    // }, [studentId]);
+
+    const { data, isLoading } = useStudentsById(studentId);
 
 
     return (
@@ -75,10 +78,10 @@ const StudentModal: FC<Props> = ({ close, studentId }) => {
                             <div className="mt-2">
                                 <div>
                                     <div className="after:absolute after:inset-y-0 after:w-px after:bg-gray-500/20 relative pl-6 after:left-0 grid dark:after:bg-gray-400/20">
-                                        {!data && !loading && (
+                                        {!data && !isLoading && (
                                             <p>No data found</p>
                                         )}
-                                        {loading && <Spinner />}
+                                        {isLoading && <Spinner />}
 
 
                                         {data && (

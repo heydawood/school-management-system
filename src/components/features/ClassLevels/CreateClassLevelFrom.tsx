@@ -6,16 +6,19 @@ import { useEffect, useState, type Dispatch, type SetStateAction } from 'react';
 import { Button } from '@/components/ui/button';
 import Input from '@/components/ui/input/input';
 import { CreateClassLevelDefaultValues, type CreateClassLevelTypes } from '@/Forms/CreateClassLevelTypes';
-import { createNewClassLevel } from '@/Redux/ClassLevels/Slice';
+import { createNewClassLevel } from '@/Redux/AdminPanel/ClassLevels/Slice';
 import { useFieldArray } from 'react-hook-form';
 import type { SubjectsDataResponse } from '@/pages/Dashboard/AdminPanel/Subjects/Types';
-import { getSubjects } from '@/Redux/Subjects/Slice';
+import { getSubjects } from '@/Redux/AdminPanel/Subjects/Slice';
 import type { StudentDataResponse } from '@/pages/Dashboard/AdminPanel/Students/Types';
 import { getStudents } from '@/Redux/Students/Slice';
 import type { TeacherDataResponse } from '@/pages/Dashboard/AdminPanel/Teachers/Types';
 import { getTeachers } from '@/Redux/Teachers/Slice';
 import Dropdown from '@/components/ui/dropdown/Dropdown';
 import { useNavigate } from 'react-router-dom';
+import { useCreateClassLevels } from '@/Hooks/TanStack/ClassLevels/useCreateClassLevels';
+import { useStudentsOptions } from '@/Hooks/dropdowns/useStudents';
+import { useSubjectsOptions } from '@/Hooks/dropdowns/useSubjects';
 
 
 
@@ -31,71 +34,12 @@ const CreateClassLevelFrom = ({ setLoading }: Props) => {
 
 
   //subjects data
-  const [subjectData, setSubjectData] = useState<SubjectsDataResponse[]>([]);
 
-  const handleGetSubjects = () => {
-    setLoading(true);
-    dispatch(getSubjects())
-      .unwrap()
-      .then((res: SubjectsDataResponse[]) => {
-        setSubjectData(res);
-        console.log("Data:", res);
-      })
-      .catch((err) => {
-        console.log("Error: ", err);
-      })
-      .finally(() => {
-        setLoading(false);
-
-      });
-  };
-
-  useEffect(() => {
-    handleGetSubjects();
-  }, [dispatch]);
-
-  const subjects = useAppSelector(
-    (state) => state.SubjectsRecords.subjects
-  );
-
-  const subjectsData = subjects.map((subject) => ({
-    name: subject.name,
-    value: subject.id,
-  }));
-
+  const subjectsData = useSubjectsOptions().options
 
   //students data
-  const [studentData, setStudentData] = useState<StudentDataResponse[]>([]);
 
-  const handleGetStudents = () => {
-    setLoading(true);
-    dispatch(getStudents())
-      .unwrap()
-      .then((res: StudentDataResponse[]) => {
-        setStudentData(res);
-        console.log("Data:", res);
-      })
-      .catch((err) => {
-        console.log("Error: ", err);
-      })
-      .finally(() => {
-        setLoading(false);
-
-      });
-  };
-
-  useEffect(() => {
-    handleGetStudents();
-  }, [dispatch]);
-
-  const students = useAppSelector(
-    (state) => state.StudentRecords.students
-  );
-
-  const studentsData = students.map((student) => ({
-    name: student.name,
-    value: student.id,
-  }));
+  const studentsData = useStudentsOptions().options
 
   //teachers data
   const [teacherData, setTeacherData] = useState<TeacherDataResponse[]>([]);
@@ -149,6 +93,7 @@ const CreateClassLevelFrom = ({ setLoading }: Props) => {
     useFieldArray({ control, name: 'teachers' });
 
 
+  const createMutation = useCreateClassLevels();
 
   const onSubmit = (data: CreateClassLevelTypes) => {
 
@@ -160,20 +105,29 @@ const CreateClassLevelFrom = ({ setLoading }: Props) => {
     };
 
 
-    console.log("Sent data:", formattedData)
-    setLoading(true);
-    dispatch(createNewClassLevel(formattedData as any))
-      .unwrap()
-      .then((res) => {
-        customToast.success(res.message ?? 'Class Level created successfully.');
+    // console.log("Sent data:", formattedData)
+    // setLoading(true);
+    // dispatch(createNewClassLevel(formattedData as any))
+    //   .unwrap()
+    //   .then((res) => {
+    //     customToast.success(res.message ?? 'Class Level created successfully.');
+    //     createClassLevelForm.reset();
+    //   })
+    //   .catch((err) => {
+    //     customToast.error(err);
+    //   })
+    //   .finally(() => {
+    //     setLoading(false);
+    //   });
+
+    createMutation.mutate(formattedData, {
+      onSuccess: () => {
         createClassLevelForm.reset();
-      })
-      .catch((err) => {
-        customToast.error(err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+
+        navigate('/dashboard/class-levels');
+      },
+    });
+
   };
 
 

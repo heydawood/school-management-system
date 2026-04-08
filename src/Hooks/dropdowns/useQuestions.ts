@@ -2,31 +2,44 @@ import { useEffect, useState } from 'react';
 import { useAppDispatch } from '@/Redux/Hooks';
 import { getQuestions } from '@/Redux/Questions/Slice';
 import type { QuestionsDataResponse } from '@/pages/Dashboard/TeacherPanel/Questions/Types';
+import { useQuestions } from '../TanStack/Questions/useQuestions';
 
-type Option = {
-  name: string;
-  value: string;
-};
+// type Option = {
+//   name: string;
+//   value: string;
+// };
 
-export const useQuestions = (setLoading?: (val: boolean) => void) => {
-  const dispatch = useAppDispatch();
-  const [data, setData] = useState<Option[]>([]);
+// export const useQuestions = (setLoading?: (val: boolean) => void) => {
+//   const dispatch = useAppDispatch();
+//   const [data, setData] = useState<Option[]>([]);
 
-  useEffect(() => {
-    setLoading?.(true);
+//   useEffect(() => {
+//     setLoading?.(true);
 
-    dispatch(getQuestions())
-      .unwrap()
-      .then((res: QuestionsDataResponse[]) => {
-        setData(
-          res.map((q) => ({
-            name: q.question,
-            value: q.id,
-          }))
-        );
-      })
-      .finally(() => setLoading?.(false));
-  }, [dispatch]);
+//     dispatch(getQuestions())
+//       .unwrap()
+//       .then((res: QuestionsDataResponse[]) => {
+//         setData(
+//           res.map((q) => ({
+//             name: q.question,
+//             value: q.id,
+//           }))
+//         );
+//       })
+//       .finally(() => setLoading?.(false));
+//   }, [dispatch]);
 
-  return data;
+//   return data;
+// };
+
+export const useQuestionsOptions = () => {
+  const { data = [], isLoading } = useQuestions();
+
+  return {
+    options: data.map((q: QuestionsDataResponse) => ({
+      name: q.question,
+      value: q.id,
+    })),
+    isLoading,
+  };
 };

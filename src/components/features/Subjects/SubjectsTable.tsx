@@ -6,10 +6,12 @@ import { useLearningHubActionManager } from '@/pages/Dashboard/LearningHub/Learn
 import { useAppDispatch } from '@/Redux/Hooks';
 import { customToast } from '@/Common/Components/ShowToast';
 import type { SubjectsDataResponse } from '@/pages/Dashboard/AdminPanel/Subjects/Types';
-import { deleteSubjectsById, updateSubjectsById } from '@/Redux/Subjects/Slice';
+import { deleteSubjectsById, updateSubjectsById } from '@/Redux/AdminPanel/Subjects/Slice';
 import SubjectsModal from '@/components/Modals/SubjectsModal';
 import DeleteSubjectsModal from '@/components/Modals/DeleteSubjectsModal';
 import UpdateSubjectsModal from '@/components/Modals/UpdateSubjectsModal';
+import { useDeleteSubjects } from '@/Hooks/TanStack/Subjects/useDeleteSubjects';
+import { useUpdateSubjects } from '@/Hooks/TanStack/Subjects/useUpdateSubjects';
 
 const SubjectsTable: FC<{
     loading: boolean;
@@ -35,53 +37,26 @@ const SubjectsTable: FC<{
     const { handleGetLearningHub } = useLearningHubActionManager();
 
 
+    const deleteMutation = useDeleteSubjects();
+    const updateMutation = useUpdateSubjects();
+
     //delete function
     const handleDeleteSubjects= async () => {
       console.log('deleted clicked. id:', selectedSubjectsId)
         if (!selectedSubjectsId) return;
 
-        setDeleting(true);
-        try {
-            await dispatch(deleteSubjectsById(selectedSubjectsId))
-                .unwrap();
-            customToast.success('Subjects deleted successfully.');
+        deleteMutation.mutate(selectedSubjectsId);
+        setOpenDeleteSubjectsModal(false);
 
-            // Close the modal
-            setOpenDeleteSubjectsModal(false);
-
-            // Refresh the list after deletion
-            setSelectedSubjectsId(null);
-
-
-
-        } catch (error: any) {
-            customToast.error(error?.message || 'Failed to delete Subjects.');
-        } finally {
-            setDeleting(false);
-        }
     };
 
     //update function
     const handleUpdateSubjects = async (updatedData: any) => {
         if (!updateSubjectsId) return;
+        
+        updateMutation.mutate({ id: updateSubjectsId, data: updatedData });
+        setOpenUpdateSubjectsModal(false);
 
-        setUpdating(true);
-        try {
-          console.log(updatedData)
-            await dispatch(updateSubjectsById({ subjectsId: updateSubjectsId, subjectsData: updatedData }))
-                .unwrap();
-            customToast.success('Subjects updated successfully.');
-
-            // Close the modal
-            setOpenUpdateSubjectsModal(false);
-
-            // Refresh the list after update
-            setUpdateSubjectsId(null);
-        } catch (error: any) {
-            customToast.error(error?.message || 'Failed to update Subjects.');
-        } finally {
-            setUpdating(false);
-        }
     };
 
     const SubjectsListColumns = [

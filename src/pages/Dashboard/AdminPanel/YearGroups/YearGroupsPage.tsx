@@ -5,8 +5,9 @@ import { Button } from '@/components/ui/button';
 import * as routes from '@/routes/Index';
 import Icon from '@/components/ui/svg_icon/SvgIcon';
 import type { YearGroupsDataResponse } from './Types';
-import { getYearGroups } from '@/Redux/YearGroups/Slice';
+import { getYearGroups } from '@/Redux/AdminPanel/YearGroups/Slice';
 import YearGroupsTable from '@/components/features/YearGroups/YearGroupsTable';
+import { useYearGroups } from '@/Hooks/TanStack/YearGroups/useYearGroups';
 
 
 
@@ -39,33 +40,34 @@ const YearGroupsPage = () => {
     const { pagination } = useAppSelector((state) => state.YearGroupsRecords);
     
         const [loading, setLoading] = useState<boolean>(false);
-        const [data, setData] = useState<YearGroupsDataResponse[]>([]);
+        //const [data, setData] = useState<YearGroupsDataResponse[]>([]);
         const [filters, setFilters] = useState<{ search: string }>({ search: '' });
-    
-    
-        const dispatch = useAppDispatch();
         const navigate = useNavigate();
     
-        const handleGetYearGroups = () => {
-            setLoading(true);
-            dispatch(getYearGroups())
-              .unwrap()
-              .then((res: YearGroupsDataResponse[]) => {
-                setData(res);
-                console.log("Data:", res);
-              })
-              .catch((err) => {
-                console.log("Error: ", err);
-              })
-              .finally(() => {
-                setLoading(false);
+    
+        //const dispatch = useAppDispatch();
+    
+        // const handleGetYearGroups = () => {
+        //     setLoading(true);
+        //     dispatch(getYearGroups())
+        //       .unwrap()
+        //       .then((res: YearGroupsDataResponse[]) => {
+        //         setData(res);
+        //         console.log("Data:", res);
+        //       })
+        //       .catch((err) => {
+        //         console.log("Error: ", err);
+        //       })
+        //       .finally(() => {
+        //         setLoading(false);
                 
-              });
-          };
+        //       });
+        //   };
         
-          useEffect(() => {
-            handleGetYearGroups();
-          }, [dispatch]);
+        //   useEffect(() => {
+        //     handleGetYearGroups();
+        //   }, [dispatch]);
+        const { data = [], isLoading } = useYearGroups();
 
   return (
     <div className="space-y-4">

@@ -8,6 +8,7 @@ import Input from '@/components/ui/input/input';
 import { createNewQuestion } from '@/Redux/Questions/Slice';
 import { useNavigate, useParams } from 'react-router-dom';
 import { CreateQuestionDefaultValues, type CreateQuestionTypes } from '@/Forms/CreateQuestionsFormTypes';
+import { useCreateQuestions } from '@/Hooks/TanStack/Questions/useCreateQuestions';
 
 interface Props {
   setLoading: Dispatch<SetStateAction<boolean>>;
@@ -15,7 +16,7 @@ interface Props {
 
 
 const CreateQuestionsForm = ({ setLoading }: Props) => {
-   const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const { examId } = useParams();
 
@@ -26,29 +27,58 @@ const CreateQuestionsForm = ({ setLoading }: Props) => {
 
   const dispatch = useAppDispatch();
 
-  const onSubmit = (data: CreateQuestionTypes) => {
 
+  
+
+  // const onSubmit = (data: CreateQuestionTypes) => {
+
+  //   if (!examId) {
+  //     customToast.error("Exam ID missing");
+  //     return;
+  //   }
+
+  //   console.log('Submit:', data);
+
+  //   setLoading(true);
+  //   dispatch(createNewQuestion({ examId, data }))
+  //     .unwrap()
+  //     .then((res) => {
+  //       customToast.success(res.message ?? 'Question created successfully.');
+  //       form.reset();
+  //     })
+  //     .catch((err) => {
+  //       customToast.error(err);
+  //     })
+  //     .finally(() => {
+  //       setLoading(false);
+  //     });
+  // };
+const createMutation = useCreateQuestions();
+  const onSubmit = (data: CreateQuestionTypes) => {
     if (!examId) {
-      customToast.error("Exam ID missing");
+      customToast.error('Exam ID missing');
       return;
     }
 
     console.log('Submit:', data);
 
-    setLoading(true);
-    dispatch(createNewQuestion({ examId, data }))
-      .unwrap()
-      .then((res) => {
-        customToast.success(res.message ?? 'Question created successfully.');
-        form.reset();
-      })
-      .catch((err) => {
-        customToast.error(err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    createMutation.mutate(
+      {
+        examId,
+        data,
+      },
+      {
+        onSuccess: () => {
+          form.reset();
+        },
+
+        onError: (err: any) => {
+          customToast.error(err?.message || 'Something went wrong');
+        },
+      }
+    );
   };
+
 
   return (
     <div className="mt-4 md:mt-0">
@@ -87,7 +117,7 @@ const CreateQuestionsForm = ({ setLoading }: Props) => {
                   label="Option A"
                   placeholder="Enter option A"
                   name='optionA'
-                  rules={ { required: 'Option A is required' }}
+                  rules={{ required: 'Option A is required' }}
                 />
 
                 <Input
@@ -151,18 +181,20 @@ const CreateQuestionsForm = ({ setLoading }: Props) => {
               {/* Submit */}
               <Button
                 type="submit"
+                disabled={createMutation.isPending}
                 className="w-full mb-3 h-[44px] rounded-[12px] bg-green-500 hover:bg-green-600 text-white"
               >
-                Save Question
+                {createMutation.isPending ? 'Saving...' : 'Save Question'}
               </Button>
-          
+
+
             </form>
 
             <Button className="w-full h-[44px] rounded-[12px] bg-primary-500 hover:bg-primary-600 text-white" onClick={() => navigate('/dashboard/teacher/exams')}>
-                Go Back
-              </Button>
-              
-            </FormProvider>
+              Go Back
+            </Button>
+
+          </FormProvider>
         </div>
       </StatChartCard>
     </div>

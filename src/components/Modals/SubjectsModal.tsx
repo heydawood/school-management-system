@@ -8,9 +8,10 @@ import Icon from '../ui/svg_icon/SvgIcon';
 import { useAppDispatch } from '@/Redux/Hooks';
 import Spinner from '../ui/spinner';
 import type { ProgramsDataResponse } from '@/pages/Dashboard/AdminPanel/Programs/Types';
-import { getProgramsById } from '@/Redux/Programs/Slice';
+import { getProgramsById } from '@/Redux/AdminPanel/Programs/Slice';
 import type { SubjectsDataResponse } from '@/pages/Dashboard/AdminPanel/Subjects/Types';
-import { getSubjectsById } from '@/Redux/Subjects/Slice';
+import { getSubjectsById } from '@/Redux/AdminPanel/Subjects/Slice';
+import { useSubjectsById } from '@/Hooks/TanStack/Subjects/useSubjectsById';
 
 
 interface Props {
@@ -25,35 +26,36 @@ const SubjectsModal: FC<Props> = ({ close, subjectsId }) => {
 
   const dispatch = useAppDispatch();
 
-  const [loading, setLoading] = useState<boolean>(false);
-  const [data, setData] = useState<SubjectsDataResponse | null>(null);
+  // const [loading, setLoading] = useState<boolean>(false);
+  // const [data, setData] = useState<SubjectsDataResponse | null>(null);
 
 
-  const handleGetSubjects = () => {
-    setLoading(true);
-    dispatch(getSubjectsById(subjectsId!))
-      .unwrap()
-      .then((res: any) => {
+  // const handleGetSubjects = () => {
+  //   setLoading(true);
+  //   dispatch(getSubjectsById(subjectsId!))
+  //     .unwrap()
+  //     .then((res: any) => {
 
-         setData(res.data.subject);
-         console.log("Data:", res.data.subject);
+  //        setData(res.data.subject);
+  //        console.log("Data:", res.data.subject);
 
-      })
-      .catch((err) => {
-        console.log("Error: ", err);
-      })
-      .finally(() => {
-        setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       console.log("Error: ", err);
+  //     })
+  //     .finally(() => {
+  //       setLoading(false);
 
-      });
-  };
+  //     });
+  // };
 
-  useEffect(() => {
-    if (subjectsId) {
-      handleGetSubjects();
-    }
-  }, [subjectsId]);
+  // useEffect(() => {
+  //   if (subjectsId) {
+  //     handleGetSubjects();
+  //   }
+  // }, [subjectsId]);
 
+  const { data, isLoading } = useSubjectsById(subjectsId);
 
 
 
@@ -81,10 +83,10 @@ const SubjectsModal: FC<Props> = ({ close, subjectsId }) => {
               <div className="mt-2">
                 <div>
                   <div className="after:absolute after:inset-y-0 after:w-px after:bg-gray-500/20 relative pl-6 after:left-0 grid dark:after:bg-gray-400/20">
-                    {!data && !loading && (
+                    {!data && !isLoading && (
                       <p>No data found</p>
                     )}
-                    {loading && <Spinner />}
+                    {isLoading && <Spinner />}
 
 
                     {data && (

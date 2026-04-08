@@ -6,7 +6,8 @@ import * as routes from '@/routes/Index';
 import Icon from '@/components/ui/svg_icon/SvgIcon';
 import ProgramsTable from '@/components/features/Programs/ProgramsTable';
 import type { ProgramsDataResponse } from './Types';
-import { getPrograms } from '@/Redux/Programs/Slice';
+import { getPrograms } from '@/Redux/AdminPanel/Programs/Slice';
+import { usePrograms } from '@/Hooks/TanStack/Programs/usePrograms';
 
 
 
@@ -39,33 +40,35 @@ const ProgramsPage = () => {
     const { pagination } = useAppSelector((state) => state.ProgramsRecords);
     
         const [loading, setLoading] = useState<boolean>(false);
-        const [data, setData] = useState<ProgramsDataResponse[]>([]);
+        //const [data, setData] = useState<ProgramsDataResponse[]>([]);
         const [filters, setFilters] = useState<{ search: string }>({ search: '' });
     
-    
-        const dispatch = useAppDispatch();
         const navigate = useNavigate();
     
-        const handleGetPrograms = () => {
-            setLoading(true);
-            dispatch(getPrograms())
-              .unwrap()
-              .then((res: ProgramsDataResponse[]) => {
-                setData(res);
-                console.log("Data:", res);
-              })
-              .catch((err) => {
-                console.log("Error: ", err);
-              })
-              .finally(() => {
-                setLoading(false);
+        // const dispatch = useAppDispatch();
+    
+        // const handleGetPrograms = () => {
+        //     setLoading(true);
+        //     dispatch(getPrograms())
+        //       .unwrap()
+        //       .then((res: ProgramsDataResponse[]) => {
+        //         setData(res);
+        //         console.log("Data:", res);
+        //       })
+        //       .catch((err) => {
+        //         console.log("Error: ", err);
+        //       })
+        //       .finally(() => {
+        //         setLoading(false);
                 
-              });
-          };
+        //       });
+        //   };
         
-          useEffect(() => {
-            handleGetPrograms();
-          }, [dispatch]);
+        //   useEffect(() => {
+        //     handleGetPrograms();
+        //   }, [dispatch]);
+        
+        const { data = [], isLoading } = usePrograms();
 
   return (
     <div className="space-y-4">

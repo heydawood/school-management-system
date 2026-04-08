@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/Redux/Hooks';
 import * as routes from '@/routes/Index';
 import type { AdminDataResponse } from './Types';
-import { getAdmins } from '@/Redux/Admin/Slice';
+import { getAdmins } from '@/Redux/AdminPanel/Admin/Slice';
 import AdminTable from '@/components/features/Admin/AdminTable';
 
 const Header = ({

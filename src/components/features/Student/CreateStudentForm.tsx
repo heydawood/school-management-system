@@ -12,13 +12,18 @@ import { CreateStudentDefaultValues } from '@/Forms/CreateStudentForm';
 import type { CreateStudentTypes } from '@/Forms/CreateStudentForm';
 import { createNewStudent } from '@/Redux/Students/Slice';
 import { useAppSelector } from '@/Redux/Hooks';
-import { getAcademicYears } from '@/Redux/AcademicYears/Slice';
+import { getAcademicYears } from '@/Redux/AdminPanel/AcademicYears/Slice';
 import type { AcademicYearDataResponse } from '@/pages/Dashboard/AdminPanel/AcademicYears/Types';
-import { getClassLevels } from '@/Redux/ClassLevels/Slice';
+import { getClassLevels } from '@/Redux/AdminPanel/ClassLevels/Slice';
 import type { ClassLevelDataResponse } from '@/pages/Dashboard/AdminPanel/ClassLevels/Types';
-import { getPrograms } from '@/Redux/Programs/Slice';
+import { getPrograms } from '@/Redux/AdminPanel/Programs/Slice';
 import type { ProgramsDataResponse } from '@/pages/Dashboard/AdminPanel/Programs/Types';
 import { useNavigate } from 'react-router-dom';
+import { useProgramsOptions } from '@/Hooks/dropdowns/usePrograms';
+import { usePrograms } from '@/Hooks/TanStack/Programs/usePrograms';
+import { useClassLevelsOptions } from '@/Hooks/dropdowns/useClassLevels';
+import { useAcademicYearsOptions } from '@/Hooks/dropdowns/useAcademicYears';
+import { useCreateStudents } from '@/Hooks/TanStack/Students/useCreateStudents';
 
 
 
@@ -28,103 +33,20 @@ interface Props {
 
 const CreateStudentForm = ({ setLoading }: Props) => {
 
-  const [academicdata, setAcademicData] = useState<AcademicYearDataResponse[]>([]);
-  const [classLeveldata, setClassLevel] = useState<AcademicYearDataResponse[]>([]);
 
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-    //fetching progrm data
-    const [programsDataState, setProgramsDataState] = useState<ProgramsDataResponse[]>([]);
-  
-    const handleGetPrograms = () => {
-      setLoading(true);
-      dispatch(getPrograms())
-        .unwrap()
-        .then((res: ProgramsDataResponse[]) => {
-          setProgramsDataState(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        })
-        .finally(() => setLoading(false));
-    };
-  
-    useEffect(() => {
-      handleGetPrograms();
-    }, [dispatch]);
-  
-    const programsData = programsDataState.map((program) => ({
-      name: program.name,
-      value: program._id, // THIS is your programId
-    }));
+  //fetching progrm data
+  const programsData = useProgramsOptions().options;
 
 
   //fetching years from db
-  const handleGetAcademicYears = () => {
-    setLoading(true);
-    dispatch(getAcademicYears())
-      .unwrap()
-      .then((res: AcademicYearDataResponse[]) => {
-        setAcademicData(res);
-        console.log("Data:", res);
-      })
-      .catch((err) => {
-        console.log("Error: ", err);
-      })
-      .finally(() => {
-        setLoading(false);
-
-      });
-  };
-
-  useEffect(() => {
-    handleGetAcademicYears();
-  }, [dispatch]);
-
-
-  const academicYears = useAppSelector(
-    (state) => state.AcademicYearsRecords.academicYears
-  );
-
-  const academicYearsData = academicYears.map((year) => ({
-    name: year.name,
-    value: year.id,
-  }));
+  const academicYearsData = useAcademicYearsOptions().options;
 
   //fetching ClassLevels from db
-  const handleGetClassLevels = () => {
-    setLoading(true);
-    dispatch(getClassLevels())
-      .unwrap()
-      .then((res: ClassLevelDataResponse[]) => {
-        setClassLevel(res as any);
-        console.log("Data:", res);
-      })
-      .catch((err) => {
-        console.log("Error: ", err);
-      })
-      .finally(() => {
-        setLoading(false);
-
-      });
-  };
-
-  useEffect(() => {
-    handleGetClassLevels();
-  }, [dispatch]);
-
-  const classLevels = useAppSelector(
-    (state) => state.ClassLevelsRecords.classLevels
-  );
-
-  const classLevelsData = classLevels.map((year) => ({
-    name: year.name,
-    value: year.id,
-  }));
-
-
+  const classLevelsData = useClassLevelsOptions().options
 
 
 
@@ -133,21 +55,18 @@ const CreateStudentForm = ({ setLoading }: Props) => {
     mode: 'onChange',
   });
 
+  const createMutation = useCreateStudents();
+
   const onSubmit = (data: CreateStudentTypes) => {
     console.log("Button clicked:", data)
-    setLoading(true);
-    dispatch(createNewStudent(data))
-      .unwrap()
-      .then((res) => {
-        customToast.success(res.message ?? 'Student created successfully.');
+
+     createMutation.mutate(data, {
+      onSuccess: () => {
         createStudentForm.reset();
-      })
-      .catch((err) => {
-        customToast.error(err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+
+        navigate('/dashboard/students');
+      },
+    });
   };
 
 

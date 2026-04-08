@@ -8,7 +8,8 @@ import Icon from '../ui/svg_icon/SvgIcon';
 import { useAppDispatch } from '@/Redux/Hooks';
 import Spinner from '../ui/spinner';
 import type { AcademicTermDataResponse } from '@/pages/Dashboard/AdminPanel/AcademicTerms/Types';
-import { getAcademicTermById } from '@/Redux/AcademicTerms/Slice';
+import { getAcademicTermById } from '@/Redux/AdminPanel/AcademicTerms/Slice';
+import { useAcademicTermById } from '@/Hooks/TanStack/AcademicTerms/useAcademicTermById';
 
 
 interface Props {
@@ -23,33 +24,34 @@ const AcademicTermModal: FC<Props> = ({ close, academicTermId }) => {
 
   const dispatch = useAppDispatch();
 
-  const [loading, setLoading] = useState<boolean>(false);
-  const [data, setData] = useState<AcademicTermDataResponse | null>(null);
+  //const [loading, setLoading] = useState<boolean>(false);
+  //const [data, setData] = useState<AcademicTermDataResponse | null>(null);
 
 
-  const handleGetAcademicYear = () => {
-    setLoading(true);
-    dispatch(getAcademicTermById(academicTermId!))
-      .unwrap()
-      .then((res: any) => {
-        setData(res.data.academicTerm);
-        console.log("Data:", res.data.academicTerm);
-      })
-      .catch((err) => {
-        console.log("Error: ", err);
-      })
-      .finally(() => {
-        setLoading(false);
+  // const handleGetAcademicYear = () => {
+  //   setLoading(true);
+  //   dispatch(getAcademicTermById(academicTermId!))
+  //     .unwrap()
+  //     .then((res: any) => {
+  //       setData(res.data.academicTerm);
+  //       console.log("Data:", res.data.academicTerm);
+  //     })
+  //     .catch((err) => {
+  //       console.log("Error: ", err);
+  //     })
+  //     .finally(() => {
+  //       setLoading(false);
 
-      });
-  };
+  //     });
+  // };
 
-  useEffect(() => {
-    if (academicTermId) {
-      handleGetAcademicYear();
-    }
-  }, [academicTermId]);
+  // useEffect(() => {
+  //   if (academicTermId) {
+  //     handleGetAcademicYear();
+  //   }
+  // }, [academicTermId]);
 
+  const { data, isLoading } = useAcademicTermById(academicTermId);
 
 
 
@@ -77,10 +79,10 @@ const AcademicTermModal: FC<Props> = ({ close, academicTermId }) => {
               <div className="mt-2">
                 <div>
                   <div className="after:absolute after:inset-y-0 after:w-px after:bg-gray-500/20 relative pl-6 after:left-0 grid dark:after:bg-gray-400/20">
-                    {!data && !loading && (
+                    {!data && !isLoading && (
                       <p>No data found</p>
                     )}
-                    {loading && <Spinner />}
+                    {isLoading && <Spinner />}
 
 
                     {data && (

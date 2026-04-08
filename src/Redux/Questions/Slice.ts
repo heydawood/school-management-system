@@ -2,7 +2,7 @@ import type { Pagination } from '@/Utils/Types';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getPaginatedLearningHub } from '../LearningHub/Slice';
 import type { QuestionsDataResponse } from '@/pages/Dashboard/TeacherPanel/Questions/Types';
-import { createQuestion, getQuestionDataById, getQuestionsData, updateQuestionsDataById } from '@/Services/Questions/Questions';
+//import { createQuestion, getQuestionDataById, getQuestionsData, updateQuestionsDataById } from '@/Services/Questions/Questions';
 
 
 interface State {
