@@ -4,32 +4,41 @@ import { Button } from '@/components/ui/button';
 import { useAppDispatch } from '@/Redux/Hooks';
 import StatChartCard from '@/components/features/Dashboard/StatChartCard';
 import { getStudentExamReview } from '@/Redux/StudentExam/Slice';
+import { useExamReview } from './Hooks';
 
 const StudentExamReviewPage = () => {
+  // const { examId } = useParams();
+  // const navigate = useNavigate();
+
+  // const [loading, setLoading] = useState(false);
+  // const [review, setReview] = useState<any>(null);
+
+  // const fetchReview = () => {
+  //   setLoading(true);
+
+  //   dispatch(getStudentExamReview(examId!))
+  //     .unwrap()
+  //     .then((res) => {
+  //       console.log("Review Data:", res.data);
+  //       setReview(res.data);
+  //     })
+  //     .finally(() => setLoading(false));
+  // };
+
+  // useEffect(() => {
+  //   fetchReview();
+  // }, []);
+
+  // if (loading || !review) return <div className="p-6">Loading review...</div>;
+
+  // const { summary, questions } = review;
+
   const { examId } = useParams();
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
 
-  const [loading, setLoading] = useState(false);
-  const [review, setReview] = useState<any>(null);
+  const { data: review, isLoading } = useExamReview(examId);
 
-  const fetchReview = () => {
-    setLoading(true);
-
-    dispatch(getStudentExamReview(examId!))
-      .unwrap()
-      .then((res) => {
-        console.log("Review Data:", res.data);
-        setReview(res.data);
-      })
-      .finally(() => setLoading(false));
-  };
-
-  useEffect(() => {
-    fetchReview();
-  }, []);
-
-  if (loading || !review) return <div className="p-6">Loading review...</div>;
+  if (isLoading || !review) return <div>Loading...</div>;
 
   const { summary, questions } = review;
 

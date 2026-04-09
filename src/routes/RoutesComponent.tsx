@@ -64,7 +64,7 @@ const CreateQuestionsPage = lazy(() => import('@/pages/Dashboard/TeacherPanel/Qu
 
 //Student Pages
 // const StudentHomePage = lazy(() => import('@/pages/Dashboard/StudentPanel/Results/ResultsPage'));
-const StudentExamPage = lazy(() => import('@/pages/Dashboard/StudentPanel/StudentExam/StudentExamPage'));
+const StudentExamPage = lazy(() => import('@/pages/Dashboard/StudentPanel/StudentExam/AllExamPage'));
 const ExamPage = lazy(() => import('@/pages/Dashboard/StudentPanel/StudentExam/ExamPage'));
 const StudentExamResultPage = lazy(() => import('@/pages/Dashboard/StudentPanel/StudentExam/StudentExamResultPage'));
 const StudentExamReviewPage = lazy(() => import('@/pages/Dashboard/StudentPanel/StudentExam/StudentExamReviewPage'));

@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from '@/Redux/Hooks';
 import * as routes from '@/routes/Index';
 import { getTeacherProfile } from '@/Redux/Teachers/Slice';
 import type { TeacherProfileDataResponse } from './Types';
+import { useTeacherProfile } from '../../AdminPanel/Teachers/Hooks';
 
 const Header = ({
   onChange,
@@ -40,26 +41,30 @@ export default function HomePage() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const [profile, setProfile] = useState<TeacherProfileDataResponse | null>(null);
+ // const [profile, setProfile] = useState<TeacherProfileDataResponse | null>(null);
 
-  const fetchProfile = () => {
-    setLoading(true);
+  // const fetchProfile = () => {
+  //   setLoading(true);
 
-    dispatch(getTeacherProfile())
-      .unwrap()
-      .then((res) => {
-        console.log("Profile Response:", res);
-        setProfile(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => setLoading(false));
-  };
+  //   dispatch(getTeacherProfile())
+  //     .unwrap()
+  //     .then((res) => {
+  //       console.log("Profile Response:", res);
+  //       setProfile(res);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     })
+  //     .finally(() => setLoading(false));
+  // };
 
-  useEffect(() => {
-    fetchProfile();
-  }, []);
+  // useEffect(() => {
+  //   fetchProfile();
+  // }, []);
+
+  const { data = [], isLoading } = useTeacherProfile();
+
+
 
   return (
     <div className="space-y-4">
@@ -68,10 +73,6 @@ export default function HomePage() {
           title="My Profile"
           ActionButtons={
             <div className="flex gap-3 items-center">
-              {/* <Button onClick={() => navigate(routes.AdminCreate())} className="bg-primary rounded-xl px-5 py-5" type="button">
-                <Icon icon="/icons/add-circle.svg" className="mr-2 text-white" />
-                <p className='text-white'>Add New Admin</p>
-              </Button> */}
             </div>
           }
           onChange={(e: any) => { }}
@@ -89,17 +90,17 @@ export default function HomePage() {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <p className="text-gray-500 text-sm">Name</p>
-              <p className="font-medium">{profile?.name}</p>
+              <p className="font-medium">{data?.name}</p>
             </div>
 
             <div>
               <p className="text-gray-500 text-sm">Email</p>
-              <p className="font-medium">{profile?.email}</p>
+              <p className="font-medium">{data?.email}</p>
             </div>
 
             <div>
               <p className="text-gray-500 text-sm">Teacher's ID</p>
-              <p className="font-medium">{profile?.teacherId}</p>
+              <p className="font-medium">{data?.teacherId}</p>
             </div>
           </div>
         </div>
@@ -113,25 +114,25 @@ export default function HomePage() {
             <div>
               <p className="text-gray-500 text-sm">Application Status</p>
               <p className="font-medium capitalize">
-                {profile?.applicationStatus}
+                {data?.applicationStatus}
               </p>
             </div>
 
             <div>
               <p className="text-gray-500 text-sm">Account Status</p>
               <p
-                className={`font-medium ${profile?.isSuspended ? 'text-red-500' : 'text-green-600'
+                className={`font-medium ${data?.isSuspended ? 'text-red-500' : 'text-green-600'
                   }`}
               >
-                {profile?.isSuspended ? 'Suspended' : 'Active'}
+                {data?.isSuspended ? 'Suspended' : 'Active'}
               </p>
             </div>
 
             <div>
               <p className="text-gray-500 text-sm">Date Employed</p>
               <p className="font-medium">
-                {profile?.dateEmployed
-                  ? new Date(profile.dateEmployed).toLocaleDateString()
+                {data?.dateEmployed
+                  ? new Date(data.dateEmployed).toLocaleDateString()
                   : '-'}
               </p>
             </div>
@@ -147,7 +148,7 @@ export default function HomePage() {
             <div className="p-4 bg-primary-25 rounded-xl">
               <p className="text-sm text-gray-500">Exams Created</p>
               <p className="text-xl font-bold">
-                {profile?.examsCreated?.length || 0}
+                {data?.examsCreated?.length || 0}
               </p>
             </div>
           </div>
@@ -157,6 +158,3 @@ export default function HomePage() {
     </div>
   )
 }
-
-
-//HomePage

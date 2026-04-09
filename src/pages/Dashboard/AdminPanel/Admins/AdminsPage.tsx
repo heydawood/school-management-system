@@ -7,6 +7,7 @@ import * as routes from '@/routes/Index';
 import type { AdminDataResponse } from './Types';
 import { getAdmins } from '@/Redux/AdminPanel/Admin/Slice';
 import AdminTable from '@/components/features/Admin/AdminTable';
+import { useAdmins } from './Hooks';
 
 const Header = ({
   onChange,
@@ -35,33 +36,35 @@ function AdminsPage() {
   const { pagination } = useAppSelector((state) => state.AdminRecords);
 
     const [loading, setLoading] = useState<boolean>(false);
-    const [data, setData] = useState<AdminDataResponse[]>([]);
+    //const [data, setData] = useState<AdminDataResponse[]>([]);
     const [filters, setFilters] = useState<{ search: string }>({ search: '' });
 
 
-    const dispatch = useAppDispatch();
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
 
-    const handleGetAdmins = () => {
-        setLoading(true);
-        dispatch(getAdmins())
-          .unwrap()
-          .then((res: AdminDataResponse[]) => {
-            setData(res);
-            console.log("Data:", res);
-          })
-          .catch((err) => {
-            console.log("Error: ", err);
-          })
-          .finally(() => {
-            setLoading(false);
+    // const handleGetAdmins = () => {
+    //     setLoading(true);
+    //     dispatch(getAdmins())
+    //       .unwrap()
+    //       .then((res: AdminDataResponse[]) => {
+    //         setData(res);
+    //         console.log("Data:", res);
+    //       })
+    //       .catch((err) => {
+    //         console.log("Error: ", err);
+    //       })
+    //       .finally(() => {
+    //         setLoading(false);
             
-          });
-      };
+    //       });
+    //   };
     
-      useEffect(() => {
-        handleGetAdmins();
-      }, [dispatch]);
+    //   useEffect(() => {
+    //     handleGetAdmins();
+    //   }, [dispatch]);
+
+    const { data = [], isLoading } = useAdmins();
 
   return (
     <div className="space-y-4">

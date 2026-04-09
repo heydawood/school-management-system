@@ -10,6 +10,7 @@ import { CreateAdminDefaultValues, type CreateAdminTypes } from '@/Forms/CreateA
 import { createNewAdmin } from '@/Redux/AdminPanel/Admin/Slice';
 import Input from '@/components/ui/input/input';
 import { useNavigate } from 'react-router-dom';
+import { useCreateAdmin } from '@/pages/Dashboard/AdminPanel/Admins/Hooks';
 
 
 interface Props {
@@ -23,23 +24,21 @@ const CreateAdminForm = ({ setLoading }: Props) => {
     mode: 'onChange',
   });
 
-  const dispatch = useAppDispatch();
+  //const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+ const createMutation = useCreateAdmin();
+
   const onSubmit = (data: CreateAdminTypes) => {
-    setLoading(true);
-    dispatch(createNewAdmin(data))
-      .unwrap()
-      .then((res) => {
-        customToast.success(res.message ?? 'Admin created successfully.');
+    createMutation.mutate(data, {
+      onSuccess: () => {
         createAdminForm.reset();
-      })
-      .catch((err) => {
-        customToast.error(err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+        navigate('/dashboard/admins');
+      },
+      onError: (err: any) => {
+        customToast.error(err?.message);
+      },
+    });
   };
 
   return (

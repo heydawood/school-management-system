@@ -7,6 +7,7 @@ import Icon from '@/components/ui/svg_icon/SvgIcon';
 import { getTeachers } from '@/Redux/Teachers/Slice';
 import type { TeacherDataResponse } from './Types';
 import TeacherTable from '@/components/features/Teacher/TeacherTable';
+import { useTeachers } from './Hooks';
 
 
 
@@ -37,34 +38,35 @@ const TeachersPage = () => {
   const { pagination } = useAppSelector((state) => state.TeacherRecords);
 
     const [loading, setLoading] = useState<boolean>(false);
-    const [data, setData] = useState<TeacherDataResponse[]>([]);
+    //const [data, setData] = useState<TeacherDataResponse[]>([]);
     const [filters, setFilters] = useState<{ search: string }>({ search: '' });
 
 
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    const handleGetTeachers = () => {
-        setLoading(true);
-        dispatch(getTeachers())
-          .unwrap()
-          .then((res: TeacherDataResponse[]) => {
-            setData(res);
-            console.log("Data:", res);
-          })
-          .catch((err) => {
-            console.log("Error: ", err);
-          })
-          .finally(() => {
-            setLoading(false);
+    // const handleGetTeachers = () => {
+    //     setLoading(true);
+    //     dispatch(getTeachers())
+    //       .unwrap()
+    //       .then((res: TeacherDataResponse[]) => {
+    //         setData(res);
+    //         console.log("Data:", res);
+    //       })
+    //       .catch((err) => {
+    //         console.log("Error: ", err);
+    //       })
+    //       .finally(() => {
+    //         setLoading(false);
             
-          });
-      };
+    //       });
+    //   };
     
-      useEffect(() => {
-        handleGetTeachers();
-      }, [dispatch]);
+    //   useEffect(() => {
+    //     handleGetTeachers();
+    //   }, [dispatch]);
 
+    const { data = [], isLoading } = useTeachers();
 
   return (
     <div className="space-y-4">

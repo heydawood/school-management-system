@@ -9,6 +9,7 @@ import { useAppDispatch } from '@/Redux/Hooks';
 import Spinner from '../ui/spinner';
 import { getTeacherById } from '@/Redux/Teachers/Slice';
 import type { TeacherDataResponse } from '@/pages/Dashboard/AdminPanel/Teachers/Types';
+import { useTeacherById } from '@/pages/Dashboard/AdminPanel/Teachers/Hooks';
 
 
 interface Props {
@@ -21,32 +22,7 @@ const TeacherModal: FC<Props> = ({close, teacherId}) => {
 
     const dispatch = useAppDispatch();
 
-    const [loading, setLoading] = useState<boolean>(false);
-    const [data, setData] = useState<TeacherDataResponse | null>(null);
-
-
-    const handleGetTeacher = () => {
-        setLoading(true);
-        dispatch(getTeacherById(teacherId!))
-            .unwrap()
-            .then((res: any) => {
-                setData(res.data.teacher);
-                console.log("Data:", res.data.teacher);
-            })
-            .catch((err) => {
-                console.log("Error: ", err);
-            })
-            .finally(() => {
-                setLoading(false);
-
-            });
-    };
-
-    useEffect(() => {
-        if (teacherId) {
-            handleGetTeacher();
-        }
-    }, [teacherId]);
+ const { data, isLoading } = useTeacherById(teacherId);
 
 
   return (
@@ -72,10 +48,10 @@ const TeacherModal: FC<Props> = ({close, teacherId}) => {
                             <div className="mt-2">
                                 <div>
                                     <div className="after:absolute after:inset-y-0 after:w-px after:bg-gray-500/20 relative pl-6 after:left-0 grid dark:after:bg-gray-400/20">
-                                        {!data && !loading && (
+                                        {!data && !isLoading && (
                                             <p>No data found</p>
                                         )}
-                                        {loading && <Spinner />}
+                                        {isLoading && <Spinner />}
 
 
                                         {data && (

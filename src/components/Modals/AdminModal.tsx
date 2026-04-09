@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from '@/Redux/Hooks';
 import Spinner from '../ui/spinner';
 import { getAdminById } from '@/Redux/AdminPanel/Admin/Slice';
 import type { AdminDataByIdResponse, AdminDataResponse } from '@/pages/Dashboard/AdminPanel/Admins/Types';
+import { useAdminById } from '@/pages/Dashboard/AdminPanel/Admins/Hooks';
 
 interface Props {
     close: () => void;
@@ -19,34 +20,36 @@ const AdminModal: FC<Props> = ({ close, adminId }) => {
 
     //const { adminActivities } = useAppSelector((state) => state.homePage);
 
-    const dispatch = useAppDispatch();
+    //const dispatch = useAppDispatch();
 
-    const [loading, setLoading] = useState<boolean>(false);
-    const [data, setData] = useState<AdminDataByIdResponse | null>(null);
+    // const [loading, setLoading] = useState<boolean>(false);
+    // const [data, setData] = useState<AdminDataByIdResponse | null>(null);
 
 
-    const handleGetAdmin = () => {
-        setLoading(true);
-        dispatch(getAdminById(adminId!))
-            .unwrap()
-            .then((res: any) => {
-                setData(res.data.admin);
-                console.log("Data:", res.data.admin);
-            })
-            .catch((err) => {
-                console.log("Error: ", err);
-            })
-            .finally(() => {
-                setLoading(false);
+    // const handleGetAdmin = () => {
+    //     setLoading(true);
+    //     dispatch(getAdminById(adminId!))
+    //         .unwrap()
+    //         .then((res: any) => {
+    //             setData(res.data.admin);
+    //             console.log("Data:", res.data.admin);
+    //         })
+    //         .catch((err) => {
+    //             console.log("Error: ", err);
+    //         })
+    //         .finally(() => {
+    //             setLoading(false);
 
-            });
-    };
+    //         });
+    // };
 
-    useEffect(() => {
-        if (adminId) {
-            handleGetAdmin();
-        }
-    }, [adminId]);
+    // useEffect(() => {
+    //     if (adminId) {
+    //         handleGetAdmin();
+    //     }
+    // }, [adminId]);
+
+    const { data, isLoading } = useAdminById(adminId);
 
     return (
         <div>
@@ -71,10 +74,10 @@ const AdminModal: FC<Props> = ({ close, adminId }) => {
                             <div className="mt-2">
                                 <div>
                                     <div className="after:absolute after:inset-y-0 after:w-px after:bg-gray-500/20 relative pl-6 after:left-0 grid dark:after:bg-gray-400/20">
-                                        {!data && !loading && (
+                                        {!data && !isLoading && (
                                             <p>No data found</p>
                                         )}
-                                        {loading && <Spinner />}
+                                        {isLoading && <Spinner />}
 
 
                                         {data && (

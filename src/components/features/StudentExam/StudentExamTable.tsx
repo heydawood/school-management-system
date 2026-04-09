@@ -128,7 +128,7 @@ const StudentExamTable: FC<{
         pagination={{
           totalItems: +pagination.total,
           totalPages: +pagination.totalPages,
-          itemCount: data.length,
+          //itemCount: data.length,
           itemsPerPage: +pagination.limit,
           currentPage: +pagination.page,
           setitemsPerPage: (val: number) => {

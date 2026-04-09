@@ -69,19 +69,6 @@ const AdminTable: FC<{
             </div>
           ),
         },
-        // {
-        //   title: 'Status',
-        //   dataIndex: 'status',
-        //   key: 'status',
-        //   sorter: (a: LearningHubResponse, b: LearningHubResponse) => {
-        //     const statusA = a?.isActive ? 'Active' : 'Inactive';
-        //     const statusB = b?.isActive ? 'Active' : 'Inactive';
-        //     return statusA.localeCompare(statusB);
-        //   },
-        //   render: (_: any, record: LearningHubResponse) => (
-        //     <Badge className={`text-center shadow-none rounded-full ${getCategoryStatusBadge(record.isActive)}`}>{record.isActive ? 'Active' : 'Inactive'}</Badge>
-        //   ),
-        // },
         {
           title: 'Action',
           dataIndex: 'action',

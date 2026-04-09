@@ -1,6 +1,6 @@
 import { customToast } from '@/Common/Components/ShowToast';
 import type { AdminDataResponse } from '@/pages/Dashboard/AdminPanel/Admins/Types';
-import { createAdmin, getAdminData, getAdminDataById } from '@/Services/AdminPanel/Admin/Admin';
+//import { createAdmin, getAdminData, getAdminDataById } from '@/Services/AdminPanel/Admin/Admin';
 import type { Pagination } from '@/Utils/Types';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getPaginatedLearningHub } from '../LearningHub/Slice';
@@ -51,18 +51,6 @@ export const createNewExam = createAsyncThunk('createNewExam', async (examData: 
   }
 });
 
-//createNewAdmin
-export const createNewAdmin = createAsyncThunk('createNewAdmin', async (adminData: CreateAdminTypes, { rejectWithValue }) => {
-
-  try {
-    const response = await createAdmin(adminData);
-    console.log("Create Admin Response:", response.data);
-    return response.data;
-  } catch (error: any) {
-    //customToast.error(error?.message ?? 'Something went wrong');
-    return rejectWithValue(error?.message ?? 'Something went wrong');
-  }
-});
 
 //get Exam by id
 export const getExamById = createAsyncThunk('getExamById', async (ExamId: string, { rejectWithValue }) => {

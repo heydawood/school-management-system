@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from '@/Redux/Hooks';
 import { getStudentExam } from '@/Redux/StudentExam/Slice';
 import StudentExamTable from '@/components/features/StudentExam/StudentExamTable';
 import type { StudentExamDataResponse } from './Types';
+import { useStudentExams } from './Hooks';
 
 const Header = ({
   onChange,
@@ -27,37 +28,38 @@ const Header = ({
   </div>
 );
 
-function StudentExamPage() {
+function AllExamPage() {
 
   const { pagination } = useAppSelector((state) => state.ResultsRecords);
 
     const [loading, setLoading] = useState<boolean>(false);
-    const [data, setData] = useState<StudentExamDataResponse[]>([]);
+    //const [data, setData] = useState<StudentExamDataResponse[]>([]);
     const [filters, setFilters] = useState<{ search: string }>({ search: '' });
 
 
     const dispatch = useAppDispatch();
 
-    const handleGetStudentExam = () => {
-        setLoading(true);
-        dispatch(getStudentExam())
-          .unwrap()
-          .then((res: any) => {
-            setData(res.exams);
-            console.log("Data:", res);
-          })
-          .catch((err) => {
-            console.log("Error: ", err);
-          })
-          .finally(() => {
-            setLoading(false);
+    // const handleGetStudentExam = () => {
+    //     setLoading(true);
+    //     dispatch(getStudentExam())
+    //       .unwrap()
+    //       .then((res: any) => {
+    //         setData(res.exams);
+    //         console.log("Data:", res);
+    //       })
+    //       .catch((err) => {
+    //         console.log("Error: ", err);
+    //       })
+    //       .finally(() => {
+    //         setLoading(false);
             
-          });
-      };
+    //       });
+    //   };
     
-      useEffect(() => {
-        handleGetStudentExam();
-      }, [dispatch]);
+    //   useEffect(() => {
+    //     handleGetStudentExam();
+    //   }, [dispatch]);
+     const { data, isLoading } = useStudentExams();
 
   return (
     <div className="space-y-4">
@@ -79,4 +81,4 @@ function StudentExamPage() {
   )
 }
 
-export default StudentExamPage
+export default AllExamPage

@@ -1,8 +1,8 @@
 import { FormProvider, useForm, type UseFormReturn } from 'react-hook-form';
 import StatChartCard from '../Dashboard/StatChartCard';
 import { customToast } from '@/Common/Components/ShowToast';
-import { useAppDispatch, useAppSelector } from '@/Redux/Hooks';
-import { useEffect, useState, type Dispatch, type SetStateAction } from 'react';
+import { useAppDispatch } from '@/Redux/Hooks';
+import {type Dispatch, type SetStateAction } from 'react';
 import PasswordInput from '@/components/ui/password_input/password-input';
 import Icon from '@/components/ui/svg_icon/SvgIcon';
 import { Button } from '@/components/ui/button';
@@ -11,22 +11,13 @@ import { CreateTeacherDefaultValues } from '@/Forms/CreateTeacherForm';
 import type { CreateTeacherTypes } from '@/Forms/CreateTeacherForm';
 import { createNewTeacher } from '@/Redux/Teachers/Slice';
 import Dropdown from '@/components/ui/dropdown/Dropdown';
-import { getAcademicYears } from '@/Redux/AdminPanel/AcademicYears/Slice';
-import type { AcademicYearDataResponse } from '@/pages/Dashboard/AdminPanel/AcademicYears/Types';
-import type { AcademicTermDataResponse } from '@/pages/Dashboard/AdminPanel/AcademicTerms/Types';
-import { getAcademicTerms } from '@/Redux/AdminPanel/AcademicTerms/Slice';
-import { getClassLevels } from '@/Redux/AdminPanel/ClassLevels/Slice';
-import type { ClassLevelDataResponse } from '@/pages/Dashboard/AdminPanel/ClassLevels/Types';
-import { getPrograms } from '@/Redux/AdminPanel/Programs/Slice';
-import type { ProgramsDataResponse } from '@/pages/Dashboard/AdminPanel/Programs/Types';
-import type { SubjectsDataResponse } from '@/pages/Dashboard/AdminPanel/Subjects/Types';
-import { getSubjects } from '@/Redux/AdminPanel/Subjects/Slice';
 import { useNavigate } from 'react-router-dom';
 import { useSubjectsOptions } from '@/Hooks/dropdowns/useSubjects';
 import { useAcademicYearsOptions } from '@/Hooks/dropdowns/useAcademicYears';
 import { useAcademicTermsOptions } from '@/Hooks/dropdowns/useAcademicTerms';
 import { useClassLevelsOptions } from '@/Hooks/dropdowns/useClassLevels';
 import { useProgramsOptions } from '@/Hooks/dropdowns/usePrograms';
+import { useCreateTeacher } from '@/pages/Dashboard/AdminPanel/Teachers/Hooks';
 
 
 
@@ -41,16 +32,10 @@ const CreateTeacherForm = ({ setLoading }: Props) => {
 
 
     //fetch subjects years for dropdown
-
-
   const subjectsData = useSubjectsOptions().options
 
-
   //fetch academic years for dropdown
-
   const academicYearsData = useAcademicYearsOptions().options
-
-
 
   //fetching terms from db
   const academicTermsData = useAcademicTermsOptions().options
@@ -71,22 +56,36 @@ const CreateTeacherForm = ({ setLoading }: Props) => {
   });
 
 
-  const onSubmit = (data: CreateTeacherTypes) => {
-    console.log("Submit button: ",data)
-    setLoading(true);
-    dispatch(createNewTeacher(data))
-      .unwrap()
-      .then((res) => {
-        customToast.success(res.message ?? 'Teacher created successfully.');
-        createTeacherForm.reset();
-      })
-      .catch((err) => {
-        customToast.error(err);
-      })
-      .finally(() => {
-        setLoading(false);
+  // const onSubmit = (data: CreateTeacherTypes) => {
+  //   console.log("Submit button: ",data)
+  //   setLoading(true);
+  //   dispatch(createNewTeacher(data))
+  //     .unwrap()
+  //     .then((res) => {
+  //       customToast.success(res.message ?? 'Teacher created successfully.');
+  //       createTeacherForm.reset();
+  //     })
+  //     .catch((err) => {
+  //       customToast.error(err);
+  //     })
+  //     .finally(() => {
+  //       setLoading(false);
+  //     });
+  // };
+
+  const createMutation = useCreateTeacher();
+  
+    const onSubmit = (data: CreateTeacherTypes) => {
+      createMutation.mutate(data, {
+        onSuccess: () => {
+          createTeacherForm.reset();
+          navigate('/dashboard/teachers');
+        },
+        onError: (err: any) => {
+          customToast.error(err?.message);
+        },
       });
-  };
+    };
 
 
 

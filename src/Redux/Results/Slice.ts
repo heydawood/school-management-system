@@ -1,10 +1,8 @@
-import { customToast } from '@/Common/Components/ShowToast';
+
 import type { AdminDataResponse } from '@/pages/Dashboard/AdminPanel/Admins/Types';
-import { createAdmin, getAdminData, getAdminDataById } from '@/Services/AdminPanel/Admin/Admin';
 import type { Pagination } from '@/Utils/Types';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getPaginatedLearningHub } from '../LearningHub/Slice';
-import type { CreateAdminTypes } from '@/Forms/CreateAdminForm';
 import { getResultsData } from '@/Services/Results/Results';
 
 
@@ -35,31 +33,6 @@ export const getResults = createAsyncThunk('getResults', async (_, { rejectWithV
   } catch (error: any) {
     //customToast.error(error?.message ?? 'Something went wrong');
     return rejectWithValue(error?.message ?? 'Something went wrong');
-  }
-});
-
-//createNewAdmin
-export const createNewAdmin = createAsyncThunk('createNewAdmin', async (adminData: CreateAdminTypes, { rejectWithValue }) => {
-
-  try {
-    const response = await createAdmin(adminData);
-    console.log("Create Admin Response:", response.data);
-    return response.data;
-  } catch (error: any) {
-    //customToast.error(error?.message ?? 'Something went wrong');
-    return rejectWithValue(error?.message ?? 'Something went wrong');
-  }
-});
-
-//get admin by id
-export const getAdminById = createAsyncThunk('getAdminById', async (adminId: string, { rejectWithValue }) => {
-  try{
-    const response = await getAdminDataById(adminId);
-    return response.data;
-  } catch (error: any) {
-    //customToast.error(error?.message ?? 'Something went wrong');
-    return rejectWithValue(error?.message ?? 'Something went wrong');
-
   }
 });
 

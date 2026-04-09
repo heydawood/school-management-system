@@ -4,29 +4,32 @@ import { Button } from '@/components/ui/button';
 import { useAppDispatch } from '@/Redux/Hooks';
 import StatChartCard from '@/components/features/Dashboard/StatChartCard';
 import { getStudentExamResult } from '@/Redux/StudentExam/Slice';
+import { useExamResult } from './Hooks';
 
 const StudentExamResultPage = () => {
   const { examId } = useParams();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<any>(null);
+  //const [loading, setLoading] = useState(false);
+  //const [result, setResult] = useState<any>(null);
 
-  const fetchResult = () => {
-    setLoading(true);
+  // const fetchResult = () => {
+  //   setLoading(true);
 
-    dispatch(getStudentExamResult(examId!))
-      .unwrap()
-      .then((res) => {
-        setResult(res.data);
-      })
-      .finally(() => setLoading(false));
-  };
+  //   dispatch(getStudentExamResult(examId!))
+  //     .unwrap()
+  //     .then((res) => {
+  //       setResult(res.data);
+  //     })
+  //     .finally(() => setLoading(false));
+  // };
 
-  useEffect(() => {
-    fetchResult();
-  }, []);
+  // useEffect(() => {
+  //   fetchResult();
+  // }, []);
+
+  const { data: result, isLoading } = useExamResult(examId);
 
   return (
     <div className="space-y-4">

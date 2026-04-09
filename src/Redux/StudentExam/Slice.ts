@@ -3,7 +3,7 @@ import type { AdminDataResponse } from '@/pages/Dashboard/AdminPanel/Admins/Type
 import type { Pagination } from '@/Utils/Types';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getPaginatedLearningHub } from '../LearningHub/Slice';
-import { getExamAttemptData, getExamDataById, getSaveAnswerData, getStartExamData, getStudentExamData, getSubmitExamData, studentExamResultData, studentExamResultReviewData } from '@/Services/StudentExam/StudentExam';
+//import { getExamAttemptData, getExamDataById, getSaveAnswerData, getStartExamData, getStudentExamData, getSubmitExamData, studentExamResultData, studentExamResultReviewData } from '@/Services/StudentExam/StudentExam';
 
 
 interface State {
