@@ -4,10 +4,8 @@ import Icon from '@/components/ui/svg_icon/SvgIcon';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/Redux/Hooks';
 import * as routes from '@/routes/Index';
-import type { AdminDataResponse } from './Types';
-import { getAdmins } from '@/Redux/AdminPanel/Admin/Slice';
 import AdminTable from '@/components/features/Admin/AdminTable';
-import { useAdmins } from './Hooks';
+import { useAdminManager } from './AdminManager';
 
 const Header = ({
   onChange,
@@ -64,7 +62,10 @@ function AdminsPage() {
     //     handleGetAdmins();
     //   }, [dispatch]);
 
-    const { data = [], isLoading } = useAdmins();
+    const {getAdminsList} = useAdminManager()
+
+    //const { data = [], isLoading } = useAdmins();
+    const { data = [], isLoading } = getAdminsList();
 
   return (
     <div className="space-y-4">

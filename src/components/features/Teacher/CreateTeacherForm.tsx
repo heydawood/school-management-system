@@ -2,7 +2,7 @@ import { FormProvider, useForm, type UseFormReturn } from 'react-hook-form';
 import StatChartCard from '../Dashboard/StatChartCard';
 import { customToast } from '@/Common/Components/ShowToast';
 import { useAppDispatch } from '@/Redux/Hooks';
-import {type Dispatch, type SetStateAction } from 'react';
+import { type Dispatch, type SetStateAction } from 'react';
 import PasswordInput from '@/components/ui/password_input/password-input';
 import Icon from '@/components/ui/svg_icon/SvgIcon';
 import { Button } from '@/components/ui/button';
@@ -17,7 +17,7 @@ import { useAcademicYearsOptions } from '@/Hooks/dropdowns/useAcademicYears';
 import { useAcademicTermsOptions } from '@/Hooks/dropdowns/useAcademicTerms';
 import { useClassLevelsOptions } from '@/Hooks/dropdowns/useClassLevels';
 import { useProgramsOptions } from '@/Hooks/dropdowns/usePrograms';
-import { useCreateTeacher } from '@/pages/Dashboard/AdminPanel/Teachers/Hooks';
+import { useTeacherManager } from '@/pages/Dashboard/AdminPanel/Teachers/TeacherManager';
 
 
 
@@ -31,7 +31,7 @@ const CreateTeacherForm = ({ setLoading }: Props) => {
   const navigate = useNavigate();
 
 
-    //fetch subjects years for dropdown
+  //fetch subjects years for dropdown
   const subjectsData = useSubjectsOptions().options
 
   //fetch academic years for dropdown
@@ -42,7 +42,6 @@ const CreateTeacherForm = ({ setLoading }: Props) => {
 
   //fetching ClassLevels from db
   const classLevelsData = useClassLevelsOptions().options
-
 
   //fetching progrm data
   const programsData = useProgramsOptions().options
@@ -73,19 +72,33 @@ const CreateTeacherForm = ({ setLoading }: Props) => {
   //     });
   // };
 
-  const createMutation = useCreateTeacher();
-  
-    const onSubmit = (data: CreateTeacherTypes) => {
-      createMutation.mutate(data, {
-        onSuccess: () => {
-          createTeacherForm.reset();
-          navigate('/dashboard/teachers');
-        },
-        onError: (err: any) => {
-          customToast.error(err?.message);
-        },
-      });
-    };
+  // const createMutation = useCreateTeacher();
+
+  //   const onSubmit = (data: CreateTeacherTypes) => {
+  //     createMutation.mutate(data, {
+  //       onSuccess: () => {
+  //         createTeacherForm.reset();
+  //         navigate('/dashboard/teachers');
+  //       },
+  //       onError: (err: any) => {
+  //         customToast.error(err?.message);
+  //       },
+  //     });
+  //   };
+
+  const { createNewTeacher, isCreating } = useTeacherManager();
+
+  const onSubmit = (data: CreateTeacherTypes) => {
+    createNewTeacher(data, {
+      onSuccess: () => {
+        createTeacherForm.reset();
+        navigate('/dashboard/teachers');
+      },
+      onError: (err: any) => {
+        customToast.error(err?.message);
+      },
+    });
+  };
 
 
 

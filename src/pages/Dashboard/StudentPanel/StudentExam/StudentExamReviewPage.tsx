@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { useAppDispatch } from '@/Redux/Hooks';
 import StatChartCard from '@/components/features/Dashboard/StatChartCard';
 import { getStudentExamReview } from '@/Redux/StudentExam/Slice';
-import { useExamReview } from './Hooks';
+import { useStudentExamManager } from './StudentExamManager';
 
 const StudentExamReviewPage = () => {
   // const { examId } = useParams();
@@ -36,7 +36,10 @@ const StudentExamReviewPage = () => {
   const { examId } = useParams();
   const navigate = useNavigate();
 
-  const { data: review, isLoading } = useExamReview(examId);
+  const {getExamReviewQuery} = useStudentExamManager()
+
+  //const { data: review, isLoading } = useExamReview(examId);
+  const { data: review, isLoading } = getExamReviewQuery(examId);
 
   if (isLoading || !review) return <div>Loading...</div>;
 

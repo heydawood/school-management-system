@@ -4,10 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import * as routes from '@/routes/Index';
 import Icon from '@/components/ui/svg_icon/SvgIcon';
-import { getTeachers } from '@/Redux/Teachers/Slice';
-import type { TeacherDataResponse } from './Types';
 import TeacherTable from '@/components/features/Teacher/TeacherTable';
-import { useTeachers } from './Hooks';
+import { useTeacherManager } from './TeacherManager';
 
 
 
@@ -66,7 +64,11 @@ const TeachersPage = () => {
     //     handleGetTeachers();
     //   }, [dispatch]);
 
-    const { data = [], isLoading } = useTeachers();
+    const {getTeachersList} = useTeacherManager();
+
+    //const { data = [], isLoading } = useTeachers();
+    const { data = [], isLoading } = getTeachersList();
+    //console.log("Data:", data);
 
   return (
     <div className="space-y-4">
