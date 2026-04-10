@@ -1,145 +1,29 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useAppDispatch } from '@/Redux/Hooks';
 import { Button } from '@/components/ui/button';
 import { customToast } from '@/Common/Components/ShowToast';
-import {
-  getExamAttempt,
-  getSaveAnswer,
-  getStartExam,
-  getSubmitExam,
-} from '@/Redux/StudentExam/Slice';
-import { useExamAttempt, useSaveAnswer, useStartExam, useSubmitExam } from './Hooks';
+import { useStudentExamManager } from './StudentExamManager';
 
 const ExamPage = () => {
-//   const { examId } = useParams();
-//   const navigate = useNavigate();
-//   const dispatch = useAppDispatch();
 
-//   const [loading, setLoading] = useState(false);
-//   const [questions, setQuestions] = useState<any[]>([]);
-//   const [answers, setAnswers] = useState<Record<string, string>>({});
-//   const [savedAnswers, setSavedAnswers] = useState<Record<string, boolean>>({});
-//   const [currentIndex, setCurrentIndex] = useState(0);
-
-//   const currentQuestion = questions[currentIndex];
-
-//   // INIT EXAM
-//   // First, start the exam to create an attempt, then fetch the questions for that attempt
-//   const initExam = async () => {
-//     if (!examId) return;
-
-//     try {
-//       setLoading(true);
-
-//       await dispatch(getStartExam(examId)).unwrap();
-//       const res = await dispatch(getExamAttempt(examId)).unwrap();
-
-//       setQuestions(res.data.questions || []);
-//     } catch (err: any) {
-//       customToast.error(err);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   useEffect(() => {
-//     initExam();
-//   }, [examId]);
-
-//   // SELECT OPTION (UI ONLY)
-//   // Second, handle answer selection
-//   const handleSelect = (questionId: string, option: string) => {
-//     console.log("Selected option:", { questionId, option });
-//     setAnswers((prev) => ({
-//       ...prev,
-//       [questionId]: option,
-//     }));
-//   };
-
-//   // SAVE ANSWER API
-//   //Third, save the answer to the backend
-//   const handleSave = () => {
-//     if (!examId || !currentQuestion) return;
-
-//     const selected = answers[currentQuestion.id];
-
-//     console.log("Saving answer:", { examId, questionId: currentQuestion.id, selectedOption: `option${selected}` });
-
-//     if (!selected) {
-//       customToast.error('Please select an option');
-//       return;
-//     }
-
-//     dispatch(
-//       getSaveAnswer({
-//         examId,
-//         questionId: currentQuestion.id,
-//         selectedOption: `option${selected}`,
-//       })
-//     )
-//       .unwrap()
-//       .then(() => {
-//         customToast.success('Answer saved');
-
-//         setSavedAnswers((prev) => ({
-//           ...prev,
-//           [currentQuestion.id]: true,
-//         }));
-//       })
-//       .catch((err: any) => {
-//         customToast.error(err);
-//       });
-//   };
-
-//   //HANDLEING QUESTIONS NAVIGATION
-
-//   // NEXT QUESTION Button
-//   const handleNext = () => {
-//     if (currentIndex < questions.length - 1) {
-//       setCurrentIndex((prev) => prev + 1);
-//     }
-//   };
-
-//   // PREVIOUS Button
-//   const handlePrev = () => {
-//     if (currentIndex > 0) {
-//       setCurrentIndex((prev) => prev - 1);
-//     }
-//   };
-
-//   // SUBMIT EXAM
-//   // Fourth, handle exam submission
-//   const handleSubmit = () => {
-//     if (!examId) return;
-
-//     setLoading(true);
-
-//     dispatch(getSubmitExam(examId))
-//       .unwrap()
-//       .then(() => {
-//         customToast.success('Exam submitted successfully');
-//         navigate(`/dashboard/student/exams/${examId}/result`);
-//       })
-//       .catch((err: any) => {
-//         customToast.error(err);
-//       })
-//       .finally(() => setLoading(false));
-//   };
-
-const { examId } = useParams();
+  const { examId } = useParams();
   const navigate = useNavigate();
 
-  const startExam = useStartExam();
-  const saveAnswer = useSaveAnswer();
-  const submitExam = useSubmitExam();
+
+  const {startExamMutation, saveAnswerMutation, submitExamMutation, getExamAttemptQuery} = useStudentExamManager()
+
+
+  // const startExam = useStartExam();
+  // const saveAnswer = useSaveAnswer();
+  // const submitExam = useSubmitExam();
 
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [savedAnswers, setSavedAnswers] = useState<Record<string, boolean>>({});
   const [currentIndex, setCurrentIndex] = useState(0);
 
   // Fetch attempt AFTER start
-  const { data: attemptData, refetch } = useExamAttempt(examId);
+  //const { data: attemptData, refetch } = useExamAttempt(examId);
+  const { data: attemptData, refetch } = getExamAttemptQuery(examId);
 
   const questions = attemptData?.questions || [];
   const currentQuestion = questions[currentIndex];
@@ -148,7 +32,7 @@ const { examId } = useParams();
   useEffect(() => {
     if (!examId) return;
 
-    startExam.mutate(examId, {
+    startExamMutation.mutate(examId, {
       onSuccess: () => {
         refetch();
       },
@@ -172,7 +56,7 @@ const { examId } = useParams();
       return;
     }
 
-    saveAnswer.mutate(
+    saveAnswerMutation.mutate(
       {
         examId,
         questionId: currentQuestion.id,
@@ -194,7 +78,7 @@ const { examId } = useParams();
   const handleSubmit = () => {
     if (!examId) return;
 
-    submitExam.mutate(examId, {
+    submitExamMutation.mutate(examId, {
       onSuccess: () => {
         customToast.success('Exam submitted');
         navigate(`/dashboard/student/exams/${examId}/result`);

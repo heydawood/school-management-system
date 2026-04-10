@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { useAppDispatch } from '@/Redux/Hooks';
 import StatChartCard from '@/components/features/Dashboard/StatChartCard';
 import { getStudentExamResult } from '@/Redux/StudentExam/Slice';
-import { useExamResult } from './Hooks';
+import { useStudentExamManager } from './StudentExamManager';
 
 const StudentExamResultPage = () => {
   const { examId } = useParams();
@@ -29,7 +29,10 @@ const StudentExamResultPage = () => {
   //   fetchResult();
   // }, []);
 
-  const { data: result, isLoading } = useExamResult(examId);
+  const {getExamResultQuery} = useStudentExamManager()
+
+  //const { data: result, isLoading } = useExamResult(examId);
+  const { data: result, isLoading } = getExamResultQuery(examId);
 
   return (
     <div className="space-y-4">

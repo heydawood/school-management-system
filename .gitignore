@@ -24,10 +24,7 @@ dist-ssr
 *.sw?
 
 # env
-.env
-.env.development
-.env.production
 .env.example
-.env.local
 
 package-lock.json
+config.bat

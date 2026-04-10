@@ -1,16 +1,14 @@
 import { FormProvider, useForm, type UseFormReturn } from 'react-hook-form';
 import StatChartCard from '../Dashboard/StatChartCard';
 import { customToast } from '@/Common/Components/ShowToast';
-import { useAppDispatch } from '@/Redux/Hooks';
 import type { Dispatch, SetStateAction } from 'react';
 import PasswordInput from '@/components/ui/password_input/password-input';
 import Icon from '@/components/ui/svg_icon/SvgIcon';
 import { Button } from '@/components/ui/button';
 import { CreateAdminDefaultValues, type CreateAdminTypes } from '@/Forms/CreateAdminForm';
-import { createNewAdmin } from '@/Redux/AdminPanel/Admin/Slice';
 import Input from '@/components/ui/input/input';
 import { useNavigate } from 'react-router-dom';
-import { useCreateAdmin } from '@/pages/Dashboard/AdminPanel/Admins/Hooks';
+import { useAdminManager } from '@/pages/Dashboard/AdminPanel/Admins/AdminManager';
 
 
 interface Props {
@@ -27,10 +25,25 @@ const CreateAdminForm = ({ setLoading }: Props) => {
   //const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
- const createMutation = useCreateAdmin();
+//  const createMutation = useCreateAdmin();
+
+//   const onSubmit = (data: CreateAdminTypes) => {
+//     createMutation.mutate(data, {
+//       onSuccess: () => {
+//         createAdminForm.reset();
+//         navigate('/dashboard/admins');
+//       },
+//       onError: (err: any) => {
+//         customToast.error(err?.message);
+//       },
+//     });
+//   };
+
+
+const { createNewAdmin, isCreating } = useAdminManager();
 
   const onSubmit = (data: CreateAdminTypes) => {
-    createMutation.mutate(data, {
+    createNewAdmin(data, {
       onSuccess: () => {
         createAdminForm.reset();
         navigate('/dashboard/admins');
@@ -40,6 +53,8 @@ const CreateAdminForm = ({ setLoading }: Props) => {
       },
     });
   };
+
+
 
   return (
     <div className="mt-4 md:mt-0">
@@ -82,13 +97,6 @@ const CreateAdminForm = ({ setLoading }: Props) => {
                     },
                   }}
                 />
-
-                {/* {createAdminForm.formState.errors.email && (
-                  <span className="text-red-500 text-sm mt-1">
-                    {createAdminForm.formState.errors.email.message}
-                  </span>
-                )} */}
-                
               </div>
 
               {/* Password Fields Grid */}

@@ -13,10 +13,10 @@ import api from '../../Api';
 // };
 
 
-// //updateAdmin
-// export const updateAdminInfo = async (adminData: UpdateAdminType) => {
-//   return api.patch(`/v1/admins/updateAdmin`, adminData);
-// };
+//updateAdmin
+export const updateAdminInfo = async (adminData: UpdateAdminType) => {
+  return api.patch(`/v1/admins/updateAdmin`, adminData);
+};
 
 
 

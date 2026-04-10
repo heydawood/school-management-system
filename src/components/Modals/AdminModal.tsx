@@ -5,11 +5,8 @@ import Modal from '../ui/modal/Modal';
 import Modalheader from '../ui/modal/Header';
 import Modalbody from '../ui/modal/Body';
 import Icon from '../ui/svg_icon/SvgIcon';
-import { useAppDispatch, useAppSelector } from '@/Redux/Hooks';
 import Spinner from '../ui/spinner';
-import { getAdminById } from '@/Redux/AdminPanel/Admin/Slice';
-import type { AdminDataByIdResponse, AdminDataResponse } from '@/pages/Dashboard/AdminPanel/Admins/Types';
-import { useAdminById } from '@/pages/Dashboard/AdminPanel/Admins/Hooks';
+import { useAdminManager } from '@/pages/Dashboard/AdminPanel/Admins/AdminManager';
 
 interface Props {
     close: () => void;
@@ -49,7 +46,10 @@ const AdminModal: FC<Props> = ({ close, adminId }) => {
     //     }
     // }, [adminId]);
 
-    const { data, isLoading } = useAdminById(adminId);
+    const {getAdmin} = useAdminManager();
+
+    //const { data, isLoading } = useAdminById(adminId);
+    const { data, isLoading } = getAdmin(adminId);
 
     return (
         <div>

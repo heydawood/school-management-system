@@ -9,6 +9,7 @@ import { useAppDispatch } from '@/Redux/Hooks';
 import Spinner from '../ui/spinner';
 import { getExamById } from '@/Redux/Exams/Slice';
 import { useExamById } from '@/Hooks/TanStack/Exams/useExamsById';
+import { useStudentExamManager } from '@/pages/Dashboard/StudentPanel/StudentExam/StudentExamManager';
 
 interface Props {
   close: () => void;
@@ -43,7 +44,10 @@ const ExamsModal: FC<Props> = ({ close, examId }) => {
   //   }
   // }, [examId]);
 
-  const { data, isLoading } = useExamById(examId);
+  const {getExamByIdQuery} = useStudentExamManager()
+
+  //const { data, isLoading } = useExamById(examId);
+  const { data, isLoading } = getExamByIdQuery(examId);
 
   return (
     <Modal
