@@ -6,16 +6,7 @@ import {
   updateAdminBasicSettingsHandler,
   updateTeacherPasswordHandler,
 } from '@/Services/Settings/Settings';
-import { updateTeacherInfo } from '@/Services/Teacher/Teacher';
-// import {
-//   getAdminBasicSettingsHandler,
-//   updateAdminPasswordHandler,
-//   updateAdminBasicSettingsHandler,
-//   getAdminSystemSettingsHandler,
-//   getSettingsAppUsageHandler,
-//   getUserSupportQuestionsHandler,
-//   getUserFeedbackSummaryHandler,
-// } from '@/Services/Settings/Settings';
+
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 // Calls

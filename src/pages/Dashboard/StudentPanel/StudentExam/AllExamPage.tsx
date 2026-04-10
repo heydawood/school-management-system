@@ -1,10 +1,8 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import Icon from '@/components/ui/svg_icon/SvgIcon';
 import { useAppDispatch, useAppSelector } from '@/Redux/Hooks';
-import { getStudentExam } from '@/Redux/StudentExam/Slice';
 import StudentExamTable from '@/components/features/StudentExam/StudentExamTable';
-import type { StudentExamDataResponse } from './Types';
-import { useStudentExams } from './Hooks';
+import { useStudentExamManager } from './StudentExamManager';
 
 const Header = ({
   onChange,
@@ -59,7 +57,11 @@ function AllExamPage() {
     //   useEffect(() => {
     //     handleGetStudentExam();
     //   }, [dispatch]);
-     const { data, isLoading } = useStudentExams();
+
+    const {getStudentExamsQuery} = useStudentExamManager()
+
+     //const { data, isLoading } = useStudentExams();
+     const { data, isLoading } = getStudentExamsQuery();
 
   return (
     <div className="space-y-4">

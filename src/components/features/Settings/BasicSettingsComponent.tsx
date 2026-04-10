@@ -3,27 +3,14 @@ import { FormProvider, useForm } from 'react-hook-form';
 import UserInfoForm from './UserInfoForm';
 import UpdatePasswordForm from './PasswordChangeForm';
 import { useEffect, type Dispatch, type ReactNode, type SetStateAction } from 'react';
-import Icon from '@/components/ui/svg_icon/SvgIcon';
 import { Button } from '@/components/ui/button';
 import type { BasicSettingsResponse } from '@/pages/Dashboard/Settings/Types';
 import { customToast } from '@/Common/Components/ShowToast';
 import { updateAdminBasicSettings, updateTeacherBasicSettings } from '@/Redux/Settings/Slice';
 import { useAppDispatch, useAppSelector } from '@/Redux/Hooks';
 import { setUserInfo } from '@/Redux/Auth/Slice';
-
-const DownloadCard = ({ logo, title, logoClasses, onDownload }: { logo: ReactNode; title: string; logoClasses: string; onDownload: () => void }) => {
-  return (
-    <div className="border-2 border-neutral-975 p-4 rounded-xl grow">
-      <div className="flex items-center flex-col gap-2">
-        <div className={`h-12 w-12 flex justify-center items-center rounded-full ${logoClasses}`}>{logo}</div>
-        <h3 className="text-subheading">{title}</h3>
-        <Button variant={'link'} className="text-primary font-semibold" onClick={onDownload}>
-          Download CSV
-        </Button>
-      </div>
-    </div>
-  );
-};
+import { useTeacherManager } from '@/pages/Dashboard/AdminPanel/Teachers/TeacherManager';
+import { useAdminManager } from '@/pages/Dashboard/AdminPanel/Admins/AdminManager';
 
 const BasicSettingsComponent = ({ basicSetting, setLoading }: { basicSetting: BasicSettingsResponse | undefined; setLoading: Dispatch<SetStateAction<boolean>> }) => {
   const basicSettingsForm = useForm<SettingsFormTypes>({
@@ -51,6 +38,8 @@ const BasicSettingsComponent = ({ basicSetting, setLoading }: { basicSetting: Ba
       },
     };
 
+
+    
 
     const role = localStorage.getItem("role");
 
@@ -107,8 +96,7 @@ const BasicSettingsComponent = ({ basicSetting, setLoading }: { basicSetting: Ba
           <div>
             <form onSubmit={basicSettingsForm.handleSubmit(onSubmit)}>
               <UserInfoForm basicSetting={basicSetting} form={basicSettingsForm} />
-              {/* <UserLanguageCard />
-              <NotificationPrefCard form={basicSettingsForm} /> */}
+
             </form>
           </div>
         </FormProvider>

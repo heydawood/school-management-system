@@ -7,9 +7,7 @@ import Modalbody from '../ui/modal/Body';
 import Icon from '../ui/svg_icon/SvgIcon';
 import { useAppDispatch } from '@/Redux/Hooks';
 import Spinner from '../ui/spinner';
-import { getTeacherById } from '@/Redux/Teachers/Slice';
-import type { TeacherDataResponse } from '@/pages/Dashboard/AdminPanel/Teachers/Types';
-import { useTeacherById } from '@/pages/Dashboard/AdminPanel/Teachers/Hooks';
+import { useTeacherManager } from '@/pages/Dashboard/AdminPanel/Teachers/TeacherManager';
 
 
 interface Props {
@@ -22,7 +20,10 @@ const TeacherModal: FC<Props> = ({close, teacherId}) => {
 
     const dispatch = useAppDispatch();
 
- const { data, isLoading } = useTeacherById(teacherId);
+    const {getTeacher} = useTeacherManager();
+
+ //const { data, isLoading } = useTeacherById(teacherId);
+ const { data, isLoading } = getTeacher(teacherId);
 
 
   return (

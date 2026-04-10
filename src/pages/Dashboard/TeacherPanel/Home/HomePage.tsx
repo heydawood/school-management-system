@@ -1,12 +1,7 @@
-import { useEffect, useState, type ReactNode } from 'react';
-import { Button } from '@/components/ui/button';
+import {type ReactNode } from 'react';
 import Icon from '@/components/ui/svg_icon/SvgIcon';
-import { useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '@/Redux/Hooks';
-import * as routes from '@/routes/Index';
-import { getTeacherProfile } from '@/Redux/Teachers/Slice';
-import type { TeacherProfileDataResponse } from './Types';
-import { useTeacherProfile } from '../../AdminPanel/Teachers/Hooks';
+import { useAppSelector } from '@/Redux/Hooks';
+import { useTeacherManager } from '../../AdminPanel/Teachers/TeacherManager';
 
 const Header = ({
   onChange,
@@ -34,12 +29,6 @@ export default function HomePage() {
 
   const { pagination } = useAppSelector((state) => state.TeacherRecords);
 
-  const [loading, setLoading] = useState<boolean>(false);
-  const [filters, setFilters] = useState<{ search: string }>({ search: '' });
-
-
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
 
  // const [profile, setProfile] = useState<TeacherProfileDataResponse | null>(null);
 
@@ -62,7 +51,10 @@ export default function HomePage() {
   //   fetchProfile();
   // }, []);
 
-  const { data = [], isLoading } = useTeacherProfile();
+  const {getProfile} = useTeacherManager()
+
+  //const { data = [], isLoading } = useTeacherProfile();
+  const { data = [], isLoading } = getProfile();
 
 
 
@@ -75,7 +67,7 @@ export default function HomePage() {
             <div className="flex gap-3 items-center">
             </div>
           }
-          onChange={(e: any) => { }}
+          onChange={(e: any) => {}}
           logo={<Icon icon="/icons/teacher.svg" className="text-primary-800 w-6 h-6" />}
           logoClasses="bg-primary-25"
         />
